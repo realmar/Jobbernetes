@@ -4,7 +4,7 @@ import argparse
 from lib import run_shell_print
 
 
-def deploy(ignore_errors):
+def deploy(ignore_errors = False):
     commands = [
         "helm repo add influxdata https://helm.influxdata.com/",
         "helm repo add grafana https://grafana.github.io/helm-charts",
