@@ -3,3 +3,5 @@ var_data
 
 # Python
 .vscode/.ropeproject
+__pycache__
+*.pyc

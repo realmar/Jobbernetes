@@ -1,6 +1,18 @@
 [
     {
-        "host": "<ROOT>/var_data",
-        "node": "/var/data"
+        "host": "<ROOT>/var_data/influxdb",
+        "node": "/var/data/influxdb"
+    },
+    {
+        "host": "<ROOT>/var_data/grafana",
+        "node": "/var/data/grafana"
+    },
+    {
+        "host": "<ROOT>/var_data/loki",
+        "node": "/var/data/loki"
+    },
+    {
+        "host": "<ROOT>/var_data/rabbitmq",
+        "node": "/var/data/rabbitmq"
     }
 ]

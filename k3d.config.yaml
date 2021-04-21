@@ -3,3 +3,12 @@ kind: Simple
 
 servers: 1
 agents: 2
+
+kubeAPI:
+ hostIP: "127.0.0.1"
+ hostPort: "6445"
+
+ports:
+  - port: 8080:80
+    nodeFilters:
+      - loadbalancer
