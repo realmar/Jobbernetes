@@ -1,0 +1,5 @@
+# Data directories mapped into k3d cluster
+var_data
+
+# Python
+.vscode/.ropeproject

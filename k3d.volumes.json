@@ -1,0 +1,6 @@
+[
+    {
+        "host": "<ROOT>/var_data",
+        "node": "/var/data"
+    }
+]
