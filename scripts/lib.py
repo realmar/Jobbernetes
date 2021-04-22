@@ -27,8 +27,10 @@ K3D_CONFIG_PATH = os.path.join(ROOT_DIR, K3D_CONFIG_FILE)
 K3D_CLUSTER_NAME = "djs-cluster"
 
 
-def run_shell(command: str):
-    print(command)
+def run_shell(command: str, silent = False):
+    if not silent:
+        print(command)
+
     result = subprocess.run(command.split(" "),
                             stdout=subprocess.PIPE,
                             stderr=subprocess.PIPE)

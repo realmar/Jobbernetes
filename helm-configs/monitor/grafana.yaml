@@ -16,8 +16,10 @@ persistence:
 
 # Administrator credentials when not using an existing secret (see below)
 adminUser: admin
-# adminPassword: strongpassword
+adminPassword: admin
 
+# Execute following to retrieve the secrets:
+# kubectl get secret --namespace default grafana -o jsonpath="{.data.admin-password}" | base64 --decode ; echo
 # Use an existing secret for the admin user.
 admin:
   existingSecret: ""
@@ -41,12 +43,36 @@ admin:
 #  grafana_net:
 #    url: https://grafana.net
 
+## Configure grafana datasources
+## ref: http://docs.grafana.org/administration/provisioning/#datasources
+##
+datasources:
+  datasources.yaml:
+    apiVersion: 1
+    datasources:
+      #- name: Prometheus
+      #  type: prometheus
+      #  url: http://prometheus-prometheus-server
+      #  access: proxy
+      #  isDefault: true
+      - name: InfluxDB
+        type: influxdb
+        url: http://influxdb:8086
+        access: proxy
+        database: djs
+        isDefault: true
+      - name: Loki
+        type: loki
+        url: http://loki:3100
+        access: proxy
+        isDefault: false
+
 ingress:
   enabled: true
   path: /
 
   # pathType is only for k8s > 1.19
-  #pathType: Prefix
-#
-  #hosts:
-  #  - grafana
+  pathType: Prefix
+
+  hosts:
+    - grafana.localhost

@@ -12,5 +12,6 @@ if __name__ == "__main__":
         uid = os.getuid()
         path = volume["host"]
 
-        run_shell(f"sudo chown {uid}:{uid} {path} -R")
-        shutil.rmtree(path)
+        if os.path.exists(path):
+            run_shell(f"sudo chown {uid}:{uid} {path} -R", silent = True)
+            shutil.rmtree(path)

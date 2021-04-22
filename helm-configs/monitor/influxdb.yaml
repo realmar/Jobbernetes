@@ -53,7 +53,7 @@ config:
 # /docker-entrypoint-initdb.d folder, it will execute them. The order they are
 # executed in is determined by the shell. This is usually alphabetical order.
 initScripts:
-  enabled: false
+  enabled: true
   scripts:
     init.iql: |+
-      CREATE DATABASE djs
+      CREATE DATABASE "djs"
