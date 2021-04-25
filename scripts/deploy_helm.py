@@ -4,21 +4,27 @@ import argparse
 from lib import run_shell_print
 
 
-def deploy(ignore_errors = False):
-    commands = [
-        "helm repo add influxdata https://helm.influxdata.com/",
-        "helm repo add grafana https://grafana.github.io/helm-charts",
-        "helm repo add prometheus-community https://prometheus-community.github.io/helm-charts",
+repos = [
+    ("influxdata", "https://helm.influxdata.com/"),
+    ("grafana", "https://grafana.github.io/helm-charts"),
+    ("prometheus-community", "https://prometheus-community.github.io/helm-charts")
+]
 
-        "helm repo update",
+charts = [
+    ("influxdb", "influxdata/influxdb", "helm-configs/monitor/influxdb.yaml"),
+    ("grafana", "grafana/grafana", "helm-configs/monitor/grafana.yaml"),
+    ("loki", "grafana/loki", "helm-configs/monitor/loki.yaml"),
+    ("prometheus", "prometheus-community/prometheus", "helm-configs/monitor/prometheus.yaml")
+]
 
-        "helm install influxdb influxdata/influxdb -f helm-configs/monitor/influxdb.yaml",
-        "helm install grafana grafana/grafana -f helm-configs/monitor/grafana.yaml",
-        "helm install loki grafana/loki -f helm-configs/monitor/loki.yaml",
-        "helm install prometheus prometheus-community/prometheus -f helm-configs/monitor/prometheus.yaml"
-    ]
 
-    for command in commands:
+def deploy(ignore_errors=False):
+    repos = [f"helm repo add {name} {url}" for name, url in repos]
+    update = ["helm repo update"]
+    install = [
+        f"helm install {name} {app} {config}" for name, app, config in charts]
+
+    for command in repos + update + install:
         try:
             run_shell_print(command)
         except:
