@@ -27,7 +27,7 @@ K3D_CONFIG_PATH = os.path.join(ROOT_DIR, K3D_CONFIG_FILE)
 K3D_CLUSTER_NAME = "djs-cluster"
 
 
-def run_shell(command: str, silent = False):
+def run_shell(command: str, silent=False):
     if not silent:
         print(command)
 
@@ -60,5 +60,8 @@ def format_placeholders(s: str):
 
 def get_volumes():
     with open(K3D_VOLUMES_PATH) as f:
-        contents = format_placeholders(f.read())
-        return json.loads(contents)
+        return [
+            dict(
+                {k: format_placeholders(v) for k, v in x.items()},
+                **{"host_raw": x["host"]})
+            for x in json.loads(f.read())]
