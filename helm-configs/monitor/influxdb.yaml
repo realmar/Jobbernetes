@@ -1,0 +1,59 @@
+persistence:
+  enabled: true
+  ## A manually managed Persistent Volume and Claim
+  ## Requires persistence.enabled: true
+  ## If defined, PVC must be created manually before volume will be bound
+  existingClaim: influxdb-pvc
+  ## influxdb data Persistent Volume Storage Class
+  ## If defined, storageClassName: <storageClass>
+  ## If set to "-", storageClassName: "", which disables dynamic provisioning
+  ## If undefined (the default) or set to null, no storageClassName spec is
+  ##   set, choosing the default provisioner.  (gp2 on AWS, standard on
+  ##   GKE, AWS & OpenStack)
+  ##
+  #storageClass: "djs-volume"
+  #annotations:
+  #accessMode: ReadWriteOnce
+  #size: 10Gi
+
+## Configure resource requests and limits
+## ref: http://kubernetes.io/docs/user-guide/compute-resources/
+resources:
+  requests:
+    memory: 256Mi
+    cpu: 0.1
+  limits:
+    memory: 2Gi
+    cpu: 2
+
+## InfluxDB configuration
+## ref: https://docs.influxdata.com/influxdb/v1.7/administration/config
+config:
+  reporting_disabled: false
+  rpc: {}
+  meta: {}
+  data: {}
+  coordinator: {}
+  retention: {}
+  shard_precreation: {}
+  monitor: {}
+  http: {}
+  logging: {}
+  subscriber: {}
+  graphite: {}
+  collectd: {}
+  opentsdb: {}
+  udp: {}
+  continuous_queries: {}
+  tls: {}
+
+# Allow executing custom init scripts
+#
+# If the container finds any files with the extensions .sh or .iql inside of the
+# /docker-entrypoint-initdb.d folder, it will execute them. The order they are
+# executed in is determined by the shell. This is usually alphabetical order.
+initScripts:
+  enabled: true
+  scripts:
+    init.iql: |+
+      CREATE DATABASE "djs"
