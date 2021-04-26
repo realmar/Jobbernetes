@@ -1,0 +1,59 @@
+alertmanager:
+  enabled: true
+
+  ## alertmanager container name
+  ##
+  name: alertmanager
+
+  persistentVolume:
+    enabled: true
+    existingClaim: prometheus-alertmanager-pvc
+
+  ## Security context to be added to alertmanager pods
+  ##
+  securityContext:
+    runAsUser: 1000
+    runAsNonRoot: true
+    runAsGroup: 1000
+    fsGroup: 1000
+
+server:
+  enabled: true
+
+  name: server
+
+  remoteWrite:
+    - url: http://influxdb:8086/api/v1/prom/write?db=djs-prometheus
+
+  remoteRead:
+    - url: http://influxdb:8086/api/v1/prom/read?db=djs-prometheus
+
+  persistentVolume:
+    enabled: true
+    existingClaim: prometheus-server-pvc
+
+  ## Security context to be added to server pods
+  ##
+  securityContext:
+    runAsUser: 1000
+    runAsNonRoot: true
+    runAsGroup: 1000
+    fsGroup: 1000
+
+
+pushgateway:
+  enabled: true
+
+  ## pushgateway container name
+  ##
+  name: pushgateway
+
+  ## Security context to be added to push-gateway pods
+  ##
+  securityContext:
+    runAsUser: 1000
+    runAsNonRoot: true
+
+  persistentVolume:
+    enabled: false
+    existingClaim: prometheus-pushgateway-pvc

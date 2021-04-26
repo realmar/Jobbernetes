@@ -27,6 +27,13 @@ https://kubernetes.io/docs/concepts/configuration/overview/
 
 https://github.com/evanlucas/fish-kubectl-completions
 
+https://github.com/kapicorp/kapitan
+https://github.com/bitnami/kubecfg
+https://github.com/bitnami-labs/kube-libsonnet/blob/master/kube.libsonnet
+https://github.com/dhall-lang/dhall-lang
+https://github.com/dhall-lang/dhall-kubernetes
+
+https://brew.sh/
 
 ## Ingress
 

@@ -50,17 +50,17 @@ datasources:
   datasources.yaml:
     apiVersion: 1
     datasources:
-      #- name: Prometheus
-      #  type: prometheus
-      #  url: http://prometheus-prometheus-server
-      #  access: proxy
-      #  isDefault: true
+      - name: Prometheus
+        type: prometheus
+        url: http://prometheus-server
+        access: proxy
+        isDefault: true
       - name: InfluxDB
         type: influxdb
         url: http://influxdb:8086
         access: proxy
-        database: djs
-        isDefault: true
+        database: djs-prometheus
+        isDefault: false
       - name: Loki
         type: loki
         url: http://loki:3100

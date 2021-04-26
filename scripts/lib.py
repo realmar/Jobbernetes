@@ -26,6 +26,8 @@ K3D_CONFIG_PATH = os.path.join(ROOT_DIR, K3D_CONFIG_FILE)
 
 K3D_CLUSTER_NAME = "djs-cluster"
 
+SPECS_DIR = os.path.join(ROOT_DIR, "kubernetes-specs")
+
 
 def run_shell(command: str, silent=False):
     if not silent:
@@ -35,8 +37,12 @@ def run_shell(command: str, silent=False):
                             stdout=subprocess.PIPE,
                             stderr=subprocess.PIPE)
 
-    if result.returncode != 0:
+    error = ""
+
+    if result.stderr:
         error = result.stderr.decode("utf-8")
+
+    if result.returncode != 0:
 
         print()
         print(Colors.FAIL + "ERROR: " + Colors.ENDC + error)
@@ -44,14 +50,19 @@ def run_shell(command: str, silent=False):
 
         raise Exception(error)
 
-    return result.stdout.decode("utf-8")
+    return (result.stdout.decode("utf-8"), error)
 
 
 def run_shell_print(command: str):
-    stdout = run_shell(command)
-    print(stdout)
+    stdout, stderr = run_shell(command)
 
-    return stdout
+    if stdout:
+        print(stdout)
+
+    if stderr:
+        print(stderr)
+
+    return (stdout, stderr)
 
 
 def format_placeholders(s: str):

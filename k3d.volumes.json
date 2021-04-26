@@ -12,8 +12,16 @@
         "node": "/var/data/loki"
     },
     {
-        "host": "<ROOT>/var_data/prometheus",
-        "node": "/var/data/prometheus"
+        "host": "<ROOT>/var_data/prometheus/server",
+        "node": "/var/data/prometheus/server"
+    },
+    {
+        "host": "<ROOT>/var_data/prometheus/alertmanager",
+        "node": "/var/data/prometheus/alertmanager"
+    },
+    {
+        "host": "<ROOT>/var_data/prometheus/pushgateway",
+        "node": "/var/data/prometheus/pushgateway"
     },
     {
         "host": "<ROOT>/var_data/rabbitmq",

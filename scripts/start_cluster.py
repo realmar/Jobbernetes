@@ -5,11 +5,11 @@ import os
 from lib import run_shell, run_shell_print, get_volumes, K3D_CLUSTER_NAME, K3D_CONFIG_PATH
 
 
-required_commands = ["k3d", "kubectl", "docker"]
+required_commands = ["k3d", "kubectl", "kubecfg", "docker", "jsonnet"]
 
 
 def create_volumes(volumes):
-    fmt = "Volume " + (("{:<" + str(max([len(x["host_raw"]) for x in volumes])) + "}") * 2)
+    fmt = "Volume " + (("{:<" + str(max([len(x["host_raw"]) for x in volumes]) + 1) + "}") * 2)
 
     for volume in volumes:
         host_path = volume["host"]
@@ -17,7 +17,7 @@ def create_volumes(volumes):
 
         if not os.path.exists(host_path):
             print(fmt.format(host_path_raw, "does not exist. Creating ..."))
-            os.mkdir(host_path)
+            os.makedirs(host_path)
         else:
             print(fmt.format(host_path_raw, " already exist. Nothing to do."))
 
@@ -27,11 +27,11 @@ def create_k3d_cli_volumes(volumes):
 
 
 def does_cluster_exist():
-    result = run_shell("k3d cluster list", silent=True)
+    result, _ = run_shell("k3d cluster list", silent=True)
     return K3D_CLUSTER_NAME in result
 
 
-if __name__ == "__main__":
+def run():
     missing = [x for x in required_commands if not shutil.which(x)]
     if any(missing):
         print("Following tools are missing, install them accoring to the readme")
@@ -53,3 +53,7 @@ if __name__ == "__main__":
         command = f"k3d cluster create {K3D_CLUSTER_NAME} --config {K3D_CONFIG_PATH} {create_k3d_cli_volumes(volumes)}"
 
     run_shell_print(command)
+
+
+if __name__ == "__main__":
+    run()

@@ -5,7 +5,8 @@ import os
 from lib import get_volumes, run_shell
 import delete_cluster
 
-if __name__ == "__main__":
+
+def run():
     delete_cluster.run()
 
     for volume in get_volumes():
@@ -13,5 +14,9 @@ if __name__ == "__main__":
         path = volume["host"]
 
         if os.path.exists(path):
-            run_shell(f"sudo chown {uid}:{uid} {path} -R", silent = True)
+            run_shell(f"sudo chown {uid}:{uid} {path} -R", silent=True)
             shutil.rmtree(path)
+
+
+if __name__ == "__main__":
+    run()

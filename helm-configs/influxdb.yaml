@@ -56,4 +56,4 @@ initScripts:
   enabled: true
   scripts:
     init.iql: |+
-      CREATE DATABASE "djs"
+      CREATE DATABASE "djs-prometheus"

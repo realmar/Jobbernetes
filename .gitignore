@@ -5,3 +5,6 @@ var_data
 .vscode/.ropeproject
 __pycache__
 *.pyc
+
+# Misc
+tmp
