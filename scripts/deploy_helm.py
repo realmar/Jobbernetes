@@ -13,6 +13,7 @@ repositories = [
 charts = [
     ("influxdb", "influxdata/influxdb", "helm-configs/influxdb.yaml"),
     ("grafana", "grafana/grafana", "helm-configs/grafana.yaml"),
+    ("promtail", "grafana/promtail", "helm-configs/promtail.yaml"),
     ("loki", "grafana/loki", "helm-configs/loki.yaml"),
     ("prometheus", "prometheus-community/prometheus", "helm-configs/prometheus.yaml")
 ]

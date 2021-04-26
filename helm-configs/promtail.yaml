@@ -1,0 +1,16 @@
+# -- Section for crafting Promtails config file. The only directly relevant value is `config.file`
+# which is a templated string that references the other values and snippets below this key.
+# @default -- See `values.yaml`
+config:
+  # -- The log level of the Promtail server
+  # Must be reference in `config.file` to configure `server.log_level`
+  # See default config in `values.yaml`
+  logLevel: info
+  # -- The port of the Promtail server
+  # Must be reference in `config.file` to configure `server.http_listen_port`
+  # See default config in `values.yaml`
+  serverPort: 3101
+  # -- The Loki address to post logs to.
+  # Must be reference in `config.file` to configure `client.url`.
+  # See default config in `values.yaml`
+  lokiAddress: http://loki/loki/api/v1/push
