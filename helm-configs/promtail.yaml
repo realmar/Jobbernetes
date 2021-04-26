@@ -13,4 +13,4 @@ config:
   # -- The Loki address to post logs to.
   # Must be reference in `config.file` to configure `client.url`.
   # See default config in `values.yaml`
-  lokiAddress: http://loki/loki/api/v1/push
+  lokiAddress: http://loki-headless:3100/loki/api/v1/push

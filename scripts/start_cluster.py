@@ -19,7 +19,7 @@ def create_volumes(volumes):
             print(fmt.format(host_path_raw, "does not exist. Creating ..."))
             os.makedirs(host_path)
         else:
-            print(fmt.format(host_path_raw, " already exist. Nothing to do."))
+            print(fmt.format(host_path_raw, "already exist. Nothing to do."))
 
 
 def create_k3d_cli_volumes(volumes):
