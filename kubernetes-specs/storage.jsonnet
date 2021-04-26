@@ -1,44 +1,10 @@
-local kube = import 'vendor/kube.libsonnet';
-
-local Storage(name) = {
-  name:: std.strReplace(name, '/', '-'),
-  pvName:: self.name + '-pv',
-  pvcName:: self.name + '-pvc',
-
-  pv: kube.PersistentVolume(self.pvName) {
-    spec+: {
-      storageClassName: 'djs-volume',
-      capacity: {
-        storage: '10Gi',
-      },
-      accessModes:
-        [
-          'ReadWriteOnce',
-        ],
-      hostPath:
-        {
-          path: '/var/data/' + name,
-        },
-    },
-  },
-  pvc: kube.PersistentVolumeClaim(self.pvcName) {
-    storageClass: 'djs-volume',
-    storage: '10Gi',
-    spec+: {
-      selector: {
-        matchLabels: {
-          name: $.pvName,
-        },
-      },
-    },
-  },
-};
+local djs = import 'djs.libsonnet';
 
 [
-  Storage('grafana'),
-  Storage('influxdb'),
-  Storage('loki'),
-  Storage('prometheus/alertmanager'),
-  Storage('prometheus/server'),
-  Storage('prometheus/pushgateway'),
+  djs.Storage('grafana'),
+  djs.Storage('influxdb'),
+  djs.Storage('loki'),
+  djs.Storage('prometheus/alertmanager'),
+  djs.Storage('prometheus/server'),
+  djs.Storage('prometheus/pushgateway'),
 ]
