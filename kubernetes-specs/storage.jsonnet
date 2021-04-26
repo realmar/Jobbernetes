@@ -1,4 +1,4 @@
-local kube = (import 'https://raw.githubusercontent.com/bitnami-labs/kube-libsonnet/master/kube.libsonnet');
+local kube = import 'vendor/kube.libsonnet';
 
 local Storage(name) = {
   name:: std.strReplace(name, '/', '-'),
