@@ -1,0 +1,41 @@
+## Number of Kafka brokers to deploy
+##
+replicaCount: 1
+## Kafka pods' Security Context
+## ref: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/#set-the-security-context-for-a-pod
+##
+podSecurityContext:
+  enabled: true
+  fsGroup: 1000
+  runAsUser: 1000
+
+## Persistence parameters
+##
+persistence:
+  enabled: true
+  existingClaim: kafka-pvc
+
+## Init Container parameters
+## Change the owner and group of the persistent volume(s) mountpoint(s) to 'runAsUser:fsGroup' on each component
+## values from the securityContext section of the component
+##
+volumePermissions:
+  enabled: true
+
+## Prometheus Exporters / Metrics
+##
+metrics:
+  ## Prometheus Kafka Exporter: exposes complimentary metrics to JMX Exporter
+  ##
+  kafka:
+    enabled: true
+
+  ## Prometheus JMX Exporter: exposes the majority of Kafkas metrics
+  ##
+  jmx:
+    enabled: true
+
+    ## Prometheus Operator ServiceMonitor configuration
+    ##
+    serviceMonitor:
+      enabled: true

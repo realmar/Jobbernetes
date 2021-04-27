@@ -3,16 +3,10 @@ persistence:
   enabled: true
   existingClaim: grafana-pvc
 
-  ## If persistence is not enabled, this allows to mount the
-  ## local storage in-memory to improve performance
-  ##
-  inMemory:
-    enabled: false
-    ## The maximum usage on memory medium EmptyDir would be
-    ## the minimum value between the SizeLimit specified
-    ## here and the sum of memory limits of all containers in a pod
-    ##
-    # sizeLimit: 300Mi
+securityContext:
+  runAsUser: 1000
+  runAsGroup: 1000
+  fsGroup: 1000
 
 # Administrator credentials when not using an existing secret (see below)
 adminUser: admin
@@ -25,23 +19,6 @@ admin:
   existingSecret: ""
   userKey: admin-user
   passwordKey: admin-password
-
-## Grafana's primary configuration
-## NOTE: values in map will be converted to ini format
-## ref: http://docs.grafana.org/installation/configuration/
-##
-#grafana.ini:
-#  paths:
-#    data: /var/lib/grafana/data
-#    logs: /var/log/grafana
-#    plugins: /var/lib/grafana/plugins
-#    provisioning: /etc/grafana/provisioning
-#  analytics:
-#    check_for_updates: true
-#  log:
-#    mode: console
-#  grafana_net:
-#    url: https://grafana.net
 
 ## Configure grafana datasources
 ## ref: http://docs.grafana.org/administration/provisioning/#datasources
@@ -67,12 +44,40 @@ datasources:
         access: proxy
         isDefault: false
 
+## Configure grafana dashboard providers
+## ref: http://docs.grafana.org/administration/provisioning/#dashboards
+##
+## `path` must be /var/lib/grafana/dashboards/<provider_name>
+##
+dashboardProviders:
+  dashboardproviders.yaml:
+    apiVersion: 1
+    providers:
+    - name: 'default'
+      orgId: 1
+      folder: ''
+      type: file
+      disableDeletion: false
+      editable: true
+      options:
+        path: /var/lib/grafana/dashboards/default
+
+## Configure grafana dashboard to import
+## NOTE: To use dashboards you must also enable/configure dashboardProviders
+## ref: https://grafana.com/dashboards
+##
+## dashboards per provider, use provider name as key.
+##
+dashboards:
+  default:
+    kafka:
+      gnetId: 7589
+      datasource: Prometheus
+    jmx:
+      gnetId: 3457
+      datasource: Prometheus
+
 ingress:
   enabled: true
-  path: /
-
-  # pathType is only for k8s > 1.19
-  pathType: Prefix
-
   hosts:
     - grafana.localhost

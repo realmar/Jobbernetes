@@ -1,0 +1,14 @@
+ingress:
+  enabled: true
+  path: /
+  hosts:
+    - registry.localhost
+
+persistence:
+  enabled: true
+  existingClaim: docker-registry-pvc
+
+securityContext:
+  enabled: true
+  runAsUser: 1000
+  fsGroup: 1000

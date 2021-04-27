@@ -7,7 +7,9 @@ from lib import run_shell_print
 repositories = [
     ("influxdata", "https://helm.influxdata.com/"),
     ("grafana", "https://grafana.github.io/helm-charts"),
-    ("prometheus-community", "https://prometheus-community.github.io/helm-charts")
+    ("prometheus-community", "https://prometheus-community.github.io/helm-charts"),
+    ("bitnami", "https://charts.bitnami.com/bitnami"),
+    ("twuni", "https://helm.twun.io")
 ]
 
 charts = [
@@ -15,7 +17,9 @@ charts = [
     ("grafana", "grafana/grafana", "helm-configs/grafana.yaml"),
     ("promtail", "grafana/promtail", "helm-configs/promtail.yaml"),
     ("loki", "grafana/loki", "helm-configs/loki.yaml"),
-    ("prometheus", "prometheus-community/prometheus", "helm-configs/prometheus.yaml")
+    ("prometheus", "prometheus-community/prometheus", "helm-configs/prometheus.yaml"),
+    ("kafka", "bitnami/kafka", "helm-configs/kafka.yaml"),
+    ("docker-registry", "twuni/docker-registry", "helm-configs/docker-registry.yaml")
 ]
 
 

@@ -1,10 +1,6 @@
 alertmanager:
   enabled: true
 
-  ## alertmanager container name
-  ##
-  name: alertmanager
-
   persistentVolume:
     enabled: true
     existingClaim: prometheus-alertmanager-pvc
@@ -19,8 +15,6 @@ alertmanager:
 
 server:
   enabled: true
-
-  name: server
 
   remoteWrite:
     - url: http://influxdb:8086/api/v1/prom/write?db=djs-prometheus
@@ -43,10 +37,6 @@ server:
 
 pushgateway:
   enabled: true
-
-  ## pushgateway container name
-  ##
-  name: pushgateway
 
   ## Security context to be added to push-gateway pods
   ##
