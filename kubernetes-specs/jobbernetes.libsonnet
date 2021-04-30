@@ -7,7 +7,7 @@ local Storage(name) = {
 
   pv: kube.PersistentVolume(self.pvName) {
     spec+: {
-      storageClassName: 'djs-volume',
+      storageClassName: 'jobbernetes-volume',
       capacity: {
         storage: '10Gi',
       },
@@ -22,7 +22,7 @@ local Storage(name) = {
     },
   },
   pvc: kube.PersistentVolumeClaim(self.pvcName) {
-    storageClass: 'djs-volume',
+    storageClass: 'jobbernetes-volume',
     storage: '10Gi',
     spec+: {
       selector: {

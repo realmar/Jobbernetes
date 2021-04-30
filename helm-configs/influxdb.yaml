@@ -18,4 +18,4 @@ initScripts:
   enabled: true
   scripts:
     init.iql: |+
-      CREATE DATABASE "djs-prometheus"
+      CREATE DATABASE "jobbernetes-prometheus"

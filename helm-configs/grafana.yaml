@@ -36,7 +36,7 @@ datasources:
         type: influxdb
         url: http://influxdb:8086
         access: proxy
-        database: djs-prometheus
+        database: jobbernetes-prometheus
         isDefault: false
       - name: Loki
         type: loki

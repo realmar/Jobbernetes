@@ -1,5 +1,4 @@
 local kube = import 'vendor/kube.libsonnet';
-// local djs = import 'djs.libsonnet';
 
 {
   name:: 'json-server',

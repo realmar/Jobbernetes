@@ -17,10 +17,10 @@ server:
   enabled: true
 
   remoteWrite:
-    - url: http://influxdb:8086/api/v1/prom/write?db=djs-prometheus
+    - url: http://influxdb:8086/api/v1/prom/write?db=jobbernetes-prometheus
 
   remoteRead:
-    - url: http://influxdb:8086/api/v1/prom/read?db=djs-prometheus
+    - url: http://influxdb:8086/api/v1/prom/read?db=jobbernetes-prometheus
 
   persistentVolume:
     enabled: true

@@ -1,15 +1,15 @@
-local djs = import 'djs.libsonnet';
+local jn = import 'jobbernetes.libsonnet';
 
 [
-  djs.Storage('grafana'),
-  djs.Storage('influxdb'),
-  djs.Storage('loki'),
+  jn.Storage('grafana'),
+  jn.Storage('influxdb'),
+  jn.Storage('loki'),
 
-  djs.Storage('prometheus/alertmanager'),
-  djs.Storage('prometheus/server'),
-  djs.Storage('prometheus/pushgateway'),
+  jn.Storage('prometheus/alertmanager'),
+  jn.Storage('prometheus/server'),
+  jn.Storage('prometheus/pushgateway'),
 
-  djs.Storage('kafka'),
+  jn.Storage('kafka'),
 
-  djs.Storage('docker-registry'),
+  jn.Storage('docker-registry'),
 ]

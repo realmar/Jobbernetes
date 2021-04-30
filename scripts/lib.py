@@ -24,7 +24,7 @@ K3D_VOLUMES_PATH = os.path.join(ROOT_DIR, K3D_VOLUMES_FILE)
 K3D_CONFIG_FILE = "k3d.config.yaml"
 K3D_CONFIG_PATH = os.path.join(ROOT_DIR, K3D_CONFIG_FILE)
 
-K3D_CLUSTER_NAME = "djs-cluster"
+K3D_CLUSTER_NAME = "jobbernetes-cluster"
 
 SPECS_DIR = os.path.join(ROOT_DIR, "kubernetes-specs")
 
