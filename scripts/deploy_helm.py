@@ -19,7 +19,8 @@ charts = [
     ("loki", "grafana/loki", "helm-configs/loki.yaml"),
     ("prometheus", "prometheus-community/prometheus", "helm-configs/prometheus.yaml"),
     ("kafka", "bitnami/kafka", "helm-configs/kafka.yaml"),
-    ("docker-registry", "twuni/docker-registry", "helm-configs/docker-registry.yaml")
+    ("docker-registry", "twuni/docker-registry", "helm-configs/docker-registry.yaml"),
+    ("mongodb", "bitnami/mongodb", "helm-configs/mongodb.yaml")
 ]
 
 

@@ -10,11 +10,6 @@ kubeAPI:
 
 ports:
     # HTTP
-    - port: 8080:80
-      nodeFilters:
-          - loadbalancer
-
-    # RabbitMQ (rabbitmq_management)
-    - port: 15672:15672
+    - port: 80:80
       nodeFilters:
           - loadbalancer

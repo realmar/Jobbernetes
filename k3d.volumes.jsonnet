@@ -4,12 +4,16 @@
 
 local cwd = std.extVar('cwd');
 
-local Mapping(relativePath) =
+// keepOnClusterDestroy indicates to the delete_cluster_and_data.py that it
+// should not delete this volume when deleting the cluster. This is helpful
+// for data that should persists between clusters such as the docker-registry.
+local Mapping(relativePath, keepOnClusterDestroy=false) =
   {
-    hostRelative: 'var_data/' + relativePath,
-    host: cwd + self.hostRelative,
+    hostRelative: 'var_data/' + std.strReplace(relativePath, '/', '-'),
+    host: cwd + '/' + self.hostRelative,
     nodeRelative: relativePath,
     node: '/var/data/' + relativePath,
+    keep: keepOnClusterDestroy,
   };
 
 [
@@ -20,5 +24,6 @@ local Mapping(relativePath) =
   Mapping('prometheus/alertmanager'),
   Mapping('prometheus/pushgateway'),
   Mapping('kafka'),
-  Mapping('docker-registry'),
+  Mapping('mongodb'),
+  Mapping('docker-registry', keepOnClusterDestroy=true),
 ]

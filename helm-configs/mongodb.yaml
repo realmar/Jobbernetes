@@ -1,0 +1,41 @@
+architecture: standalone
+
+auth:
+  enabled: false
+  rootPassword: "admin"
+
+persistence:
+  enabled: true
+  existingClaim: mongodb-pvc
+
+podSecurityContext:
+  enabled: true
+  fsGroup: 1000
+
+
+containerSecurityContext:
+  enabled: true
+  runAsUser: 1000
+  runAsNonRoot: true
+
+arbiter:
+  podSecurityContext:
+  enabled: true
+  fsGroup: 1000
+
+
+  containerSecurityContext:
+    enabled: true
+    runAsUser: 1000
+
+service:
+  nameOverride: "mongodb"
+
+externalAccess:
+  enabled: true
+
+metrics:
+  enabled: true
+
+volumePermissions:
+  enabled: true
