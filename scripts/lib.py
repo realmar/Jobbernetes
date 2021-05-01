@@ -18,7 +18,7 @@ class Colors:
 
 ROOT_DIR = str(pathlib.Path(__file__).parents[1].absolute())
 
-K3D_VOLUMES_FILE = "k3d.volumes.json"
+K3D_VOLUMES_FILE = "k3d.volumes.jsonnet"
 K3D_VOLUMES_PATH = os.path.join(ROOT_DIR, K3D_VOLUMES_FILE)
 
 K3D_CONFIG_FILE = "k3d.config.yaml"
@@ -65,14 +65,6 @@ def run_shell_print(command: str):
     return (stdout, stderr)
 
 
-def format_placeholders(s: str):
-    return s.replace("<ROOT>", ROOT_DIR)
-
-
 def get_volumes():
-    with open(K3D_VOLUMES_PATH) as f:
-        return [
-            dict(
-                {k: format_placeholders(v) for k, v in x.items()},
-                **{"host_raw": x["host"]})
-            for x in json.loads(f.read())]
+    jsontext, _ = run_shell(f"jsonnet --ext-str cwd={ROOT_DIR} {K3D_VOLUMES_PATH}")
+    return json.loads(jsontext)

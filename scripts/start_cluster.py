@@ -9,17 +9,17 @@ required_commands = ["k3d", "kubectl", "kubecfg", "docker", "jsonnet"]
 
 
 def create_volumes(volumes):
-    fmt = "Volume " + (("{:<" + str(max([len(x["host_raw"]) for x in volumes]) + 1) + "}") * 2)
+    fmt = "Volume " + (("{:<" + str(max([len(x["hostRelative"]) for x in volumes]) + 1) + "}") * 2)
 
     for volume in volumes:
         host_path = volume["host"]
-        host_path_raw = volume["host_raw"]
+        host_path_relative = volume["hostRelative"]
 
         if not os.path.exists(host_path):
-            print(fmt.format(host_path_raw, "does not exist. Creating ..."))
+            print(fmt.format(host_path_relative, "does not exist. Creating ..."))
             os.makedirs(host_path)
         else:
-            print(fmt.format(host_path_raw, "already exist. Nothing to do."))
+            print(fmt.format(host_path_relative, "already exist. Nothing to do."))
 
 
 def create_k3d_cli_volumes(volumes):

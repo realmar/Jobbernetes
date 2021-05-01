@@ -1,15 +1,7 @@
+local k3dVolumes = import '../k3d.volumes.jsonnet';
 local jn = import 'jobbernetes.libsonnet';
 
 [
-  jn.Storage('grafana'),
-  jn.Storage('influxdb'),
-  jn.Storage('loki'),
-
-  jn.Storage('prometheus/alertmanager'),
-  jn.Storage('prometheus/server'),
-  jn.Storage('prometheus/pushgateway'),
-
-  jn.Storage('kafka'),
-
-  jn.Storage('docker-registry'),
+  jn.Storage(volume.nodeRelative)
+  for volume in k3dVolumes
 ]
