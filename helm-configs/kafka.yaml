@@ -1,6 +1,29 @@
 ## Number of Kafka brokers to deploy
 ##
 replicaCount: 1
+
+## External Access to Kafka brokers configuration
+##
+externalAccess:
+  ## Enable Kubernetes external cluster access to Kafka brokers
+  ##
+  enabled: true
+
+  autoDiscovery:
+    ## Enable external IP/ports auto-discovery
+    ##
+    enabled: true
+
+## Role Based Access
+## ref: https://kubernetes.io/docs/admin/authorization/rbac/
+##
+rbac:
+  ## Specifies whether RBAC rules should be created
+  ## binding Kafka ServiceAccount to a role
+  ## that allows Kafka pods querying the K8s API
+  ##
+  create: true
+
 ## Kafka pods' Security Context
 ## ref: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/#set-the-security-context-for-a-pod
 ##
@@ -25,7 +48,7 @@ volumePermissions:
 ## Prometheus Exporters / Metrics
 ##
 metrics:
-  ## Prometheus Kafka Exporter: exposes complimentary metrics to JMX Exporter
+  ## Prometheus Kafka Exporter: exposes complimentary metrics to JMX Exportery
   ##
   kafka:
     enabled: true

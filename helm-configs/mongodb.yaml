@@ -31,8 +31,17 @@ arbiter:
 service:
   nameOverride: "mongodb"
 
+rbac:
+  create: true
+
 externalAccess:
   enabled: true
+
+  autoDiscovery:
+    enabled: true
+
+#  hidden:
+#    enabled: true
 
 metrics:
   enabled: true

@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+option csharp_namespace = "Realmar.Jobbernetes.Demo.GRPC.ExternalService";
+
+package scrape;
+
+
+service ImageService {
+	rpc GetImage (ImageRequest) returns (ImageReply);
+}
+
+message ImageRequest {
+	string name = 1;
+}
+
+message ImageReply {
+	bytes data = 1;
+}

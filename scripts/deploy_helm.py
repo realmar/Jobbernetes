@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 import argparse
-from lib import run_shell_print
+from lib import is_windows, run_shell_print
 
 
 repositories = [
@@ -32,6 +32,8 @@ def deploy(ignore_errors=False):
 
     for command in repos + update + install:
         try:
+            if is_windows():
+                command = f"wsl -- {command}"
             run_shell_print(command)
         except:
             if not ignore_errors:

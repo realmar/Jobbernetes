@@ -2,6 +2,9 @@
 
 TODO
 
+If you are running on Windows then you NEED WSL2 AND Docker for Windows Desktop
+installed. Furthermore, in WSL2 you need to install kubecfg and jsonnet.
+
 
 https://kubectl.docs.kubernetes.io/installation/kustomize/
 
@@ -38,3 +41,34 @@ https://brew.sh/
 ## Ingress
 
 http://grafana.localhost:8080/
+
+## Commands
+
+```sh
+# General
+kubectl get po          # po  = pods
+kubectl get svc         # svc = services
+kubectl get ing         # ing = ingress
+
+# Show more information
+kubectl get <type> -o wide
+
+# Show k8s object as yaml (spec + status)
+kubectl get <type> <name> -o yaml
+
+# Secrets
+kubectl get secrets
+kubectl get secret <name> -o jsonpath="{.data}"
+kubectl get secret <name> -o jsonpath="{.data.password}" | base64 --decode
+
+# Logs
+kubectl logs -f <pod> [<container>]
+
+# Port Forwarding
+kubectl port-forward --namespace default svc/<name> <host>:<k8s>
+
+# Storage
+kubectl get sc      # sc = StorageClass
+kubectl get pv      # pv = PersistentVolume
+kubectl get pvc     # sc = PersistentVolumeClaim
+```

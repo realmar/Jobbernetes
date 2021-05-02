@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+option csharp_namespace = "Realmar.Jobbernetes.Demo.GRPC";
+
+package models;
+
+message ImageIngress {
+	string name = 1;
+}
+
+message Image {
+	string name = 1;
+	string data = 2;
+}

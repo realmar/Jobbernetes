@@ -29,6 +29,10 @@ K3D_CLUSTER_NAME = "jobbernetes-cluster"
 SPECS_DIR = os.path.join(ROOT_DIR, "kubernetes-specs")
 
 
+def is_windows():
+    return os.name == 'nt'
+
+
 def run_shell(command: str, silent=False):
     if not silent:
         print(command)
@@ -66,5 +70,23 @@ def run_shell_print(command: str):
 
 
 def get_volumes():
-    jsontext, _ = run_shell(f"jsonnet --ext-str cwd={ROOT_DIR} {K3D_VOLUMES_PATH}")
+    escaped_root_dir = ROOT_DIR
+
+    if is_windows():
+        escaped_root_dir = escaped_root_dir.replace('\\', '\\\\')
+
+    command = f"jsonnet --ext-str cwd={escaped_root_dir}"
+    if is_windows():
+        wsl_root, _ = run_shell(f"wsl -- pwd")
+        wsl_root = wsl_root.strip()
+        wsl_path = f"{wsl_root}/{K3D_VOLUMES_FILE}"
+
+        print(wsl_path)
+        command = f"wsl -- bash -l -c '{command} {wsl_path}'"
+        print(command)
+    else:
+        command = f"{command} {K3D_VOLUMES_PATH}"
+
+    jsontext, _ = run_shell(command)
+
     return json.loads(jsontext)

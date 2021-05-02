@@ -1,0 +1,54 @@
+@page "/images"
+@using Realmar.Jobbernetes.Demo.DataViewer.Shared
+@using Realmar.Jobbernetes.Demo.GRPC
+@using Google.Protobuf.WellKnownTypes
+@using Grpc.Core.Utils
+@inject ImageService.ImageServiceClient Service
+
+<h1>Weather forecast</h1>
+
+<p>This component demonstrates fetching data from the server.</p>
+
+@if (images == null)
+{
+    <p>
+        <em>Loading...</em>
+    </p>
+}
+else
+{
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>Image</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var image in images)
+        {
+            <tr>
+                <td>@image.Name</td>
+                <td>
+                    <img src="data:image/png;base64, @image.Data"/>
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+}
+
+@code {
+    private List<Image> images = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        var stream = Service.GetImages(new Empty());
+        await stream.ResponseStream.ForEachAsync(image =>
+        {
+            images.Add(image);
+            return Task.CompletedTask;
+        }).ConfigureAwait(false);
+    }
+
+}

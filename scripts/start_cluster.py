@@ -2,10 +2,11 @@
 
 import shutil
 import os
-from lib import run_shell, run_shell_print, get_volumes, K3D_CLUSTER_NAME, K3D_CONFIG_PATH
+from lib import is_windows, run_shell, run_shell_print, get_volumes, K3D_CLUSTER_NAME, K3D_CONFIG_PATH
 
 
-required_commands = ["k3d", "kubectl", "kubecfg", "docker", "jsonnet"]
+required_commands = ["k3d", "kubectl", "docker"]
+linux_required_commands = ["kubecfg", "jsonnet"]
 
 
 def create_volumes(volumes):
@@ -32,7 +33,13 @@ def does_cluster_exist():
 
 
 def run():
-    missing = [x for x in required_commands if not shutil.which(x)]
+    # TODO: also check linux commands
+    commands = required_commands
+    if not is_windows():
+        commands = commands + linux_required_commands
+
+    missing = [x for x in commands if not shutil.which(x)]
+
     if any(missing):
         print("Following tools are missing, install them accoring to the readme")
         for tool in missing:
@@ -50,7 +57,7 @@ def run():
         command = f"k3d cluster start {K3D_CLUSTER_NAME}"
     else:
         print(f"Cluster not found. Creating ...")
-        command = f"k3d cluster create {K3D_CLUSTER_NAME} --config {K3D_CONFIG_PATH} {create_k3d_cli_volumes(volumes)}"
+        command = f"k3d cluster create {K3D_CLUSTER_NAME} --k3s-server-arg \"--no-deploy=traefik\" --config {K3D_CONFIG_PATH} {create_k3d_cli_volumes(volumes)}"
 
     run_shell_print(command)
 

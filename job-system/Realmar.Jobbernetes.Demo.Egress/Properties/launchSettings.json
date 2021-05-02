@@ -1,0 +1,12 @@
+{
+  "profiles": {
+    /*"Realmar.Jobbernetes.Demo.Egress": {
+      "commandName": "Project"
+    },*/
+    "WSL 2": {
+      "commandName": "WSL2",
+      "environmentVariables": {},
+      "distributionName": ""
+    }
+  }
+}

@@ -3,7 +3,7 @@
 import argparse
 import shutil
 import os
-from lib import get_volumes, run_shell
+from lib import is_windows, get_volumes, run_shell
 import delete_cluster
 
 
@@ -15,11 +15,13 @@ def run(force=False):
 
     for volume in get_volumes():
         if force or not volume["keep"]:
-            uid = os.getuid()
             path = volume["host"]
 
             if os.path.exists(path):
-                run_shell(f"sudo chown {uid}:{uid} {path} -R", silent=True)
+                if not is_windows():
+                    uid = os.getuid()
+                    run_shell(f"sudo chown {uid}:{uid} {path} -R", silent=True)
+
                 shutil.rmtree(path)
 
 

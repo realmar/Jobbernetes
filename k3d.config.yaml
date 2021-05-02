@@ -5,7 +5,7 @@ servers: 1
 agents: 2
 
 kubeAPI:
-    hostIP: "127.0.0.1"
+    hostIP: "0.0.0.0"
     hostPort: "6445"
 
 ports:
@@ -13,3 +13,13 @@ ports:
     - port: 80:80
       nodeFilters:
           - loadbalancer
+
+#    # MongoDB
+#    - port: 27017:27017
+#      nodeFilters:
+#          - loadbalancer
+
+#    # Kafka
+#    - port: 9094:9094
+#      nodeFilters:
+#          - loadbalancer

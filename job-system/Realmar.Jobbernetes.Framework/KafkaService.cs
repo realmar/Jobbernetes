@@ -36,7 +36,7 @@ namespace Realmar.Jobbernetes.Framework
                     try
                     {
                         var cr = consumer.Consume(cts.Token);
-                        Console.WriteLine($"Consumed message '{cr.Value}' at: '{cr.TopicPartitionOffset}'.");
+                        // Console.WriteLine($"Consumed message '{cr.Value}' at: '{cr.TopicPartitionOffset}'.");
                     }
                     catch (ConsumeException e)
                     {
