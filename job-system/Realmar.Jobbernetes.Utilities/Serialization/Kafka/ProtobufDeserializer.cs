@@ -12,7 +12,7 @@ namespace Realmar.Jobbernetes.Utilities.Serialization.Kafka
 
         public ProtobufDeserializer()
         {
-            _parser = new MessageParser<T>(() => new T());
+            _parser = new(() => new());
         }
 
         public T Deserialize(ReadOnlySpan<byte> data, bool isNull, SerializationContext context) =>

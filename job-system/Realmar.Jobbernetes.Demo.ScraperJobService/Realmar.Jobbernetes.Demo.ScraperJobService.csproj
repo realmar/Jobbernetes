@@ -6,12 +6,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Confluent.Kafka" Version="1.6.3" />
-    <PackageReference Include="Grpc.Net.Client" Version="2.37.0" />
+      <PackageReference Include="Grpc.Net.Client" Version="2.37.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Realmar.Jobbernetes.Demo.GRPC\Realmar.Jobbernetes.Demo.GRPC.csproj" />
+    <ProjectReference Include="..\Realmar.Jobbernetes.Framework\Realmar.Jobbernetes.Framework.csproj" />
+    <ProjectReference Include="..\Realmar.Jobbernetes.Hosting\Realmar.Jobbernetes.Hosting.csproj" />
     <ProjectReference Include="..\Realmar.Jobbernetes.Utilities\Realmar.Jobbernetes.Utilities.csproj" />
   </ItemGroup>
 

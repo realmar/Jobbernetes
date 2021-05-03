@@ -1,26 +1,22 @@
-using System;
-using System.Net.Http;
-using System.Threading;
 using System.Threading.Tasks;
-using Confluent.Kafka;
-using Grpc.Net.Client;
 using Realmar.Jobbernetes.Demo.GRPC;
-using Realmar.Jobbernetes.Demo.GRPC.ExternalService;
-using Realmar.Jobbernetes.Utilities.Serialization.Kafka;
-using ImageService = Realmar.Jobbernetes.Demo.GRPC.ExternalService.ImageService;
+using Realmar.Jobbernetes.Hosting;
 
 namespace Realmar.Jobbernetes.Demo.ScraperJobService
 {
     internal static class Program
     {
-        private static async Task Main()
+        private static Task Main()
         {
-            var httpClientHandler = new HttpClientHandler();
+            return JobberHost.StartAsync<JobModule, ImageIngress>();
+
+
+            /*var httpClientHandler = new HttpClientHandler();
             httpClientHandler.ServerCertificateCustomValidationCallback =
                 HttpClientHandler.DangerousAcceptAnyServerCertificateValidator;
             var httpClient = new HttpClient(httpClientHandler);
 
-            var channel = GrpcChannel.ForAddress("https://localhost:5001", new GrpcChannelOptions { HttpClient = httpClient });
+            var channel = GrpcChannel.ForAddress("https://localhost:5001", new() { HttpClient = httpClient });
             var client  = new ImageService.ImageServiceClient(channel);
 
             // var response = await client.GetImageAsync(new ImageRequest { Name = "Hello World" });
@@ -65,6 +61,7 @@ namespace Realmar.Jobbernetes.Demo.ScraperJobService
                         try
                         {
                             while (true)
+                            {
                                 try
                                 {
                                     var cr = c.Consume(cts.Token);
@@ -75,20 +72,18 @@ namespace Realmar.Jobbernetes.Demo.ScraperJobService
                                     // collection.InsertOne(new SampleDocument(cr.Value, cr.TopicPartitionOffset.ToString()));
                                     // collection.InsertOne(image);
 
-                                    var response = await client.GetImageAsync(new ImageRequest { Name = image.Name });
+                                    var response = await client.GetImageAsync(new() { Name = image.Name });
 
                                     var dr = await p.ProduceAsync(
                                         "test",
-                                        new Message<Null, Image>
-                                        {
-                                            Value = new Image { Name = image.Name, Data = response.Data.ToBase64() }
-                                        });
+                                        new() { Value = new() { Name = image.Name, Data = response.Data.ToBase64() } });
                                     Console.WriteLine($"Delivered '{dr.Value}' to '{dr.TopicPartitionOffset}'");
                                 }
                                 catch (ConsumeException e)
                                 {
                                     Console.WriteLine($"Error occured: {e.Error.Reason}");
                                 }
+                            }
                         }
                         catch (OperationCanceledException)
                         {
@@ -101,7 +96,7 @@ namespace Realmar.Jobbernetes.Demo.ScraperJobService
                 {
                     Console.WriteLine($"Delivery failed: {e.Error.Reason}");
                 }
-            }
+            }*/
         }
     }
 }

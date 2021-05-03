@@ -1,18 +1,38 @@
-using System;
+using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
+using Realmar.Jobbernetes.Framework.Messaging;
 
 namespace Realmar.Jobbernetes.Framework
 {
-    public class Jobbernetes : IJobbernetes
+    public class Jobbernetes<TData> : IJobbernetes
     {
-        public Task<TInput> GetDataAsync<TInput>(in DataDescriptor descriptor)
+        private readonly IDataConsumer<TData> _consumer;
+        private readonly List<Task>           _consumers = new();
+        private readonly IDataProducer<TData> _producer;
+
+        public Jobbernetes(IDataConsumer<TData> consumer, IDataProducer<TData> producer)
         {
-            throw new NotImplementedException();
+            _consumer = consumer;
+            _producer = producer;
         }
 
-        public Task StoreDataAsync<TOutput>(TOutput data, in DataDescriptor descriptor)
+        public async Task Run(CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            await foreach (var data in _producer.Produce(cancellationToken).ConfigureAwait(false))
+            {
+                var task = _consumer.Consume(data, cancellationToken);
+                _consumers.Add(task);
+
+                if (cancellationToken.IsCancellationRequested)
+                {
+                    break;
+                }
+            }
+
+            // ReSharper is wrong, it is needed because of the await foreach
+            // ReSharper disable once AsyncConverter.AsyncAwaitMayBeElidedHighlighting
+            await Task.WhenAll(_consumers).ConfigureAwait(false);
         }
     }
 }
