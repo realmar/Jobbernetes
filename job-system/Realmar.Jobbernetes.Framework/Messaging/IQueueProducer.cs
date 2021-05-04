@@ -2,8 +2,8 @@ using System.Threading.Tasks;
 
 namespace Realmar.Jobbernetes.Framework.Messaging
 {
-    public interface IDataSender<TData>
+    public interface IQueueProducer<in TData>
     {
-        Task Send(TData data);
+        Task Produce(TData data);
     }
 }

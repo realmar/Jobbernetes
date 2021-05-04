@@ -12,7 +12,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\Realmar.Jobbernetes.Framework\Realmar.Jobbernetes.Framework.csproj" />
+      <ProjectReference Include="..\Realmar.Jobbernetes.Framework\Realmar.Jobbernetes.Framework.csproj" />
     </ItemGroup>
 
 </Project>

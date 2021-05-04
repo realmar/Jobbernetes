@@ -1,17 +1,16 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-using Realmar.Jobbernetes.Framework.Jobs;
 
-namespace Realmar.Jobbernetes.Framework.Messaging
+namespace Realmar.Jobbernetes.Framework.Jobs
 {
-    public class JobDispatcher<TData> : IDataConsumer<TData>
+    public class JobDispatcher<TData> : IJobDispatcher<TData>
     {
         private readonly Func<IJob<TData>> _jobFactory;
 
         public JobDispatcher(Func<IJob<TData>> jobFactory) => _jobFactory = jobFactory;
 
-        public Task Consume(TData data, CancellationToken cancellationToken)
+        public Task Dispatch(TData data, CancellationToken cancellationToken)
         {
             var job = _jobFactory.Invoke();
             return job.Process(data, cancellationToken);

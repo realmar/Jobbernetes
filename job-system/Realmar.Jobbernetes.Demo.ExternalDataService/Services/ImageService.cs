@@ -7,7 +7,7 @@ using Realmar.Jobbernetes.Demo.GRPC.ExternalService;
 
 namespace Realmar.Jobbernetes.Demo.ExternalDataService.Services
 {
-    public class ImageService : GRPC.ExternalService.ImageService.ImageServiceBase
+    public class ImageService : ExternalImageService.ExternalImageServiceBase
     {
         public override Task<ImageReply> GetImage(ImageRequest request, ServerCallContext context)
         {

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Confluent.Kafka;
 using Google.Protobuf;
 
-namespace Realmar.Jobbernetes.Utilities.Serialization.Kafka
+namespace Realmar.Jobbernetes.Extensions.Serialization.Kafka
 {
     public class ProtobufDeserializer<T> : IDeserializer<T>
         where T : IMessage<T>, new()

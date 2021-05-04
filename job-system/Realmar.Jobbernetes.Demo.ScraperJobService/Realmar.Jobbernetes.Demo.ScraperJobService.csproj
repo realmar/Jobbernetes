@@ -11,9 +11,9 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Realmar.Jobbernetes.Demo.GRPC\Realmar.Jobbernetes.Demo.GRPC.csproj" />
+    <ProjectReference Include="..\Realmar.Jobbernetes.Extensions.Serialization\Realmar.Jobbernetes.Extensions.Serialization.csproj" />
     <ProjectReference Include="..\Realmar.Jobbernetes.Framework\Realmar.Jobbernetes.Framework.csproj" />
     <ProjectReference Include="..\Realmar.Jobbernetes.Hosting\Realmar.Jobbernetes.Hosting.csproj" />
-    <ProjectReference Include="..\Realmar.Jobbernetes.Utilities\Realmar.Jobbernetes.Utilities.csproj" />
   </ItemGroup>
 
 </Project>

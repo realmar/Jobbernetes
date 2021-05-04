@@ -6,22 +6,23 @@ using Realmar.Jobbernetes.Framework.Options;
 
 namespace Realmar.Jobbernetes.Framework.Messaging
 {
-    public class KafkaDataSender<TData> : IDataSender<TData>
+    public class KafkaQueueProducer<TData> : IQueueProducer<TData>
     {
-        private readonly ILogger<KafkaDataSender<TData>> _logger;
-        private readonly IProducer<Null, TData>          _producer;
-        private readonly string                          _topic;
+        private readonly ILogger<KafkaQueueProducer<TData>> _logger;
+        private readonly IProducer<Null, TData>             _producer;
+        private readonly string                             _topic;
 
-        public KafkaDataSender(IOptions<KafkaOptions>          options,
-                               IProducer<Null, TData>          producer,
-                               ILogger<KafkaDataSender<TData>> logger)
+        public KafkaQueueProducer(IOptions<KafkaOptions>             options,
+                                  IProducer<Null, TData>             producer,
+                                  ILogger<KafkaQueueProducer<TData>> logger)
         {
             _producer = producer;
             _logger   = logger;
             _topic    = options.Value.Topic;
         }
 
-        public async Task Send(TData data)
+        /// <exception cref="T:Confluent.Kafka.ProduceException`2">When producing the message fails.</exception>
+        public async Task Produce(TData data)
         {
             try
             {
@@ -31,6 +32,7 @@ namespace Realmar.Jobbernetes.Framework.Messaging
             catch (ProduceException<Null, TData> e)
             {
                 _logger.LogError($"Failed to deliver data to Kafka Error.Reason = {e.Error.Reason}");
+                throw;
             }
         }
     }

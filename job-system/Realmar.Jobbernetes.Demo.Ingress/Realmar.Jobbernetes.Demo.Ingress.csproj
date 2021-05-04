@@ -6,13 +6,16 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Autofac" Version="6.2.0" />
+    <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="7.1.0" />
     <PackageReference Include="Confluent.Kafka" Version="1.6.3" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="5.6.3" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Realmar.Jobbernetes.Demo.GRPC\Realmar.Jobbernetes.Demo.GRPC.csproj" />
-    <ProjectReference Include="..\Realmar.Jobbernetes.Utilities\Realmar.Jobbernetes.Utilities.csproj" />
+    <ProjectReference Include="..\Realmar.Jobbernetes.Extensions.Serialization\Realmar.Jobbernetes.Extensions.Serialization.csproj" />
+    <ProjectReference Include="..\Realmar.Jobbernetes.Framework\Realmar.Jobbernetes.Framework.csproj" />
   </ItemGroup>
 
 </Project>

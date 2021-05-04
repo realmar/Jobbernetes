@@ -1,7 +1,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Hosting;
-using Realmar.Jobbernetes.Framework;
+using Realmar.Jobbernetes.Framework.Facade;
 
 namespace Realmar.Jobbernetes.Hosting
 {

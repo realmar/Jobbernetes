@@ -5,7 +5,7 @@ option csharp_namespace = "Realmar.Jobbernetes.Demo.GRPC.ExternalService";
 package scrape;
 
 
-service DataService {
+service ExternalDataService {
 	rpc GetActor (IdRequest) returns (ActorReply);
   rpc GetMusic (IdRequest) returns (MusicReply);
 	rpc GetMovie (IdRequest) returns (MovieReply);

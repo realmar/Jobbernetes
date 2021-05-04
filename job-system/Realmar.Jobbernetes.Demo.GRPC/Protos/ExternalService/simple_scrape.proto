@@ -5,7 +5,7 @@ option csharp_namespace = "Realmar.Jobbernetes.Demo.GRPC.ExternalService";
 package scrape;
 
 
-service ImageService {
+service ExternalImageService {
 	rpc GetImage (ImageRequest) returns (ImageReply);
 }
 

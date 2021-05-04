@@ -7,7 +7,7 @@ package stepbased;
 
 // this is the API of a spaceship vendor
 // we want to scrap it and store the data in our own DB to do data mining
-service SpaceshipVendorService {
+service ExternalSpaceshipVendorService {
 	// Ingress service scrapes this API and ingests the IDs into the queue.
 	// In this specific case, the ingress service itself is a job.
 	//
