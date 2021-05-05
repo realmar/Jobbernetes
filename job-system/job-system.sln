@@ -3,10 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31205.134
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Realmar.Jobbernetes.Demo.ExternalDataService", "Realmar.Jobbernetes.Demo.ExternalDataService\Realmar.Jobbernetes.Demo.ExternalDataService.csproj", "{7F32A75F-7449-4C9E-8DCA-952FF59A2582}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Realmar.Jobbernetes.Demo.GRPC", "Realmar.Jobbernetes.Demo.GRPC\Realmar.Jobbernetes.Demo.GRPC.csproj", "{15185EC4-C55E-4FC3-A0BC-4822CCCC6E72}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Realmar.Jobbernetes.Demo.ScraperJobService", "Realmar.Jobbernetes.Demo.ScraperJobService\Realmar.Jobbernetes.Demo.ScraperJobService.csproj", "{57E70269-C904-4F93-9FEB-7B168BF033D2}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Realmar.Jobbernetes.Demo.Egress", "Realmar.Jobbernetes.Demo.Egress\Realmar.Jobbernetes.Demo.Egress.csproj", "{5B06C5BF-148D-4ECC-8A0B-D86DA1DF8EBD}"
@@ -19,13 +15,17 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Realmar.Jobbernetes.Demo.Da
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Realmar.Jobbernetes.Demo.DataViewer.Shared", "Realmar.Jobbernetes.Demo.DataViewer\Shared\Realmar.Jobbernetes.Demo.DataViewer.Shared.csproj", "{B87B698D-C380-4D07-A16E-8AC13C7353CE}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Realmar.Jobbernetes.Demo.Utilities", "Realmar.Jobbernetes.Demo.Utilities\Realmar.Jobbernetes.Demo.Utilities.csproj", "{EE475383-4D18-4D74-9DC5-24AF0A9ABC01}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Realmar.Jobbernetes.Hosting", "Realmar.Jobbernetes.Hosting\Realmar.Jobbernetes.Hosting.csproj", "{8EE8AFFE-9758-4164-A47D-62EB5E6C6DC4}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Realmar.Jobbernetes.Extensions.Serialization", "Realmar.Jobbernetes.Extensions.Serialization\Realmar.Jobbernetes.Extensions.Serialization.csproj", "{075F5FC7-4C8A-4EEE-B3C1-E8EE8AE4D0D7}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Realmar.Jobbernetes.Framework", "Realmar.Jobbernetes.Framework\Realmar.Jobbernetes.Framework.csproj", "{E4E8DDCC-080E-48E1-AE01-A9AB8A451434}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Realmar.Jobbernetes.Infrastructure", "Realmar.Jobbernetes.Infrastructure\Realmar.Jobbernetes.Infrastructure.csproj", "{E4E8DDCC-080E-48E1-AE01-A9AB8A451434}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Realmar.Jobbernetes.Demo.Infrastructure", "Realmar.Jobbernetes.Demo.Infrastructure\Realmar.Jobbernetes.Demo.Infrastructure.csproj", "{F72700CF-1D22-4174-A484-2D78D85727E7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Realmar.Jobbernetes.Demo.Models", "Realmar.Jobbernetes.Demo.Models\Realmar.Jobbernetes.Demo.Models.csproj", "{4D34DFF5-D680-4F79-B240-1D5BBA253D61}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Realmar.Jobbernetes.Demo.ExternalDataService", "Realmar.Jobbernetes.Demo.ExternalDataService\Realmar.Jobbernetes.Demo.ExternalDataService.csproj", "{EB1FB1D0-8FD1-4823-A56D-F7F44F0E6498}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,14 +33,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{7F32A75F-7449-4C9E-8DCA-952FF59A2582}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7F32A75F-7449-4C9E-8DCA-952FF59A2582}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7F32A75F-7449-4C9E-8DCA-952FF59A2582}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7F32A75F-7449-4C9E-8DCA-952FF59A2582}.Release|Any CPU.Build.0 = Release|Any CPU
-		{15185EC4-C55E-4FC3-A0BC-4822CCCC6E72}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{15185EC4-C55E-4FC3-A0BC-4822CCCC6E72}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{15185EC4-C55E-4FC3-A0BC-4822CCCC6E72}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{15185EC4-C55E-4FC3-A0BC-4822CCCC6E72}.Release|Any CPU.Build.0 = Release|Any CPU
 		{57E70269-C904-4F93-9FEB-7B168BF033D2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{57E70269-C904-4F93-9FEB-7B168BF033D2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{57E70269-C904-4F93-9FEB-7B168BF033D2}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -65,10 +57,6 @@ Global
 		{B87B698D-C380-4D07-A16E-8AC13C7353CE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B87B698D-C380-4D07-A16E-8AC13C7353CE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B87B698D-C380-4D07-A16E-8AC13C7353CE}.Release|Any CPU.Build.0 = Release|Any CPU
-		{EE475383-4D18-4D74-9DC5-24AF0A9ABC01}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{EE475383-4D18-4D74-9DC5-24AF0A9ABC01}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{EE475383-4D18-4D74-9DC5-24AF0A9ABC01}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{EE475383-4D18-4D74-9DC5-24AF0A9ABC01}.Release|Any CPU.Build.0 = Release|Any CPU
 		{8EE8AFFE-9758-4164-A47D-62EB5E6C6DC4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{8EE8AFFE-9758-4164-A47D-62EB5E6C6DC4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8EE8AFFE-9758-4164-A47D-62EB5E6C6DC4}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -81,6 +69,18 @@ Global
 		{E4E8DDCC-080E-48E1-AE01-A9AB8A451434}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E4E8DDCC-080E-48E1-AE01-A9AB8A451434}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E4E8DDCC-080E-48E1-AE01-A9AB8A451434}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F72700CF-1D22-4174-A484-2D78D85727E7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F72700CF-1D22-4174-A484-2D78D85727E7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F72700CF-1D22-4174-A484-2D78D85727E7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F72700CF-1D22-4174-A484-2D78D85727E7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4D34DFF5-D680-4F79-B240-1D5BBA253D61}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4D34DFF5-D680-4F79-B240-1D5BBA253D61}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4D34DFF5-D680-4F79-B240-1D5BBA253D61}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4D34DFF5-D680-4F79-B240-1D5BBA253D61}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EB1FB1D0-8FD1-4823-A56D-F7F44F0E6498}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EB1FB1D0-8FD1-4823-A56D-F7F44F0E6498}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EB1FB1D0-8FD1-4823-A56D-F7F44F0E6498}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EB1FB1D0-8FD1-4823-A56D-F7F44F0E6498}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

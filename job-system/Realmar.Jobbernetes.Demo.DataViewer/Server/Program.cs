@@ -1,19 +1,17 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
-using Realmar.Jobbernetes.Demo.Utilities.Serialization.MongoDB;
+using Realmar.Jobbernetes.Hosting;
 
 namespace Realmar.Jobbernetes.Demo.DataViewer.Server
 {
-    public static class Program
+    internal static class Program
     {
-        public static void Main(string[] args)
-        {
-            BsonClassMapper.MapProtobufModels();
+        public static void Main(string[] args) =>
             CreateHostBuilder(args).Build().Run();
-        }
 
-        public static IHostBuilder CreateHostBuilder(string[] args) =>
+        private static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
-                .ConfigureWebHostDefaults(webBuilder => { webBuilder.UseStartup<Startup>(); });
+                .ConfigureJobberAspNet()
+                .ConfigureWebHostDefaults(webBuilder => webBuilder.UseStartup<Startup>());
     }
 }

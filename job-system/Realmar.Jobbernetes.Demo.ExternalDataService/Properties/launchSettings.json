@@ -1,21 +1,41 @@
 {
-  "profiles": {
-    /*"Realmar.Jobbernetes.Demo.ExternalDataService": {
-      "commandName": "Project",
-      "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
-      },
-      "dotnetRunMessages": "true",
-      "applicationUrl": "http://localhost:5000;https://localhost:5001"
-    },*/
-    "WSL 2": {
-      "commandName": "WSL2",
-      "launchUrl": "https://localhost:5001",
-      "environmentVariables": {
-        "ASPNETCORE_URLS": "http://localhost:5000;https://localhost:5001",
-        "ASPNETCORE_ENVIRONMENT": "Development"
-      },
-      "distributionName": ""
+    /*"iisSettings": {
+      "windowsAuthentication": false,
+      "anonymousAuthentication": true,
+      "iisExpress": {
+        "applicationUrl": "http://localhost:25458",
+        "sslPort": 0
+      }
+    },
+    "$schema": "http://json.schemastore.org/launchsettings.json",*/
+    "profiles": {
+        /*"IIS Express": {
+            "commandName": "IISExpress",
+            "launchBrowser": true,
+            "launchUrl": "swagger",
+            "environmentVariables": {
+                "ASPNETCORE_ENVIRONMENT": "Development"
+            }
+        },
+        "Realmar.Jobbernetes.Demo.ExternalImageService": {
+            "commandName": "Project",
+            "launchBrowser": true,
+            "launchUrl": "swagger",
+            "environmentVariables": {
+                "ASPNETCORE_ENVIRONMENT": "Development"
+            },
+            "dotnetRunMessages": "true",
+            "applicationUrl": "http://localhost:5000"
+        },*/
+        "WSL 2": {
+            "commandName": "WSL2",
+            "launchBrowser": true,
+            "launchUrl": "http://localhost:5000/swagger",
+            "environmentVariables": {
+                "ASPNETCORE_URLS": "http://localhost:5000",
+                "ASPNETCORE_ENVIRONMENT": "Development"
+            },
+            "distributionName": ""
+        }
     }
-  }
 }

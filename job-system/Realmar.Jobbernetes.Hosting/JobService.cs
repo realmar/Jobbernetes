@@ -5,7 +5,7 @@ using Realmar.Jobbernetes.Framework.Facade;
 
 namespace Realmar.Jobbernetes.Hosting
 {
-    public class JobService : BackgroundService
+    internal class JobService : BackgroundService
     {
         private readonly IHostApplicationLifetime _application;
         private readonly IJobbernetes             _jobbernetes;

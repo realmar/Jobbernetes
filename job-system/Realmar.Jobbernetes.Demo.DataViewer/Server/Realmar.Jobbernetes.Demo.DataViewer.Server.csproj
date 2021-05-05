@@ -1,27 +1,28 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
 
-  <PropertyGroup>
-    <TargetFramework>net5.0</TargetFramework>
-    <UserSecretsId>c0cbb34d-78d4-4389-8f50-e456a761b1f1</UserSecretsId>
-  </PropertyGroup>
+    <PropertyGroup>
+        <TargetFramework>net5.0</TargetFramework>
+        <UserSecretsId>c0cbb34d-78d4-4389-8f50-e456a761b1f1</UserSecretsId>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Grpc.AspNetCore" Version="2.37.0" />
-    <PackageReference Include="Grpc.AspNetCore.Web" Version="2.37.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="5.0.5" />
-    <PackageReference Include="MongoDB.Driver" Version="2.12.2" />
-  </ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="JetBrains.Annotations" Version="2021.1.0" />
+        <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="5.0.5" />
+        <PackageReference Include="MongoDB.Driver" Version="2.12.2" />
+    </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\..\Realmar.Jobbernetes.Demo.GRPC\Realmar.Jobbernetes.Demo.GRPC.csproj" />
-    <ProjectReference Include="..\..\Realmar.Jobbernetes.Demo.Utilities\Realmar.Jobbernetes.Demo.Utilities.csproj" />
-    <ProjectReference Include="..\Client\Realmar.Jobbernetes.Demo.DataViewer.Client.csproj" />
-    <ProjectReference Include="..\Shared\Realmar.Jobbernetes.Demo.DataViewer.Shared.csproj" />
-  </ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\..\Realmar.Jobbernetes.Demo.Infrastructure\Realmar.Jobbernetes.Demo.Infrastructure.csproj" />
+        <ProjectReference Include="..\..\Realmar.Jobbernetes.Demo.Models\Realmar.Jobbernetes.Demo.Models.csproj" />
+        <ProjectReference Include="..\..\Realmar.Jobbernetes.Hosting\Realmar.Jobbernetes.Hosting.csproj" />
+        <ProjectReference Include="..\Client\Realmar.Jobbernetes.Demo.DataViewer.Client.csproj" />
+        <ProjectReference Include="..\Shared\Realmar.Jobbernetes.Demo.DataViewer.Shared.csproj" />
+    </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Services\" />
-  </ItemGroup>
+    <ItemGroup>
+        <Folder Include="Controllers\" />
+    </ItemGroup>
 
 
 </Project>

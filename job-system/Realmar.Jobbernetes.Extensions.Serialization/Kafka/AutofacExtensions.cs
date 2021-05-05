@@ -1,28 +1,26 @@
 using Autofac;
 using Confluent.Kafka;
-using Google.Protobuf;
 
 namespace Realmar.Jobbernetes.Extensions.Serialization.Kafka
 {
     public static class AutofacExtensions
     {
-        public static void UseKafkaProtobuf<TData>(this ContainerBuilder builder)
-            where TData : IMessage<TData>, new()
+        public static void UseKafkaJson<TData>(this ContainerBuilder builder)
         {
             builder.Register(context =>
             {
-                var a = new ProducerBuilder<Null, TData>(context.Resolve<ProducerConfig>());
-                a.SetValueSerializer(new ProtobufSerializer<TData>());
+                var pb = new ProducerBuilder<Null, TData>(context.Resolve<ProducerConfig>());
+                pb.SetValueSerializer(new JsonSerializer<TData>());
 
-                return a;
+                return pb;
             });
 
             builder.Register(context =>
             {
-                var a = new ConsumerBuilder<Ignore, TData>(context.Resolve<ConsumerConfig>());
-                a.SetValueDeserializer(new ProtobufDeserializer<TData>());
+                var cb = new ConsumerBuilder<Ignore, TData>(context.Resolve<ConsumerConfig>());
+                cb.SetValueDeserializer(new JsonDeserializer<TData>());
 
-                return a;
+                return cb;
             });
         }
     }

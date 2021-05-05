@@ -1,6 +1,6 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Realmar.Jobbernetes.Demo.GRPC;
+using Realmar.Jobbernetes.Demo.Models;
 using Realmar.Jobbernetes.Framework.Messaging;
 
 namespace Realmar.Jobbernetes.Demo.Ingress.Controllers
@@ -16,7 +16,7 @@ namespace Realmar.Jobbernetes.Demo.Ingress.Controllers
         [HttpPut]
         public Task Put(string name)
         {
-            return _producer.Produce(new() { Name = name });
+            return _producer.Produce(new(name));
         }
     }
 }

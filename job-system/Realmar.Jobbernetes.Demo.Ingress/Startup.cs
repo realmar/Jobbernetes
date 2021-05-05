@@ -4,13 +4,11 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Realmar.Jobbernetes.Demo.GRPC;
-using Realmar.Jobbernetes.Extensions.Serialization.Kafka;
 using Realmar.Jobbernetes.Framework.Messaging;
 
 namespace Realmar.Jobbernetes.Demo.Ingress
 {
-    public class Startup
+    internal class Startup
     {
         public Startup(IConfiguration configuration)
         {
@@ -31,14 +29,9 @@ namespace Realmar.Jobbernetes.Demo.Ingress
             });
         }
 
-        // ConfigureContainer is where you can register things directly
-        // with Autofac. This runs after ConfigureServices so the things
-        // here will override registrations made in ConfigureServices.
-        // Don't build the container; that gets done for you by the factory.
         public void ConfigureContainer(ContainerBuilder builder)
         {
             builder.RegisterModule<MessagingModule>();
-            builder.UseKafkaProtobuf<ImageIngress>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -52,12 +45,9 @@ namespace Realmar.Jobbernetes.Demo.Ingress
             }
 
             app.UseHttpsRedirection();
-
             app.UseRouting();
-
             app.UseAuthorization();
-
-            app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
+            app.UseEndpoints(endpoints => endpoints.MapControllers());
         }
     }
 }

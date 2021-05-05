@@ -1,25 +1,22 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <OutputType>Exe</OutputType>
-    <TargetFramework>net5.0</TargetFramework>
-  </PropertyGroup>
+    <PropertyGroup>
+        <OutputType>Exe</OutputType>
+        <TargetFramework>net5.0</TargetFramework>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Autofac" Version="6.2.0" />
-    <PackageReference Include="Confluent.Kafka" Version="1.6.3" />
-    <PackageReference Include="Microsoft.Extensions.Configuration" Version="5.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Hosting" Version="5.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Logging" Version="5.0.0" />
-    <PackageReference Include="MongoDB.Driver" Version="2.12.2" />
-  </ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="Autofac" Version="6.2.0" />
+        <PackageReference Include="MongoDB.Driver" Version="2.12.2" />
+    </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\Realmar.Jobbernetes.Demo.GRPC\Realmar.Jobbernetes.Demo.GRPC.csproj" />
-    <ProjectReference Include="..\Realmar.Jobbernetes.Demo.Utilities\Realmar.Jobbernetes.Demo.Utilities.csproj" />
-    <ProjectReference Include="..\Realmar.Jobbernetes.Extensions.Serialization\Realmar.Jobbernetes.Extensions.Serialization.csproj" />
-    <ProjectReference Include="..\Realmar.Jobbernetes.Framework\Realmar.Jobbernetes.Framework.csproj" />
-    <ProjectReference Include="..\Realmar.Jobbernetes.Hosting\Realmar.Jobbernetes.Hosting.csproj" />
-  </ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\Realmar.Jobbernetes.Demo.Infrastructure\Realmar.Jobbernetes.Demo.Infrastructure.csproj" />
+        <ProjectReference Include="..\Realmar.Jobbernetes.Demo.Models\Realmar.Jobbernetes.Demo.Models.csproj" />
+        <ProjectReference Include="..\Realmar.Jobbernetes.Extensions.Serialization\Realmar.Jobbernetes.Extensions.Serialization.csproj" />
+        <ProjectReference Include="..\Realmar.Jobbernetes.Hosting\Realmar.Jobbernetes.Hosting.csproj" />
+        <ProjectReference Include="..\Realmar.Jobbernetes.Infrastructure\Realmar.Jobbernetes.Infrastructure.csproj" />
+    </ItemGroup>
 
 </Project>

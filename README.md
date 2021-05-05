@@ -1,21 +1,3 @@
-# TODO
-
- - Refactor Egress
- - Refactor hosting so that is more modular
- - Handle consumed data if job throws exception (prob just put it back into the queue --> handling strategies)
- - DI for GRPC services
- - DI modules unification
- - Actual config file and/or environment variables
- - Create and send metrics
- - Create k8s specs and reusable library
- - Testing somehow??
- - Create Grafana dashboards with metrics etc.
-
-Very low prio
-
- - Nicer DataViewer UI (it's just here to show that it works)
- - Swagger for GRPC services
-
 # BT - PoC
 
 TODO

@@ -1,48 +1,41 @@
 using System;
 using System.Threading.Tasks;
 using Autofac;
-using Autofac.Core;
-using Autofac.Extensions.DependencyInjection;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using Realmar.Jobbernetes.Framework;
+using Realmar.Jobbernetes.Framework.Facade;
+using Realmar.Jobbernetes.Framework.Jobs;
+using Realmar.Jobbernetes.Framework.Messaging;
 
 namespace Realmar.Jobbernetes.Hosting
 {
     public static class JobberHost
     {
-        public static Task StartAsync<TJobbernetesModule, TData>()
-            where TJobbernetesModule : AutofacModule<TData>, new() =>
-            Host.CreateDefaultBuilder(Environment.GetCommandLineArgs())
-                .UseServiceProviderFactory(new AutofacServiceProviderFactory())
-                .ConfigureLogging(ConfigureLogging)
-                .ConfigureAppConfiguration(ConfigureAppConfiguration)
-                .ConfigureServices(ConfigureServices)
-                .ConfigureContainer<ContainerBuilder>(ConfigureContainer<TJobbernetesModule>)
-                .RunConsoleAsync();
-
-        private static void ConfigureLogging(HostBuilderContext context, ILoggingBuilder builder)
+        public static Task RunConsoleAsync(string[]                   args,
+                                           Action<IServiceCollection> configureServices,
+                                           Action<ContainerBuilder>   configureContainer,
+                                           Action<IHostBuilder>?      configureHostBuilder = null)
         {
-            builder.AddConsole();
+            var host = Host.CreateDefaultBuilder(args)
+                           .ConfigureJobberConsoleApp()
+                           .ConfigureServices(configureServices)
+                           .ConfigureContainer(configureContainer);
+
+            configureHostBuilder?.Invoke(host);
+
+            return host.RunConsoleAsync();
         }
 
-        private static void ConfigureAppConfiguration(IConfigurationBuilder builder)
-        {
-            builder.AddEnvironmentVariables();
-            builder.AddIniFile("appsettings.ini", optional: true, reloadOnChange: true);
-        }
+        public static Task RunJobAsync<TData>(string[] args, Action<ContainerBuilder> configureContainer) =>
+            RunConsoleAsync(args,
+                            services => services.AddHostedService<JobService>(),
+                            builder =>
+                            {
+                                builder.RegisterModule<FacadeModule<TData>>();
+                                builder.RegisterModule<JobsModule>();
+                                builder.RegisterModule<MessagingModule>();
 
-        private static void ConfigureServices(IServiceCollection services)
-        {
-            services.AddHostedService<JobService>();
-        }
-
-        private static void ConfigureContainer<TModule>(ContainerBuilder builder)
-            where TModule : class, IModule, new()
-        {
-            builder.RegisterModule<TModule>();
-        }
+                                configureContainer.Invoke(builder);
+                            });
     }
 }

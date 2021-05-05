@@ -1,57 +1,67 @@
+using System.IO;
 using Autofac;
-using JetBrains.Annotations;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Realmar.Jobbernetes.Demo.ExternalDataService.Services;
+using Realmar.Jobbernetes.Framework.Messaging;
+using SixLabors.Fonts;
 
-namespace Realmar.Jobbernetes.Demo.ExternalDataService
+namespace Realmar.Jobbernetes.Demo.ExternalImageService
 {
-    public class Startup
+    internal class Startup
     {
-        // This method gets called by the runtime. Use this method to add services to the container.
-        // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
-        //
-        // ConfigureServices is where you register dependencies. This gets
-        // called by the runtime before the ConfigureContainer method, below.
-        public void ConfigureServices(IServiceCollection services)
+        private readonly IHostEnvironment _hostingEnvironment;
+
+        public Startup(IConfiguration configuration, IHostEnvironment hostingEnvironment)
         {
-            services.AddGrpc();
+            Configuration       = configuration;
+            _hostingEnvironment = hostingEnvironment;
         }
 
+        public IConfiguration Configuration { get; }
 
-        // ConfigureContainer is where you can register things directly
-        // with Autofac. This runs after ConfigureServices so the things
-        // here will override registrations made in ConfigureServices.
-        // Don't build the container; that gets done for you by the factory.
-        [UsedImplicitly]
-        public void ConfigureContainer(ContainerBuilder builder) { }
+        // This method gets called by the runtime. Use this method to add services to the container.
+        public void ConfigureServices(IServiceCollection services)
+        {
+            services.AddControllers();
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc(
+                    "v1",
+                    new() { Title = "Realmar.Jobbernetes.Demo.ExternalImageService", Version = "v1" });
+            });
+        }
+
+        public void ConfigureContainer(ContainerBuilder builder)
+        {
+            builder.RegisterModule<MessagingModule>();
+
+            builder.Register(context =>
+            {
+                const int fontSize = 28;
+                FontCollection fonts = new();
+                var font = fonts.Install(Path.Combine(_hostingEnvironment.ContentRootPath, "Fonts/JetBrainsMono-Regular.ttf"));
+
+                return font.CreateFont(fontSize);
+            }).As<Font>();
+        }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        //
-        // Configure is where you add middleware. This is called after
-        // ConfigureContainer. You can use IApplicationBuilder.ApplicationServices
-        // here if you need to resolve things from the container.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            if (env.IsDevelopment()) app.UseDeveloperExceptionPage();
+            if (env.IsDevelopment())
+            {
+                app.UseDeveloperExceptionPage();
+                app.UseSwagger();
+                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json",
+                                                        "Realmar.Jobbernetes.Demo.ExternalImageService v1"));
+            }
 
             app.UseRouting();
-
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapGrpcService<ImageService>();
-
-                endpoints.MapGet(
-                    "/",
-                    async context =>
-                    {
-                        await context.Response.WriteAsync(
-                            "Communication with gRPC endpoints must be made through a gRPC client. To learn how to create a client, visit: https://go.microsoft.com/fwlink/?linkid=2086909");
-                    });
-            });
+            app.UseAuthorization();
+            app.UseEndpoints(endpoints => endpoints.MapControllers());
         }
     }
 }

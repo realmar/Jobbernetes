@@ -1,18 +1,20 @@
 @page "/images"
-@using Realmar.Jobbernetes.Demo.DataViewer.Shared
-@using Realmar.Jobbernetes.Demo.GRPC
-@using Google.Protobuf.WellKnownTypes
-@using Grpc.Core.Utils
-@inject ImageService.ImageServiceClient Service
+@inject HttpClient Http
 
-<h1>Weather forecast</h1>
+<h1>Image Database</h1>
 
-<p>This component demonstrates fetching data from the server.</p>
+<p>This page shows all the images stored in the database.</p>
 
-@if (images == null)
+@if (_images == null)
 {
     <p>
         <em>Loading...</em>
+    </p>
+}
+else if (_images.Count == 0)
+{
+    <p>
+        <em>No images found in database.</em>
     </p>
 }
 else
@@ -25,12 +27,12 @@ else
         </tr>
         </thead>
         <tbody>
-        @foreach (var image in images)
+        @foreach (var image in _images)
         {
             <tr>
                 <td>@image.Name</td>
                 <td>
-                    <img src="data:image/png;base64, @image.Data"/>
+                    <img src="data:image/png;base64, @image.DataBase64"/>
                 </td>
             </tr>
         }
@@ -39,16 +41,11 @@ else
 }
 
 @code {
-    private List<Image> images = new();
+    private List<Image> _images;
 
     protected override async Task OnInitializedAsync()
     {
-        var stream = Service.GetImages(new Empty());
-        await stream.ResponseStream.ForEachAsync(image =>
-        {
-            images.Add(image);
-            return Task.CompletedTask;
-        }).ConfigureAwait(false);
+        _images = await Http.GetFromJsonAsync<List<Image>>("Images").ConfigureAwait(false);
     }
 
 }
