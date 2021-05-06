@@ -3,13 +3,16 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Realmar.Jobbernetes.Framework.Jobs;
 using Realmar.Jobbernetes.Framework.Messaging;
+using Realmar.Jobbernetes.Framework.Options;
 
 namespace Realmar.Jobbernetes.Framework.Facade
 {
     internal class Jobbernetes<TData> : IJobbernetes
     {
+        private readonly int                         _batchSize;
         private readonly IQueueConsumer<TData>       _consumer;
         private readonly IJobDispatcher<TData>       _dispatcher;
         private readonly List<Task>                  _jobs = new();
@@ -17,8 +20,10 @@ namespace Realmar.Jobbernetes.Framework.Facade
 
         public Jobbernetes(IJobDispatcher<TData>       dispatcher,
                            IQueueConsumer<TData>       consumer,
-                           ILogger<Jobbernetes<TData>> logger)
+                           ILogger<Jobbernetes<TData>> logger,
+                           IOptions<ProcessingOptions> options)
         {
+            _batchSize  = options.Value.BatchSize;
             _dispatcher = dispatcher;
             _consumer   = consumer;
             _logger     = logger;
@@ -26,8 +31,12 @@ namespace Realmar.Jobbernetes.Framework.Facade
 
         public async Task Run(CancellationToken cancellationToken)
         {
+            var counter = 0;
+
             await foreach (var data in _consumer.Consume(cancellationToken).ConfigureAwait(false))
             {
+                counter++;
+
                 try
                 {
                     var task = _dispatcher.Dispatch(data, cancellationToken);
@@ -38,7 +47,7 @@ namespace Realmar.Jobbernetes.Framework.Facade
                     _logger.LogError($"Failed to start job: {e}");
                 }
 
-                if (cancellationToken.IsCancellationRequested)
+                if (cancellationToken.IsCancellationRequested || counter >= _batchSize)
                 {
                     break;
                 }
