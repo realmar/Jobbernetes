@@ -23,7 +23,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Realmar.Jobbernetes.Infrast
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Realmar.Jobbernetes.Demo.Infrastructure", "Realmar.Jobbernetes.Demo.Infrastructure\Realmar.Jobbernetes.Demo.Infrastructure.csproj", "{F72700CF-1D22-4174-A484-2D78D85727E7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Realmar.Jobbernetes.Demo.Models", "Realmar.Jobbernetes.Demo.Models\Realmar.Jobbernetes.Demo.Models.csproj", "{4D34DFF5-D680-4F79-B240-1D5BBA253D61}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Realmar.Jobbernetes.Demo.Models", "Realmar.Jobbernetes.Demo.Models\Realmar.Jobbernetes.Demo.Models.csproj", "{4D34DFF5-D680-4F79-B240-1D5BBA253D61}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Realmar.Jobbernetes.Demo.ExternalDataService", "Realmar.Jobbernetes.Demo.ExternalDataService\Realmar.Jobbernetes.Demo.ExternalDataService.csproj", "{EB1FB1D0-8FD1-4823-A56D-F7F44F0E6498}"
 EndProject

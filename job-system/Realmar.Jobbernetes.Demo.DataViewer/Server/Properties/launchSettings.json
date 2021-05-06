@@ -34,6 +34,7 @@
                 "ASPNETCORE_URLS": "https://localhost:5001;http://localhost:5000",
                 "ASPNETCORE_ENVIRONMENT": "Development"
             },
+            "inspectUri": "{wsProtocol}://{url.hostname}:{url.port}/_framework/debug/ws-proxy?browser={browserInspectUri}",
             "distributionName": ""
         }
     }

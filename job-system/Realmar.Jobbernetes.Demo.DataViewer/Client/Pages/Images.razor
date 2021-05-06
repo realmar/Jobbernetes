@@ -11,7 +11,7 @@
         <em>Loading...</em>
     </p>
 }
-else if (_images.Count == 0)
+else if (_images.Length == 0)
 {
     <p>
         <em>No images found in database.</em>
@@ -41,11 +41,11 @@ else
 }
 
 @code {
-    private List<Image> _images;
+    private Image[] _images;
 
     protected override async Task OnInitializedAsync()
     {
-        _images = await Http.GetFromJsonAsync<List<Image>>("Images").ConfigureAwait(false);
+        _images = await Http.GetFromJsonAsync<Image[]>("/api/Images").ConfigureAwait(false);
     }
 
 }

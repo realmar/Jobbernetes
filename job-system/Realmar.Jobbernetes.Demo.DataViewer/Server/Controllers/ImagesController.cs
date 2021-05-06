@@ -6,7 +6,7 @@ using Realmar.Jobbernetes.Demo.Models;
 namespace Realmar.Jobbernetes.Demo.DataViewer.Server.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     public class ImagesController : ControllerBase
     {
         private readonly IMongoCollection<Image> _collection;
