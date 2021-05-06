@@ -6,7 +6,7 @@ from typing import List
 
 SERVICES = [
     ("svc/mongodb", "27017:27017"),
-    ("svc/kafka-0-external", "9094:9094")
+    # ("svc/kafka-0-external", "9094:9094")
 ]
 
 

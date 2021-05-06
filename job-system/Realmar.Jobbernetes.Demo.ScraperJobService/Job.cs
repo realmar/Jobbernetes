@@ -21,7 +21,7 @@ namespace Realmar.Jobbernetes.Demo.ScraperJobService
 
         public async Task Process(ImageIngress data, CancellationToken cancellationToken)
         {
-            var response = await _httpClient.GetAsync($"http://localhost/5000/images/{data.Name}").ConfigureAwait(false);
+            var response = await _httpClient.GetAsync($"http://localhost:5000/images/{data.Name}").ConfigureAwait(false);
             response.EnsureSuccessStatusCode();
 
             var bytes = await response.Content.ReadAsByteArrayAsync(cancellationToken).ConfigureAwait(false);

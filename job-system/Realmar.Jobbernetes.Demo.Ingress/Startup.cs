@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Realmar.Jobbernetes.Demo.Models;
+using Realmar.Jobbernetes.Extensions.Serialization.Kafka;
 using Realmar.Jobbernetes.Framework.Messaging;
 
 namespace Realmar.Jobbernetes.Demo.Ingress
@@ -32,6 +34,7 @@ namespace Realmar.Jobbernetes.Demo.Ingress
         public void ConfigureContainer(ContainerBuilder builder)
         {
             builder.RegisterModule<MessagingModule>();
+            builder.UseKafkaJson<ImageIngress>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
