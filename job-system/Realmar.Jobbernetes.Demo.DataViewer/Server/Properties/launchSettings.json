@@ -32,7 +32,12 @@
             "launchUrl": "https://localhost:5001",
             "environmentVariables": {
                 "ASPNETCORE_URLS": "https://localhost:5001;http://localhost:5000",
-                "ASPNETCORE_ENVIRONMENT": "Development"
+                "ASPNETCORE_ENVIRONMENT": "Development",
+
+                // MongoDB
+                "MongoOptions__ConnectionString": "mongodb://localhost:27017",
+                "MongoOptions__Database": "jobbernetes",
+                "MongoOptions__Collection": "images"
             },
             "inspectUri": "{wsProtocol}://{url.hostname}:{url.port}/_framework/debug/ws-proxy?browser={browserInspectUri}",
             "distributionName": ""

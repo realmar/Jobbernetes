@@ -18,14 +18,20 @@
           }
         },
         "Realmar.Jobbernetes.Demo.Ingress": {
-          "commandName": "Project",
-          "launchBrowser": true,
-          "launchUrl": "swagger",
-          "environmentVariables": {
-            "ASPNETCORE_ENVIRONMENT": "Development"
-          },
-          "dotnetRunMessages": "true",
-          "applicationUrl": "https://localhost:5001;http://localhost:5000"
+            "commandName": "Project",
+            "launchBrowser": true,
+            "launchUrl": "swagger",
+            "environmentVariables": {
+                "ASPNETCORE_ENVIRONMENT": "Development"
+            },
+            "dotnetRunMessages": "true",
+            "applicationUrl": "https://localhost:5001;http://localhost:5000",
+
+            // General
+            "KafkaOptions__BootStrapServers": "172.25.0.2:9094",
+
+            // Producer
+            "KafkaProducerOptions__Topic": "jn-images-ingress"
         },*/
         "WSL 2": {
             "commandName": "WSL2",
@@ -33,7 +39,13 @@
             "launchUrl": "https://localhost:5001/swagger",
             "environmentVariables": {
                 "ASPNETCORE_URLS": "https://localhost:5001;http://localhost:5000",
-                "ASPNETCORE_ENVIRONMENT": "Development"
+                "ASPNETCORE_ENVIRONMENT": "Development",
+
+                // General
+                "KafkaOptions__BootStrapServers": "172.25.0.2:9094",
+
+                // Producer
+                "KafkaProducerOptions__Topic": "jn-images-ingress"
             },
             "distributionName": ""
         }

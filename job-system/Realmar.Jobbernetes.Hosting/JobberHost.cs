@@ -11,10 +11,10 @@ namespace Realmar.Jobbernetes.Hosting
 {
     public static class JobberHost
     {
-        public static Task RunConsoleAsync(string[]                   args,
-                                           Action<IServiceCollection> configureServices,
-                                           Action<ContainerBuilder>   configureContainer,
-                                           Action<IHostBuilder>?      configureHostBuilder = null)
+        public static Task RunConsoleAsync(string[]                                       args,
+                                           Action<HostBuilderContext, IServiceCollection> configureServices,
+                                           Action<ContainerBuilder>                       configureContainer,
+                                           Action<IHostBuilder>?                          configureHostBuilder = null)
         {
             var host = Host.CreateDefaultBuilder(args)
                            .ConfigureJobberConsoleApp()
@@ -26,16 +26,22 @@ namespace Realmar.Jobbernetes.Hosting
             return host.RunConsoleAsync();
         }
 
-        public static Task RunJobAsync<TData>(string[] args, Action<ContainerBuilder> configureContainer) =>
+        public static Task RunJobAsync<TData>(string[]                                       args,
+                                              Action<HostBuilderContext, IServiceCollection> configureServices  = null,
+                                              Action<ContainerBuilder>                       configureContainer = null) =>
             RunConsoleAsync(args,
-                            services => services.AddHostedService<JobService>(),
+                            (context, services) =>
+                            {
+                                services.AddHostedService<JobService>();
+                                configureServices?.Invoke(context, services);
+                            },
                             builder =>
                             {
                                 builder.RegisterModule<FacadeModule<TData>>();
                                 builder.RegisterModule<JobsModule>();
                                 builder.RegisterModule<MessagingModule>();
 
-                                configureContainer.Invoke(builder);
+                                configureContainer?.Invoke(builder);
                             });
     }
 }

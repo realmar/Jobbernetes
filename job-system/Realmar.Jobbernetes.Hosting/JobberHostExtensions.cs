@@ -1,7 +1,9 @@
 using Autofac.Extensions.DependencyInjection;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Realmar.Jobbernetes.Framework.Options;
 
 namespace Realmar.Jobbernetes.Hosting
 {
@@ -16,17 +18,28 @@ namespace Realmar.Jobbernetes.Hosting
         private static IHostBuilder ConfigureCommon(this IHostBuilder builder) =>
             builder.UseServiceProviderFactory(new AutofacServiceProviderFactory())
                    .ConfigureLogging(ConfigureLogging)
-                   .ConfigureAppConfiguration(ConfigureAppConfiguration);
+                   .ConfigureAppConfiguration(ConfigureDelegate)
+                   .ConfigureServices(ConfigureDelegate);
 
         private static void ConfigureLogging(HostBuilderContext context, ILoggingBuilder builder)
         {
             builder.AddConsole();
         }
 
-        private static void ConfigureAppConfiguration(IConfigurationBuilder builder)
+        private static void ConfigureDelegate(HostBuilderContext context, IConfigurationBuilder config)
         {
-            builder.AddEnvironmentVariables();
-            builder.AddIniFile("appsettings.ini", optional: true, reloadOnChange: true);
+            config.AddEnvironmentVariables();
+        }
+
+        private static void ConfigureDelegate(HostBuilderContext context, IServiceCollection services)
+        {
+            void Configure<TOptions>() where TOptions : class =>
+                services.Configure<TOptions>(context.Configuration.GetSection(typeof(TOptions).Name));
+
+            Configure<KafkaOptions>();
+            Configure<KafkaProducerOptions>();
+            Configure<KafkaConsumerOptions>();
+            Configure<ProcessingOptions>();
         }
     }
 }

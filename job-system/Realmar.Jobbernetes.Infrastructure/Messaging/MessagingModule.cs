@@ -23,11 +23,13 @@ namespace Realmar.Jobbernetes.Framework.Messaging
 
             builder.Register(context =>
             {
-                var options = context.Resolve<IOptions<KafkaOptions>>().Value;
+                var generalOpts  = context.Resolve<IOptions<KafkaOptions>>().Value;
+                var consumerOpts = context.Resolve<IOptions<KafkaConsumerOptions>>().Value;
+
                 return new ConsumerConfig
                 {
-                    GroupId          = options.GroupId,
-                    BootstrapServers = options.BootStrapServers,
+                    GroupId          = consumerOpts.GroupId,
+                    BootstrapServers = generalOpts.BootStrapServers,
 
                     // Note: The AutoOffsetReset property determines the start offset in the event
                     // there are not yet any committed offsets for the consumer group for the

@@ -1,12 +1,26 @@
 {
-  "profiles": {
-    /*"Realmar.Jobbernetes.Demo.ScraperJobService": {
-      "commandName": "Project"
-    },*/
-    "WSL 2": {
-      "commandName": "WSL2",
-      "environmentVariables": {},
-      "distributionName": ""
+    "profiles": {
+        /*"Realmar.Jobbernetes.Demo.ScraperJobService": {
+          "commandName": "Project"
+        },*/
+        "WSL 2": {
+            "commandName": "WSL2",
+            "environmentVariables": {
+                // ExternalService
+                "ExternalServiceOptions__Url": "http://localhost:5000/images",
+
+                // General
+                "KafkaOptions__BootStrapServers": "172.25.0.2:9094",
+
+                // Consumer
+                "KafkaConsumerOptions__GroupId": "jn-images-scraper-job-service",
+                "KafkaConsumerOptions__Topic": "jn-images-ingress",
+                "KafkaConsumerOptions__PollTimeout": "2",
+
+                // Producer
+                "KafkaProducerOptions__Topic": "jn-images-egress"
+            },
+            "distributionName": ""
+        }
     }
-  }
 }

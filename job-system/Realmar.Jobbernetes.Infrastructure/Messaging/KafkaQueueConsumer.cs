@@ -17,10 +17,11 @@ namespace Realmar.Jobbernetes.Framework.Messaging
         private readonly TimeSpan                           _pollTimeout;
         private readonly string                             _topic;
 
-        public KafkaQueueConsumer(IOptions<KafkaOptions>             options,
+        public KafkaQueueConsumer(IOptions<KafkaConsumerOptions>     options,
                                   IConsumer<Ignore, TData>           consumer,
                                   ILogger<KafkaQueueConsumer<TData>> logger)
         {
+            logger.LogWarning(options.Value.Topic);
             _consumer    = consumer;
             _logger      = logger;
             _pollTimeout = TimeSpan.FromSeconds(options.Value.PollTimeout);

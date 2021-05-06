@@ -12,10 +12,11 @@ namespace Realmar.Jobbernetes.Framework.Messaging
         private readonly IProducer<Null, TData>             _producer;
         private readonly string                             _topic;
 
-        public KafkaQueueProducer(IOptions<KafkaOptions>             options,
+        public KafkaQueueProducer(IOptions<KafkaProducerOptions>     options,
                                   IProducer<Null, TData>             producer,
                                   ILogger<KafkaQueueProducer<TData>> logger)
         {
+            logger.LogWarning(options.Value.Topic);
             _producer = producer;
             _logger   = logger;
             _topic    = options.Value.Topic;

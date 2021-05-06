@@ -1,12 +1,28 @@
 {
-  "profiles": {
-    /*"Realmar.Jobbernetes.Demo.Egress": {
-      "commandName": "Project"
-    },*/
-    "WSL 2": {
-      "commandName": "WSL2",
-      "environmentVariables": {},
-      "distributionName": ""
+    "profiles": {
+        /*"Realmar.Jobbernetes.Demo.Egress": {
+          "commandName": "Project"
+        },*/
+        "WSL 2": {
+            "commandName": "WSL2",
+            "environmentVariables": {
+                // ExternalService
+                "ExternalServiceOptions__Url": "http://localhost:5000/images",
+
+                // General
+                "KafkaOptions__BootStrapServers": "172.25.0.2:9094",
+
+                // Consumer
+                "KafkaConsumerOptions__GroupId": "jn-images-egress",
+                "KafkaConsumerOptions__Topic": "jn-images-egress",
+                "KafkaConsumerOptions__PollTimeout": "2",
+
+                // MongoDB
+                "MongoOptions__ConnectionString": "mongodb://localhost:27017",
+                "MongoOptions__Database": "jobbernetes",
+                "MongoOptions__Collection": "images"
+            },
+            "distributionName": ""
+        }
     }
-  }
 }
