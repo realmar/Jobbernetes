@@ -40,7 +40,8 @@ https://brew.sh/
 
 ## Ingress
 
-http://grafana.localhost:8080/
+http://grafana.localhost/
+http://kafka-ui.localhost/
 
 ## Commands
 
