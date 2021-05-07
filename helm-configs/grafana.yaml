@@ -76,6 +76,9 @@ dashboards:
     jmx:
       gnetId: 3457
       datasource: Prometheus
+    mongodb:
+      gnetId: 7353
+      datasource: Prometheus
 
 ingress:
   enabled: true
