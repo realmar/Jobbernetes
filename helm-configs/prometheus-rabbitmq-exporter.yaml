@@ -1,0 +1,12 @@
+rabbitmq:
+  url: http://rabbitmq:15672
+  user: admin
+  password: admin
+  # If existingPasswordSecret is set then password is ignored
+  #existingPasswordSecret: ~
+  #existingPasswordSecretKey: password
+
+annotations:
+  prometheus.io/scrape: "true"
+  prometheus.io/path: "/metrics"
+  prometheus.io/port: "9419"

@@ -1,0 +1,46 @@
+## Pod security options
+podSecurityContext:
+  fsGroup: 1000
+
+## Default security options to run RabbitMq as read only container without privilege escalation
+securityContext:
+  allowPrivilegeEscalation: false
+  privileged: false
+  readOnlyRootFilesystem: true
+  runAsNonRoot: true
+  runAsGroup: 1000
+  runAsUser: 1000
+
+## Ingress configuration
+ingress:
+  enabled: true
+
+  ## Additional ingress annotations
+  annotations: {}
+  # kubernetes.io/ingress.class: nginx
+  # kubernetes.io/tls-acme: "true"
+
+  ## Hosts
+  hosts:
+    - host: rabbitmq.localhost
+      paths:
+        - /
+
+# Default user and erlang cookie
+# The erlang cookie is important for clustered or container based usage
+# Find more information about it at https://hub.docker.com/_/rabbitmq and https://www.rabbitmq.com/clustering.html#erlang-cookie
+# If password of erlang cookie not provided in configuration random values will be generated
+authentication:
+  ## Initial user name
+  user: admin
+
+  ## Initial password (default: random alphanumeric 10 characters)
+  password: admin
+
+  ## Erlang cookie (default: Random base64 value)
+  erlangCookie:
+
+## Storage parameters
+storage:
+  ## Set persistentVolumenClaimName to reference an existing PVC
+  persistentVolumeClaimName: rabbitmq-pvc

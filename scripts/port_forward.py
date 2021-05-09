@@ -13,7 +13,6 @@ SERVICES = [
     ("svc/grafana", "9092:80"),
     ("svc/rabbitmq", "5672:5672"),
     ("svc/rabbitmq", "15672:15672"),
-    # ("svc/kafka-0-external", "9094:9094")
 ]
 
 
@@ -39,8 +38,9 @@ def run(event, silent, name, ports):
 
             sleep(0.5)
 
-        print("\nRestarting Process ...\n")
-        sleep(2)
+        if event.is_set() == False:
+            print("\nRestarting Process ...\n")
+            sleep(2)
 
 
 if __name__ == "__main__":

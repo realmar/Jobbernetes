@@ -23,7 +23,7 @@ local Mapping(relativePath, keepOnClusterDestroy=false) =
   Mapping('prometheus/server'),
   Mapping('prometheus/alertmanager'),
   Mapping('prometheus/pushgateway'),
-  Mapping('kafka'),
+  Mapping('rabbitmq'),
   Mapping('mongodb'),
   Mapping('docker-registry', keepOnClusterDestroy=true),
 ]

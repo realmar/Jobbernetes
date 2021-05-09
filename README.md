@@ -42,10 +42,19 @@ Instance Name
 https://kubernetes.io/docs/tasks/inject-data-application/environment-variable-expose-pod-information/
 https://github.com/prometheus/prometheus/wiki/Default-port-allocations
 
+
+https://www.rabbitmq.com/semantics.html
+https://www.rabbitmq.com/confirms.html
+https://www.rabbitmq.com/tutorials/amqp-concepts.html
+https://www.rabbitmq.com/queues.html
+https://www.rabbitmq.com/amqp-0-9-1-reference.html
+https://www.rabbitmq.com/management.html
+
+
 ## Ingress
 
 http://grafana.localhost/
-http://kafka-ui.localhost/
+http://rabbitmq.localhost/
 
 Caveats:
 

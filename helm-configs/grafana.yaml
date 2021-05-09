@@ -70,11 +70,8 @@ dashboardProviders:
 ##
 dashboards:
   default:
-    kafka:
-      gnetId: 7589
-      datasource: Prometheus
-    jmx:
-      gnetId: 3457
+    rabbitmq:
+      gnetId: 4371
       datasource: Prometheus
     mongodb:
       gnetId: 7353

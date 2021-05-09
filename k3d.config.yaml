@@ -13,13 +13,3 @@ ports:
     - port: 80:80
       nodeFilters:
           - loadbalancer
-
-#    # MongoDB
-#    - port: 27017:27017
-#      nodeFilters:
-#          - loadbalancer
-
-#    # Kafka
-#    - port: 9094:9094
-#      nodeFilters:
-#          - loadbalancer
