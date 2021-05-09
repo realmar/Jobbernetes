@@ -17,8 +17,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Realmar.Jobbernetes.Demo.Da
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Realmar.Jobbernetes.Hosting", "Realmar.Jobbernetes.Hosting\Realmar.Jobbernetes.Hosting.csproj", "{8EE8AFFE-9758-4164-A47D-62EB5E6C6DC4}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Realmar.Jobbernetes.Extensions.Serialization", "Realmar.Jobbernetes.Extensions.Serialization\Realmar.Jobbernetes.Extensions.Serialization.csproj", "{075F5FC7-4C8A-4EEE-B3C1-E8EE8AE4D0D7}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Realmar.Jobbernetes.Infrastructure", "Realmar.Jobbernetes.Infrastructure\Realmar.Jobbernetes.Infrastructure.csproj", "{E4E8DDCC-080E-48E1-AE01-A9AB8A451434}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Realmar.Jobbernetes.Demo.Infrastructure", "Realmar.Jobbernetes.Demo.Infrastructure\Realmar.Jobbernetes.Demo.Infrastructure.csproj", "{F72700CF-1D22-4174-A484-2D78D85727E7}"
@@ -61,10 +59,6 @@ Global
 		{8EE8AFFE-9758-4164-A47D-62EB5E6C6DC4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8EE8AFFE-9758-4164-A47D-62EB5E6C6DC4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8EE8AFFE-9758-4164-A47D-62EB5E6C6DC4}.Release|Any CPU.Build.0 = Release|Any CPU
-		{075F5FC7-4C8A-4EEE-B3C1-E8EE8AE4D0D7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{075F5FC7-4C8A-4EEE-B3C1-E8EE8AE4D0D7}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{075F5FC7-4C8A-4EEE-B3C1-E8EE8AE4D0D7}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{075F5FC7-4C8A-4EEE-B3C1-E8EE8AE4D0D7}.Release|Any CPU.Build.0 = Release|Any CPU
 		{E4E8DDCC-080E-48E1-AE01-A9AB8A451434}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{E4E8DDCC-080E-48E1-AE01-A9AB8A451434}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E4E8DDCC-080E-48E1-AE01-A9AB8A451434}.Release|Any CPU.ActiveCfg = Release|Any CPU

@@ -1,7 +1,12 @@
+using System;
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
+using Prometheus;
 using Realmar.Jobbernetes.Demo.Models;
 using Realmar.Jobbernetes.Framework.Messaging;
+using Realmar.Jobbernetes.Infrastructure.Metrics;
 
 namespace Realmar.Jobbernetes.Demo.Ingress.Controllers
 {
@@ -9,14 +14,35 @@ namespace Realmar.Jobbernetes.Demo.Ingress.Controllers
     [ApiController]
     public class ImagesController : ControllerBase
     {
+        private readonly Counter                      _counter;
+        private readonly ILogger<ImagesController>    _logger;
         private readonly IQueueProducer<ImageIngress> _producer;
 
-        public ImagesController(IQueueProducer<ImageIngress> producer) => _producer = producer;
+        public ImagesController(IQueueProducer<ImageIngress> producer,
+                                IMetricsNameFactory          nameFactory,
+                                ILogger<ImagesController>    logger)
+        {
+            _producer = producer;
+            _logger   = logger;
+
+            var name = nameFactory.Create("images_inserted");
+            _counter = Metrics.CreateCounter(name, "Number of images inserted into the system.", Labels.Keys.Status);
+        }
 
         [HttpPut]
-        public Task Put(string name)
+        public async Task Put(string name, CancellationToken cancellationToken)
         {
-            return _producer.Produce(new(name));
+            try
+            {
+                await _producer.ProduceAsync(new(name), cancellationToken).ConfigureAwait(false);
+                _counter.WithSuccess().Inc();
+            }
+            catch (Exception e)
+            {
+                _counter.WithFail().Inc();
+                _logger.LogError(e, $"Failed to insert image Name = {name}");
+                throw;
+            }
         }
     }
 }

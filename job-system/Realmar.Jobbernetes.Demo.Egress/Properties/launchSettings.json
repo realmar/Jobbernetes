@@ -10,12 +10,14 @@
                 "ExternalServiceOptions__Url": "http://localhost:5000/images",
 
                 // General
-                "KafkaOptions__BootStrapServers": "172.25.0.2:9094",
+                "RabbitMQConnectionOptions__Hostname": "localhost",
+                "RabbitMQConnectionOptions__Username": "admin",
+                "RabbitMQConnectionOptions__Password": "4Plbub2nQ4",
 
                 // Consumer
-                "KafkaConsumerOptions__GroupId": "jn-images-egress",
-                "KafkaConsumerOptions__Topic": "jn-images-egress",
-                "KafkaConsumerOptions__PollTimeout": "2",
+                "RabbitMQConsumerOptions__Exchange": "jobbernetes",
+                "RabbitMQConsumerOptions__Queue": "jn-images-egress",
+                "RabbitMQConsumerOptions__RoutingKey": "jn-images-egress",
 
                 // MongoDB
                 "MongoOptions__ConnectionString": "mongodb://localhost:27017",

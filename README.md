@@ -38,10 +38,29 @@ https://github.com/dhall-lang/dhall-kubernetes
 
 https://brew.sh/
 
+Instance Name
+https://kubernetes.io/docs/tasks/inject-data-application/environment-variable-expose-pod-information/
+https://github.com/prometheus/prometheus/wiki/Default-port-allocations
+
 ## Ingress
 
 http://grafana.localhost/
 http://kafka-ui.localhost/
+
+Caveats:
+
+Grafana cannot tail logs vom Loki because it tries to connect to a `wss` web
+socket. The ingress is not configured to handle this. Firstly, it should not use
+encryption, and secondly, I suspect the ingress is not setting the correct
+headers.
+
+You need to use port-forwarding to tail the logs:
+
+```sh
+kubectl port-forward --namespace default svc/grafana 9092:80
+```
+
+Access as follows: `http://localhost:9092`
 
 ## Commands
 
@@ -72,4 +91,11 @@ kubectl port-forward --namespace default svc/<name> <host>:<k8s>
 kubectl get sc      # sc = StorageClass
 kubectl get pv      # pv = PersistentVolume
 kubectl get pvc     # sc = PersistentVolumeClaim
+```
+
+Switch context
+
+```sh
+# https://k3d.io/usage/kubeconfig/
+set -gx KUBECONFIG (k3d kubeconfig write jobbernetes-cluster)
 ```

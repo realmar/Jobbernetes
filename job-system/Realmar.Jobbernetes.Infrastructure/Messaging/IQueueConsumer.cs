@@ -3,8 +3,8 @@ using System.Threading;
 
 namespace Realmar.Jobbernetes.Framework.Messaging
 {
-    public interface IQueueConsumer<out TData>
+    public interface IQueueConsumer<TData>
     {
-        IAsyncEnumerable<TData> Consume(CancellationToken cancellationToken);
+        IAsyncEnumerable<Message<TData>> ConsumeAsync(CancellationToken cancellationToken);
     }
 }

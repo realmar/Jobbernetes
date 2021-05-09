@@ -4,9 +4,9 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Realmar.Jobbernetes.Demo.Models;
-using Realmar.Jobbernetes.Extensions.Serialization.Kafka;
+using Prometheus;
 using Realmar.Jobbernetes.Framework.Messaging;
+using Realmar.Jobbernetes.Infrastructure.Metrics;
 
 namespace Realmar.Jobbernetes.Demo.Ingress
 {
@@ -34,7 +34,7 @@ namespace Realmar.Jobbernetes.Demo.Ingress
         public void ConfigureContainer(ContainerBuilder builder)
         {
             builder.RegisterModule<MessagingModule>();
-            builder.UseKafkaJson<ImageIngress>();
+            builder.RegisterMetricsNameDecorator(factory => new SuffixMetricsNameFactory("ingress", factory));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -50,7 +50,11 @@ namespace Realmar.Jobbernetes.Demo.Ingress
             app.UseHttpsRedirection();
             app.UseRouting();
             app.UseAuthorization();
-            app.UseEndpoints(endpoints => endpoints.MapControllers());
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllers();
+                endpoints.MapMetrics();
+            });
         }
     }
 }

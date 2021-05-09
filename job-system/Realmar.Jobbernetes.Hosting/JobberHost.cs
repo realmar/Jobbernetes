@@ -6,6 +6,7 @@ using Microsoft.Extensions.Hosting;
 using Realmar.Jobbernetes.Framework.Facade;
 using Realmar.Jobbernetes.Framework.Jobs;
 using Realmar.Jobbernetes.Framework.Messaging;
+using Realmar.Jobbernetes.Infrastructure.Metrics;
 
 namespace Realmar.Jobbernetes.Hosting
 {
@@ -26,9 +27,9 @@ namespace Realmar.Jobbernetes.Hosting
             return host.RunConsoleAsync();
         }
 
-        public static Task RunJobAsync<TData>(string[]                                       args,
-                                              Action<HostBuilderContext, IServiceCollection> configureServices  = null,
-                                              Action<ContainerBuilder>                       configureContainer = null) =>
+        public static Task RunJobAsync<TData>(string[]                                        args,
+                                              Action<HostBuilderContext, IServiceCollection>? configureServices  = null,
+                                              Action<ContainerBuilder>?                       configureContainer = null) =>
             RunConsoleAsync(args,
                             (context, services) =>
                             {
@@ -40,6 +41,9 @@ namespace Realmar.Jobbernetes.Hosting
                                 builder.RegisterModule<FacadeModule<TData>>();
                                 builder.RegisterModule<JobsModule>();
                                 builder.RegisterModule<MessagingModule>();
+
+                                builder.RegisterMetricsNameDecorator(factory => new SuffixMetricsNameFactory("job", factory));
+                                builder.RegisterMetricsPusher();
 
                                 configureContainer?.Invoke(builder);
                             });

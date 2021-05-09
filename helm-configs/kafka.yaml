@@ -1,3 +1,9 @@
+## Bitnami Kafka image version
+## ref: https://hub.docker.com/r/bitnami/kafka/tags/
+##
+image:
+  debug: true
+
 ## Number of Kafka brokers to deploy
 ##
 replicaCount: 1

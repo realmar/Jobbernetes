@@ -3,7 +3,6 @@ using System.Threading.Tasks;
 using Autofac;
 using Microsoft.Extensions.DependencyInjection;
 using Realmar.Jobbernetes.Demo.Models;
-using Realmar.Jobbernetes.Extensions.Serialization.Kafka;
 using Realmar.Jobbernetes.Hosting;
 
 namespace Realmar.Jobbernetes.Demo.ScraperJobService
@@ -20,8 +19,6 @@ namespace Realmar.Jobbernetes.Demo.ScraperJobService
                 },
                 builder =>
                 {
-                    builder.UseKafkaJson<ImageIngress>();
-                    builder.UseKafkaJson<Image>();
                     builder.RegisterType<Job>().AsImplementedInterfaces();
                     builder.RegisterType<HttpClient>().SingleInstance();
                 });

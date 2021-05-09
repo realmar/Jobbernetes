@@ -4,9 +4,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Realmar.Jobbernetes.Demo.Infrastructure.MongoDB;
 using Realmar.Jobbernetes.Demo.Infrastructure.MongoDB.Options;
 using Realmar.Jobbernetes.Demo.Models;
-using Realmar.Jobbernetes.Extensions.Serialization.Kafka;
 using Realmar.Jobbernetes.Framework.Messaging;
 using Realmar.Jobbernetes.Hosting;
+using Realmar.Jobbernetes.Infrastructure.Metrics;
 
 namespace Realmar.Jobbernetes.Demo.Egress
 {
@@ -26,7 +26,10 @@ namespace Realmar.Jobbernetes.Demo.Egress
                 {
                     builder.RegisterModule<MongoDBModule<Image>>();
                     builder.RegisterModule<MessagingModule>();
-                    builder.UseKafkaJson<Image>();
+
+                    builder.UseEndlessConsumer();
+                    builder.RegisterMetricsNameDecorator(factory => new SuffixMetricsNameFactory("egress", factory));
+                    builder.RegisterConsoleMetricServer();
                 });
         }
     }

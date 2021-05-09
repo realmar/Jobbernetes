@@ -1,6 +1,8 @@
 using System.IO;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Prometheus;
+using Realmar.Jobbernetes.Infrastructure.Metrics;
 using SixLabors.Fonts;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Drawing.Processing;
@@ -14,9 +16,14 @@ namespace Realmar.Jobbernetes.Demo.ExternalImageService.Controllers
     [ApiController]
     public class ImagesController : ControllerBase
     {
-        private readonly Font _font;
+        private readonly Counter _counter;
+        private readonly Font    _font;
 
-        public ImagesController(Font font) => _font = font;
+        public ImagesController(Font font, IMetricsNameFactory nameFactory)
+        {
+            _font    = font;
+            _counter = Metrics.CreateCounter(nameFactory.Create("bytes_total"), "Number of bytes of all generated images");
+        }
 
         [HttpGet("{name}")]
         public async Task<IActionResult> Get(string name)
@@ -35,8 +42,11 @@ namespace Realmar.Jobbernetes.Demo.ExternalImageService.Controllers
             await image.SaveAsync(stream, new JpegEncoder()).ConfigureAwait(false);
 
             stream.ConfigureAwait(false);
+            var fileContents = stream.ToArray();
 
-            return File(stream.ToArray(), "image/jpeg");
+            _counter.Inc(fileContents.Length);
+
+            return File(fileContents, "image/jpeg");
         }
     }
 }

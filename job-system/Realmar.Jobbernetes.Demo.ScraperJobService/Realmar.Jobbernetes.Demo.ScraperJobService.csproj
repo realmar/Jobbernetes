@@ -8,7 +8,6 @@
 
     <ItemGroup>
         <ProjectReference Include="..\Realmar.Jobbernetes.Demo.Models\Realmar.Jobbernetes.Demo.Models.csproj" />
-        <ProjectReference Include="..\Realmar.Jobbernetes.Extensions.Serialization\Realmar.Jobbernetes.Extensions.Serialization.csproj" />
         <ProjectReference Include="..\Realmar.Jobbernetes.Hosting\Realmar.Jobbernetes.Hosting.csproj" />
         <ProjectReference Include="..\Realmar.Jobbernetes.Infrastructure\Realmar.Jobbernetes.Infrastructure.csproj" />
     </ItemGroup>

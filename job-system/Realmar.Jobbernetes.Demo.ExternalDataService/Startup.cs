@@ -5,7 +5,9 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Prometheus;
 using Realmar.Jobbernetes.Framework.Messaging;
+using Realmar.Jobbernetes.Infrastructure.Metrics;
 using SixLabors.Fonts;
 
 namespace Realmar.Jobbernetes.Demo.ExternalImageService
@@ -46,6 +48,8 @@ namespace Realmar.Jobbernetes.Demo.ExternalImageService
 
                 return font.CreateFont(fontSize);
             }).As<Font>();
+
+            builder.RegisterMetricsNameDecorator(factory => new SuffixMetricsNameFactory("external_data_service", factory));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -61,7 +65,11 @@ namespace Realmar.Jobbernetes.Demo.ExternalImageService
 
             app.UseRouting();
             app.UseAuthorization();
-            app.UseEndpoints(endpoints => endpoints.MapControllers());
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllers();
+                endpoints.MapMetrics();
+            });
         }
     }
 }

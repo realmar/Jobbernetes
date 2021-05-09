@@ -10,15 +10,28 @@
                 "ExternalServiceOptions__Url": "http://localhost:5000/images",
 
                 // General
-                "KafkaOptions__BootStrapServers": "172.25.0.2:9094",
+                "RabbitMQConnectionOptions__Hostname": "localhost",
+                "RabbitMQConnectionOptions__Username": "admin",
+                "RabbitMQConnectionOptions__Password": "4Plbub2nQ4",
 
                 // Consumer
-                "KafkaConsumerOptions__GroupId": "jn-images-scraper-job-service",
-                "KafkaConsumerOptions__Topic": "jn-images-ingress",
-                "KafkaConsumerOptions__PollTimeout": "2",
+                "RabbitMQConsumerOptions__Exchange": "jobbernetes",
+                "RabbitMQConsumerOptions__Queue": "jn-images-ingress",
+                "RabbitMQConsumerOptions__RoutingKey": "jn-images-ingress",
 
                 // Producer
-                "KafkaProducerOptions__Topic": "jn-images-egress"
+                "RabbitMQProducerOptions__Exchange": "jobbernetes",
+                "RabbitMQProducerOptions__Queue": "jn-images-egress",
+                "RabbitMQProducerOptions__RoutingKey": "jn-images-egress",
+
+                // Prometheus
+                "MetricsOptions__InstanceName": "localhost_scraper",
+                "MetricPusherOptions__Endpoint": "http://localhost:9091/metrics",
+                "MetricPusherOptions__Job": "ScraperJobService",
+
+                // Logging
+                "Logging__LogLevel__Default": "Trace"
+  }
             },
             "distributionName": ""
         }

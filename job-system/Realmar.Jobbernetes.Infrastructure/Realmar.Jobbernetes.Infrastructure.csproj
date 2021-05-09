@@ -7,9 +7,13 @@
 
     <ItemGroup>
         <PackageReference Include="Autofac" Version="6.2.0" />
-        <PackageReference Include="Confluent.Kafka" Version="1.6.3" />
+        <PackageReference Include="EasyNetQ" Version="6.3.1" />
         <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="5.0.0" />
         <PackageReference Include="Microsoft.Extensions.Options" Version="5.0.0" />
+        <PackageReference Include="prometheus-net" Version="4.1.1" />
+        <PackageReference Include="RabbitMQ.Client" Version="6.2.1" />
+        <PackageReference Include="System.Linq.Async" Version="5.0.0" />
+        <PackageReference Include="System.Threading.Tasks.Dataflow" Version="5.0.0" />
     </ItemGroup>
 
 </Project>
