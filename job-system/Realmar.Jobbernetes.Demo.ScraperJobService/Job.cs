@@ -29,6 +29,8 @@ namespace Realmar.Jobbernetes.Demo.ScraperJobService
 
             var bytes = await response.Content.ReadAsByteArrayAsync(cancellationToken).ConfigureAwait(false);
 
+            // var bytes = new byte[] { 0x02, 0x08 };
+
             await _producer.ProduceAsync(new(data.Name, Convert.ToBase64String(bytes)), cancellationToken)
                            .ConfigureAwait(false);
         }

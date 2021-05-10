@@ -35,7 +35,7 @@ namespace Realmar.Jobbernetes.Framework.Facade
 
         public async Task Run(CancellationToken cancellationToken)
         {
-            await _consumer.StartAsync(ConsumeData, cancellationToken)
+            await _consumer.StartAsync(ConsumeData, ProcessJobError, cancellationToken)
                            .ConfigureAwait(false);
 
             await _consumer.WaitForBatchAsync(cancellationToken).ConfigureAwait(false);
@@ -51,11 +51,19 @@ namespace Realmar.Jobbernetes.Framework.Facade
                 await _dispatcher.Dispatch(data, token).ConfigureAwait(false);
                 _counterProcessed.WithSuccess().Inc();
             }
-            catch (Exception e) when (e is not OperationCanceledException)
+            catch (Exception e)
+            {
+                ProcessJobError(e);
+                throw;
+            }
+        }
+
+        private void ProcessJobError(Exception exception)
+        {
+            if (exception is not OperationCanceledException)
             {
                 _counterProcessed.WithFail().Inc();
-                _logger.LogError(e, "Job failed to process");
-                throw;
+                _logger.LogError(exception, "Job failed to process");
             }
         }
     }
