@@ -30,15 +30,15 @@
         "WSL 2": {
             "commandName": "WSL2",
             "launchBrowser": true,
-            "launchUrl": "https://localhost:5001/swagger",
+            "launchUrl": "http://localhost:5000/swagger",
             "environmentVariables": {
-                "ASPNETCORE_URLS": "https://localhost:5001;http://localhost:5000",
+                "ASPNETCORE_URLS": "http://localhost:5000",
                 "ASPNETCORE_ENVIRONMENT": "Development",
 
                 // General
                 "RabbitMQConnectionOptions__Hostname": "localhost",
                 "RabbitMQConnectionOptions__Username": "admin",
-                "RabbitMQConnectionOptions__Password": "4Plbub2nQ4",
+                "RabbitMQConnectionOptions__Password": "admin",
 
                 // Producer
                 "RabbitMQProducerOptions__Exchange": "jobbernetes",

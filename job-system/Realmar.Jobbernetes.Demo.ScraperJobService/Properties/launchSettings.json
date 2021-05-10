@@ -7,12 +7,12 @@
             "commandName": "WSL2",
             "environmentVariables": {
                 // ExternalService
-                "ExternalServiceOptions__Url": "http://localhost:5000/images",
+                "ExternalServiceOptions__Url": "http://localhost:5001/images",
 
                 // General
                 "RabbitMQConnectionOptions__Hostname": "localhost",
                 "RabbitMQConnectionOptions__Username": "admin",
-                "RabbitMQConnectionOptions__Password": "4Plbub2nQ4",
+                "RabbitMQConnectionOptions__Password": "admin",
 
                 // Consumer
                 "RabbitMQConsumerOptions__Exchange": "jobbernetes",
@@ -31,9 +31,8 @@
 
                 // Logging
                 "Logging__LogLevel__Default": "Trace"
-  }
-            },
-            "distributionName": ""
+            }
         }
+        // "distributionName": ""
     }
 }
