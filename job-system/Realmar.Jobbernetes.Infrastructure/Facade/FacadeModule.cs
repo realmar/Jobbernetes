@@ -7,7 +7,6 @@ namespace Realmar.Jobbernetes.Framework.Facade
         protected override void Load(ContainerBuilder builder)
         {
             builder.RegisterType<Jobbernetes<TData>>().AsImplementedInterfaces();
-            builder.RegisterType<Watcher>().AsSelf();
         }
     }
 }

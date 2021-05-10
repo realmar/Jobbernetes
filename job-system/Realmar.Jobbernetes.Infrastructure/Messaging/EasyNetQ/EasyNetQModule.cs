@@ -12,6 +12,7 @@ namespace Realmar.Jobbernetes.Framework.Messaging.EasyNetQ
         protected override void Load(ContainerBuilder builder)
         {
             builder.RegisterGeneric(typeof(EasyNetQConsumer<>)).AsImplementedInterfaces();
+            builder.RegisterGeneric(typeof(EasyNetQBatchConsumer<>)).As(typeof(IQueueBatchConsumer<>));
             builder.RegisterGeneric(typeof(EasyNetQProducer<>)).AsImplementedInterfaces();
 
             builder.RegisterEasyNetQ(resolver =>

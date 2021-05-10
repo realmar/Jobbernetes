@@ -1,6 +1,6 @@
 namespace Realmar.Jobbernetes.Framework.Options
 {
-    public class ProcessingOptions
+    public class JobOptions
     {
         public int BatchSize { get; set; } = 20;
     }
