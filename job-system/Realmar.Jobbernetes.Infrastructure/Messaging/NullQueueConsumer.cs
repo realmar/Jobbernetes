@@ -1,5 +1,4 @@
-using System.Collections.Generic;
-using System.Linq;
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Realmar.Jobbernetes.Framework.Jobs;
@@ -8,23 +7,15 @@ namespace Realmar.Jobbernetes.Framework.Messaging
 {
     public class NullQueueConsumer : IQueueConsumer<NullInput>
     {
-        public IAsyncEnumerable<Message<NullInput>> ConsumeAsync(CancellationToken cancellationToken) =>
-            ConsumeSync(cancellationToken).ToAsyncEnumerable();
-
-        private static IEnumerable<Message<NullInput>> ConsumeSync(CancellationToken cancellationToken)
-        {
-            while (cancellationToken.IsCancellationRequested == false)
+        public Task StartAsync(Func<NullInput, CancellationToken, Task> processor, CancellationToken cancellationToken) =>
+            Task.Run(async () =>
             {
-                yield return new(NullInput.Default, NullCommitter.Default);
-            }
-        }
+                while (cancellationToken.IsCancellationRequested == false)
+                {
+                    await processor.Invoke(NullInput.Default, cancellationToken).ConfigureAwait(false);
+                }
+            }, cancellationToken);
 
-        private class NullCommitter : IMessageCommitter
-        {
-            public static NullCommitter Default { get; } = new();
-
-            public Task CommitAsync(CancellationToken   cancellationToken) => Task.CompletedTask;
-            public Task RollbackAsync(CancellationToken cancellationToken) => Task.CompletedTask;
-        }
+        public Task StopAsync(CancellationToken cancellationToken) => Task.CompletedTask;
     }
 }

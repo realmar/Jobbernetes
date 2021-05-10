@@ -27,7 +27,6 @@ namespace Realmar.Jobbernetes.Demo.Egress
                     builder.RegisterModule<MongoDBModule<Image>>();
                     builder.RegisterModule<MessagingModule>();
 
-                    builder.UseEndlessConsumer();
                     builder.RegisterMetricsNameDecorator(factory => new SuffixMetricsNameFactory("egress", factory));
                     builder.RegisterConsoleMetricServer();
                 });

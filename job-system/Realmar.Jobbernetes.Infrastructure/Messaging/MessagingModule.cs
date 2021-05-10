@@ -1,7 +1,6 @@
 using Autofac;
 using Realmar.Jobbernetes.Framework.Jobs;
-using Realmar.Jobbernetes.Framework.Messaging.RabbitMQ;
-using Realmar.Jobbernetes.Framework.Messaging.Serialization;
+using Realmar.Jobbernetes.Framework.Messaging.EasyNetQ;
 
 namespace Realmar.Jobbernetes.Framework.Messaging
 {
@@ -9,9 +8,7 @@ namespace Realmar.Jobbernetes.Framework.Messaging
     {
         protected override void Load(ContainerBuilder builder)
         {
-            builder.RegisterModule<SerializationModule>();
-            builder.RegisterModule<RabbitMQModule>();
-
+            builder.RegisterModule<EasyNetQModule>();
             builder.RegisterType<NullQueueConsumer>().As<IQueueConsumer<NullInput>>();
         }
     }

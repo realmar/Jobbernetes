@@ -9,6 +9,9 @@
                 // ExternalService
                 "ExternalServiceOptions__Url": "http://localhost:5001/images",
 
+                // Processing
+                "ProcessingOptions__BatchSize": "200",
+
                 // General
                 "RabbitMQConnectionOptions__Hostname": "localhost",
                 "RabbitMQConnectionOptions__Username": "admin",

@@ -5,6 +5,6 @@ namespace Realmar.Jobbernetes.Framework.Jobs
 {
     internal interface IJobDispatcher<in TData>
     {
-        Task Dispatch(TData data, CancellationToken cancellationToken);
+        Task Dispatch(TData data, CancellationToken cancellationToken = default);
     }
 }

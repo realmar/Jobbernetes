@@ -36,39 +36,22 @@ namespace Realmar.Jobbernetes.Demo.Egress
 
         protected override async Task ExecuteAsync(CancellationToken cancellationToken)
         {
-            await foreach (var message in _consumer.ConsumeAsync(cancellationToken).ConfigureAwait(false))
+            await _consumer.StartAsync(async (image, token) =>
             {
                 try
                 {
-                    await _collection.InsertOneAsync(message.Data, options: null, cancellationToken).ConfigureAwait(false);
-
-                    try
-                    {
-                        await message.Committer.CommitAsync(cancellationToken).ConfigureAwait(false);
-                        _counter.WithSuccess().Inc();
-                    }
-                    catch (Exception commitException)
-                    {
-                        _counter.WithFailCommit().Inc();
-                        _logger.LogError(commitException, "Failed to commit consumed message");
-                    }
+                    await _collection.InsertOneAsync(image, options: null, cancellationToken).ConfigureAwait(false);
                 }
                 catch (Exception jobException)
                 {
                     _logger.LogError(jobException, "Failed to save image to DB");
-
-                    try
-                    {
-                        await message.Committer.RollbackAsync(cancellationToken).ConfigureAwait(false);
-                        _counter.WithFail().Inc();
-                    }
-                    catch (Exception rollbackException)
-                    {
-                        _counter.WithFailRollback().Inc();
-                        _logger.LogError(rollbackException, "Failed to rollback message");
-                    }
+                    throw;
                 }
-            }
+            }, cancellationToken).ConfigureAwait(false);
+
+            cancellationToken.WaitHandle.WaitOne();
+
+            await _consumer.StopAsync(default).ConfigureAwait(false);
 
             _application.StopApplication();
         }
