@@ -1,0 +1,30 @@
+FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build-env
+WORKDIR /app
+
+# Copy the main source project files
+COPY ./*/*.csproj ./
+
+# Restore folder structure and restore dependencies
+RUN for file in $(ls *.csproj); do \
+        mkdir -p ./${file%.*}/ \
+     && mv $file ./${file%.*}/; \
+    done \
+ && for file in $(ls Realmar.Jobbernetes.*); do \
+        dotnet restore ./${file%.*}/; \
+    done
+
+# # Copy the test project files
+# COPY test/*/*.csproj ./
+# RUN for file in $(ls *.csproj); do mkdir -p test/${file%.*}/ && mv $file test/${file%.*}/; done
+
+# Copy everything else
+# Build runtime image
+FROM build-env AS publish
+COPY ./ ./
+RUN dotnet publish 'Realmar.Jobbernetes.Demo.Ingress' -c Release -o /app/out
+
+# Production layer
+FROM mcr.microsoft.com/dotnet/aspnet:5.0
+WORKDIR /app
+COPY --from=publish /app/out .
+ENTRYPOINT ["dotnet", "Realmar.Jobbernetes.Demo.Ingress.dll"]

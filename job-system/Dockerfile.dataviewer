@@ -1,0 +1,43 @@
+FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build-env
+WORKDIR /app
+
+# Copy the main source project files
+COPY ./*/*.csproj ./
+COPY ./*/*/*.csproj ./
+
+# Restore folder structure and restore dependencies
+RUN \
+    mkdir -p Realmar.Jobbernetes.Demo.DataViewer/Client \
+ && mkdir -p Realmar.Jobbernetes.Demo.DataViewer/Server \
+ && mkdir -p Realmar.Jobbernetes.Demo.DataViewer/Shared \
+ && mv ./Realmar.Jobbernetes.Demo.DataViewer.Client.csproj Realmar.Jobbernetes.Demo.DataViewer/Client/. \
+ && mv ./Realmar.Jobbernetes.Demo.DataViewer.Server.csproj Realmar.Jobbernetes.Demo.DataViewer/Server/. \
+ && mv ./Realmar.Jobbernetes.Demo.DataViewer.Shared.csproj Realmar.Jobbernetes.Demo.DataViewer/Shared/. \
+ && for file in $(ls *.csproj); do \
+        mkdir -p ./${file%.*}/ \
+     && mv $file ./${file%.*}/; \
+    done \
+ # && apt update && apt install -y tree && ls -al && tree && ls | grep Realmar.Jobbernetes \
+ && for file in $(ls | grep Realmar.Jobbernetes); do \
+        dotnet restore ./${file}; \
+    done \
+ && dotnet restore ./Realmar.Jobbernetes.Demo.DataViewer/Client/ \
+ && dotnet restore ./Realmar.Jobbernetes.Demo.DataViewer/Server/ \
+ && dotnet restore ./Realmar.Jobbernetes.Demo.DataViewer/Shared/
+
+
+# # Copy the test project files
+# COPY test/*/*.csproj ./
+# RUN for file in $(ls *.csproj); do mkdir -p test/${file%.*}/ && mv $file test/${file%.*}/; done
+
+# Copy everything else
+# Build runtime image
+FROM build-env AS publish
+COPY ./ ./
+RUN dotnet publish 'Realmar.Jobbernetes.Demo.DataViewer/Server' -c Release -o /app/out
+
+# Production layer
+FROM mcr.microsoft.com/dotnet/aspnet:5.0
+WORKDIR /app
+COPY --from=publish /app/out .
+ENTRYPOINT ["dotnet", "Realmar.Jobbernetes.Demo.DataViewer.Server.dll"]
