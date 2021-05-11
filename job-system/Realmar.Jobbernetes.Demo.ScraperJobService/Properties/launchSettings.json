@@ -10,8 +10,9 @@
                 "ExternalServiceOptions__Url": "http://localhost:5001/images",
 
                 // Processing
-                "JobOptions__BatchSize": "20000",
-                "JobOptions__MaxConcurrentJobs": "20",
+                "JobOptions__BatchSize": "2000",
+                "JobOptions__MaxConcurrentJobs": "100",
+                "JobOptions__MaxMessagesPerTask": "20",
 
                 // General
                 "RabbitMQConnectionOptions__Hostname": "localhost",

@@ -14,10 +14,10 @@ namespace Realmar.Jobbernetes.Framework.Messaging.EasyNetQ
         private readonly IBus                                  _bus;
         private readonly IOptions<JobOptions>                  _jobOptions;
         private readonly ILogger<EasyNetQBatchConsumer<TData>> _logger;
-        private readonly CancellationTokenSource               _queueEmptyToken = new();
-        private readonly CancellationTokenSource               _stopToken       = new();
-        private          ActionBlock<ulong>?                   _block;
-        private          CancellationTokenSource?              _linkedToken;
+        private readonly CancellationTokenSource               _stopToken = new();
+        private          ActionBlock<PullResult<TData>>?       _actionBlock;
+        private          Task?                                 _dispatchTask;
+        private          CancellationTokenSource?              _manualStopToken;
         private          Func<TData, CancellationToken, Task>  _processor;
         private          IPullingConsumer<PullResult<TData>>?  _pullingConsumer;
         private          Action<Exception>?                    _readErrorHandler;
@@ -37,24 +37,6 @@ namespace Realmar.Jobbernetes.Framework.Messaging.EasyNetQ
             _stopToken.Dispose();
         }
 
-        public Task StopAsync(CancellationToken cancellationToken)
-        {
-            _stopToken?.Cancel();
-            return Task.CompletedTask;
-        }
-
-        public async Task WaitForBatchAsync(CancellationToken cancellationToken)
-        {
-            try
-            {
-                await _block.Completion.ConfigureAwait(false);
-            }
-            catch (OperationCanceledException)
-            {
-                // that is ok
-            }
-        }
-
         public Task StartAsync(Func<TData, CancellationToken, Task> processor, CancellationToken cancellationToken) =>
             StartAsync(processor, null, cancellationToken);
 
@@ -65,79 +47,136 @@ namespace Realmar.Jobbernetes.Framework.Messaging.EasyNetQ
             _readErrorHandler = readErrorHandler;
             _processor        = processor;
 
-            await PrepareCommunication(cancellationToken).ConfigureAwait(false);
+            _manualStopToken = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken, _stopToken.Token);
 
-            _linkedToken     = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken, _stopToken.Token);
+            await PrepareCommunication(_manualStopToken.Token).ConfigureAwait(false);
+
             _pullingConsumer = _bus.Advanced.CreatePullingConsumer<TData>(Queue, autoAck: false);
 
-            _block = new(_ => ProcessItem(),
-                         new()
-                         {
-                             MaxDegreeOfParallelism = _jobOptions.Value.MaxConcurrentJobs,
-                             CancellationToken      = _linkedToken.Token,
-                             MaxMessagesPerTask     = _jobOptions.Value.MaxConcurrentJobs
-                         });
+            _actionBlock = new(
+                ProcessItem,
+                new()
+                {
+                    MaxDegreeOfParallelism = _jobOptions.Value.MaxConcurrentJobs,
+                    CancellationToken      = _manualStopToken.Token,
+                    MaxMessagesPerTask     = _jobOptions.Value.MaxMessagesPerTask
+                });
 
-            var stats        = await _bus.Advanced.GetQueueStatsAsync(Queue, cancellationToken).ConfigureAwait(false);
-            var messageCount = stats.MessagesCount;
-
-            var batchSize = Math.Clamp((ulong) _jobOptions.Value.BatchSize, 0ul, messageCount);
-            for (var counter = 0ul; counter < batchSize; counter++)
-            {
-                _block.Post(counter);
-            }
-
-            _block.Complete();
+            _dispatchTask = Task.Run(DispatchMessages);
         }
 
-        private async Task ProcessItem()
+        public async Task WaitForBatchAsync(CancellationToken cancellationToken)
         {
-            if (_queueEmptyToken.IsCancellationRequested)
+            try
             {
-                return;
+                await _dispatchTask.ConfigureAwait(false);
             }
-
-            if (_linkedToken.IsCancellationRequested)
+            catch (OperationCanceledException)
             {
-                _logger.LogInformation("Cancellation requested");
-                return;
+                // it's ok
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e, "Exception while waiting for dispatcher task to complete");
             }
 
             try
             {
-                var result = await _pullingConsumer.PullAsync(_linkedToken.Token).ConfigureAwait(false);
+                await _actionBlock.Completion.ConfigureAwait(false);
+            }
+            catch (OperationCanceledException)
+            {
+                // it's ok
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e, "Block threw an error");
+            }
+        }
 
-                if (result.IsAvailable == false)
+        public Task StopAsync(CancellationToken cancellationToken)
+        {
+            _stopToken?.Cancel();
+            return WaitForBatchAsync(cancellationToken);
+        }
+
+        private async Task DispatchMessages()
+        {
+            var counter = 0;
+
+            while (true)
+            {
+                if (_stopToken.IsCancellationRequested)
                 {
-                    _logger.LogInformation("No more message available");
-                    _queueEmptyToken.Cancel();
+                    _logger.LogInformation("Cancellation requested, stop processing new messages");
+                    _actionBlock.Complete();
 
                     return;
                 }
 
-                await ProcessJob(_processor, result).ConfigureAwait(false);
-            }
-            catch (Exception readException) when (readException is not OperationCanceledException)
-            {
-                HandleReadException(readException);
+                if (Interlocked.Increment(ref counter) > _jobOptions.Value.BatchSize)
+                {
+                    _logger.LogInformation("Batch size reached, stop processing new messages");
+                    _actionBlock.Complete();
+
+                    return;
+                }
+
+                try
+                {
+                    var result = await _pullingConsumer.PullAsync(_manualStopToken.Token).ConfigureAwait(false);
+
+                    if (result.IsAvailable == false)
+                    {
+                        _logger.LogInformation("No more message available");
+                        _actionBlock.Complete();
+
+                        return;
+                    }
+
+                    _actionBlock.Post(result);
+                }
+                catch (Exception readException) when (readException is not OperationCanceledException)
+                {
+                    HandleReadException(readException);
+                }
             }
         }
 
-        private async Task ProcessJob(Func<TData, CancellationToken, Task> processor, PullResult<TData> result)
+        private async Task ProcessItem(PullResult<TData> result)
         {
             try
             {
                 var data = result.Message.Body;
 
-                await processor.Invoke(data, _linkedToken.Token).ConfigureAwait(false);
-                await _pullingConsumer.AckAsync(result.ReceivedInfo.DeliveryTag).ConfigureAwait(false);
-                _logger.LogInformation($"Successfully processed job {result.ReceivedInfo}");
+                await _processor.Invoke(data, _manualStopToken.Token).ConfigureAwait(false);
+
+                try
+                {
+                    await _pullingConsumer.AckAsync(result.ReceivedInfo.DeliveryTag).ConfigureAwait(false);
+                    _logger.LogInformation($"Successfully processed job {result.ReceivedInfo}");
+                }
+                catch (Exception ackException)
+                {
+                    _logger.LogError(ackException, "Failed to ACK (accept ie. remove from queue) message");
+                }
             }
             catch (Exception jobException)
             {
-                _logger.LogError(jobException, $"Error in job {result.ReceivedInfo}");
-                await _pullingConsumer.RejectAsync(result.ReceivedInfo.DeliveryTag, requeue: true)
-                                      .ConfigureAwait(false);
+                if (jobException is not OperationCanceledException)
+                {
+                    _logger.LogError(jobException, $"Error in job {result.ReceivedInfo}");
+                }
+
+                try
+                {
+                    await _pullingConsumer.RejectAsync(result.ReceivedInfo.DeliveryTag, requeue: true)
+                                          .ConfigureAwait(false);
+                }
+                catch (Exception rejectException)
+                {
+                    _logger.LogError(rejectException, "Failed to NACK (reject ie. put back into queue) message");
+                }
             }
         }
 
