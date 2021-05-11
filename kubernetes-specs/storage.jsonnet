@@ -1,5 +1,5 @@
 local k3dVolumes = import '../k3d.volumes.jsonnet';
-local jn = import 'jobbernetes.libsonnet';
+local jn = import 'lib/jobbernetes.libsonnet';
 
 [
   jn.Storage(volume.nodeRelative)

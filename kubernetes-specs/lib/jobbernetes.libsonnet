@@ -1,4 +1,4 @@
-local kube = import 'vendor/kube.libsonnet';
+local kube = (import '../vendor/kube.libsonnet');
 
 local Storage(name) = {
   name:: std.strReplace(name, '/', '-'),
@@ -34,7 +34,14 @@ local Storage(name) = {
   },
 };
 
+local local_registry(image) = 'docker-registry/' + image;
+
+local jn_image(name) = 'jn-' + name;
+
+
 // exports
 {
-  Storage:: Storage
+  Storage:: Storage,
+  local_registry:: local_registry,
+  jn_image:: jn_image,
 }
