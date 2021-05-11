@@ -4,10 +4,20 @@ local jn_full(name) = jn.local_registry(jn.jn_image(name));
 
 local job_image(name) = jn_full('job-' + name);
 
+local Image(name) = {
+  relativeName: name,
+  imageName: jn.jn_image(name),
+  fqdn: jn_full(name),
+  registryName: jn.jn_registry_name,
+};
+
+local JobImage(name) = Image(name) {
+  fqdn: jn_full('job-' + name),
+};
 
 {
-  ingress: jn_full('ingress'),
-  egress: jn_full('egress'),
-  external_service: jn_full('external-service'),
-  image_scraper_job: job_image('image-scraper'),
+  ingress: Image('ingress'),
+  egress: Image('egress'),
+  external_service: Image('external-service'),
+  image_scraper_job: JobImage('image-scraper-job'),
 }

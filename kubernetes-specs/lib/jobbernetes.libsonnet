@@ -34,7 +34,9 @@ local Storage(name) = {
   },
 };
 
-local local_registry(image) = 'docker-registry/' + image;
+local jn_registry_name = 'docker-registry';
+
+local local_registry(image) = jn_registry_name + '/' + image;
 
 local jn_image(name) = 'jn-' + name;
 
@@ -44,4 +46,5 @@ local jn_image(name) = 'jn-' + name;
   Storage:: Storage,
   local_registry:: local_registry,
   jn_image:: jn_image,
+  jn_registry_name:: jn_registry_name,
 }

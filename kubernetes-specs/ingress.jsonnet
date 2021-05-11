@@ -15,7 +15,7 @@ local kube = import 'vendor/kube.libsonnet';
         spec+: {
           containers_+: {
             server: kube.Container($.name) {
-              image: jnci.ingress,
+              image: jnci.ingress.fqdn,
               imagePullPolicy: 'Always',
               restartPolicy: 'OnFailure',
               ports: [{ name: 'http', containerPort: 3000 }],
