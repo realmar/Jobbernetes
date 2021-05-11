@@ -69,7 +69,7 @@ def run_shell_print(command: str):
     return (stdout, stderr)
 
 
-def get_volumes():
+def __read_jsonnet(path):
     escaped_root_dir = ROOT_DIR
 
     if is_windows():
@@ -79,14 +79,22 @@ def get_volumes():
     if is_windows():
         wsl_root, _ = run_shell(f"wsl -- pwd")
         wsl_root = wsl_root.strip()
-        wsl_path = f"{wsl_root}/{K3D_VOLUMES_FILE}"
+        wsl_path = f"{wsl_root}/{path}"
 
         print(wsl_path)
         command = f"wsl -- bash -l -c '{command} {wsl_path}'"
         print(command)
     else:
-        command = f"{command} {K3D_VOLUMES_PATH}"
+        command = f"{command} {path}"
 
     jsontext, _ = run_shell(command)
 
     return json.loads(jsontext)
+
+
+def get_volumes():
+    return __read_jsonnet(K3D_VOLUMES_FILE)
+
+
+def get_container_images():
+    return __read_jsonnet(os.path.join(SPECS_DIR, 'lib', 'container_images.libsonnet'))
