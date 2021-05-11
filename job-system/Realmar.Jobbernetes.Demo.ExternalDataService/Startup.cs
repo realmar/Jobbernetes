@@ -58,10 +58,11 @@ namespace Realmar.Jobbernetes.Demo.ExternalImageService
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json",
-                                                        "Realmar.Jobbernetes.Demo.ExternalImageService v1"));
             }
+
+            app.UseSwagger();
+            app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json",
+                                                    "Realmar.Jobbernetes.Demo.ExternalImageService v1"));
 
             app.UseRouting();
             app.UseAuthorization();
