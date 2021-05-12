@@ -2,7 +2,8 @@
 
 import shutil
 import os
-from lib import is_windows, run_shell, run_shell_print, get_volumes, K3D_CLUSTER_NAME, K3D_CONFIG_PATH
+from lib import is_windows, run_shell, run_shell_print, get_volumes, get_registry, K3D_CLUSTER_NAME, K3D_CONFIG_PATH
+import start_registry
 
 
 required_commands = ["k3d", "kubectl", "docker"]
@@ -57,8 +58,16 @@ def run():
         command = f"k3d cluster start {K3D_CLUSTER_NAME}"
     else:
         print(f"Cluster not found. Creating ...")
-        command = f"k3d cluster create {K3D_CLUSTER_NAME} --k3s-server-arg \"--no-deploy=traefik\" --config {K3D_CONFIG_PATH} {create_k3d_cli_volumes(volumes)}"
 
+        registry = get_registry()
+        print(registry)
+        command = f"k3d cluster create {K3D_CLUSTER_NAME} " \
+            + f"--k3s-server-arg \"--no-deploy=traefik\" " \
+            + f"--config {K3D_CONFIG_PATH} " \
+            + f"{create_k3d_cli_volumes(volumes)} " \
+            + f"--registry-use {registry['registryUrl']}"
+
+    start_registry.start()
     run_shell_print(command)
 
 

@@ -13,7 +13,6 @@ SERVICES = [
     ("svc/grafana", "9092:80"),
     ("svc/rabbitmq", "5672:5672"),
     ("svc/rabbitmq", "15672:15672"),
-    ("svc/docker-registry", "5000:5000"),
 ]
 
 

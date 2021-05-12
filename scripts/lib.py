@@ -98,3 +98,7 @@ def get_volumes():
 
 def get_container_images():
     return __read_jsonnet(os.path.join(SPECS_DIR, 'lib', 'container_images.libsonnet'))
+
+
+def get_registry():
+    return __read_jsonnet(os.path.join(SPECS_DIR, 'lib', 'registry.libsonnet'))

@@ -34,17 +34,27 @@ local Storage(name) = {
   },
 };
 
-local jn_registry_name = 'docker-registry';
+local Registry = import '../lib/registry.libsonnet';
 
-local local_registry(image) = jn_registry_name + '/' + image;
+local image_name(name) = 'jn-' + name;
 
-local jn_image(name) = 'jn-' + name;
+local image_fqn(name) = Registry.registryUrl + '/' + image_name(name);
 
+local image_job_fqn(name) = image_fqn('job-' + name);
+
+local Image(name) = Registry {
+  relativeName: name,
+  imageName: image_name(name),
+  fqn: image_fqn(name),
+};
+
+local JobImage(name) = Image(name) {
+  fqn: image_fqn('job-' + name),
+};
 
 // exports
 {
   Storage:: Storage,
-  local_registry:: local_registry,
-  jn_image:: jn_image,
-  jn_registry_name:: jn_registry_name,
+  Image:: Image,
+  JobImage:: JobImage,
 }

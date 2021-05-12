@@ -50,6 +50,13 @@ https://www.rabbitmq.com/queues.html
 https://www.rabbitmq.com/amqp-0-9-1-reference.html
 https://www.rabbitmq.com/management.html
 
+## Building Images
+
+https://hub.docker.com/_/microsoft-dotnet-runtime/
+https://hub.docker.com/_/microsoft-dotnet-aspnet
+
+https://andrewlock.net/optimising-asp-net-core-apps-in-docker-avoiding-manually-copying-csproj-files-part-2/
+https://www.softwaredeveloper.blog/multi-project-dotnet-core-solution-in-docker-image
 
 ## Ingress
 

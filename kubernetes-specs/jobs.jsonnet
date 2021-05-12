@@ -17,7 +17,7 @@ local kube = import 'vendor/kube.libsonnet';
             spec+: {
               containers_+: {
                 job: kube.Container($.name) {
-                  image: jnci.image_scraper_job.fqdn,
+                  image: jnci.image_scraper_job.fqn,
                   imagePullPolicy: 'Always',
                   restartPolicy: 'OnFailure',
                   env_+: {

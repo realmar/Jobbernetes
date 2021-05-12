@@ -5,6 +5,7 @@ import shutil
 import os
 from lib import is_windows, get_volumes, run_shell
 import delete_cluster
+import delete_registry
 
 
 def run(force=False):
@@ -12,6 +13,9 @@ def run(force=False):
         print("Force delete everything is activated")
 
     delete_cluster.run()
+
+    if force:
+        delete_registry.delete()
 
     for volume in get_volumes():
         if force or not volume["keep"]:

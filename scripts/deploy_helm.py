@@ -9,7 +9,6 @@ repositories = [
     ("grafana", "https://grafana.github.io/helm-charts"),
     ("prometheus-community", "https://prometheus-community.github.io/helm-charts"),
     ("bitnami", "https://charts.bitnami.com/bitnami"),
-    ("twuni", "https://helm.twun.io"),
     ("groundhog2k", "https://groundhog2k.github.io/helm-charts/"),
 ]
 
@@ -19,7 +18,6 @@ charts = [
     ("promtail", "grafana/promtail", "helm-configs/promtail.yaml"),
     ("loki", "grafana/loki", "helm-configs/loki.yaml"),
     ("prometheus", "prometheus-community/prometheus", "helm-configs/prometheus.yaml"),
-    ("docker-registry", "twuni/docker-registry", "helm-configs/docker-registry.yaml"),
     ("mongodb", "bitnami/mongodb", "helm-configs/mongodb.yaml"),
     ("rabbitmq", "groundhog2k/rabbitmq", "helm-configs/rabbitmq.yaml"),
     ("prometheus-rabbitmq-exporter", "prometheus-community/prometheus-rabbitmq-exporter", "helm-configs/prometheus-rabbitmq-exporter.yaml"),
