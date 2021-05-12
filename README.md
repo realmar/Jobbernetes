@@ -58,6 +58,9 @@ https://hub.docker.com/_/microsoft-dotnet-aspnet
 https://andrewlock.net/optimising-asp-net-core-apps-in-docker-avoiding-manually-copying-csproj-files-part-2/
 https://www.softwaredeveloper.blog/multi-project-dotnet-core-solution-in-docker-image
 
+https://github.com/genuinetools/reg
+https://github.com/andrey-pohilko/registry-cli
+
 ## Ingress
 
 http://grafana.localhost/
