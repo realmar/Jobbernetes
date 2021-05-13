@@ -8,9 +8,17 @@ securityContext:
   runAsGroup: 1000
   fsGroup: 1000
 
+resources:
+  requests:
+    cpu: 100m
+    memory: 128Mi
+  limits:
+    cpu: 100m
+    memory: 128Mi
+
 # Administrator credentials when not using an existing secret (see below)
 adminUser: admin
-adminPassword: admin
+adminPassword: admin22
 
 # Execute following to retrieve the secrets:
 # kubectl get secret --namespace default grafana -o jsonpath="{.data.admin-password}" | base64 --decode ; echo

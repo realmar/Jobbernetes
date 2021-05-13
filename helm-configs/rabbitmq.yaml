@@ -11,6 +11,15 @@ securityContext:
   runAsGroup: 1000
   runAsUser: 1000
 
+## Resource limits and requests
+resources:
+  limits:
+     cpu: 8
+     memory: 1024Mi
+  requests:
+     cpu: 2
+     memory: 256Mi
+
 ## Ingress configuration
 ingress:
   enabled: true

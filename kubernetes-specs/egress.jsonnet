@@ -3,22 +3,25 @@ local jn = import 'lib/jobbernetes.libsonnet';
 local kube = import 'vendor/kube.libsonnet';
 
 {
-  name:: 'egress',
+  name:: 'jn-egress',
 
   deployment: kube.Deployment(self.name) {
     metadata+: {
       labels: { app: $.name },
     },
     spec+: {
-      replicas: 3,
+      replicas: 2,
       template+: {
+        metadata+: jn.PrometheusAnnotations(),
         spec+: {
+          restartPolicy: 'Always',
+          initContainers_+: jn.WaitForAll(),
           containers_+: {
             server: kube.Container($.name) {
               image: jnci.egress.fqn,
               imagePullPolicy: 'Always',
-              restartPolicy: 'OnFailure',
               ports: [{ name: 'http', containerPort: 3000 }],
+              resources: jn.ResourcesMemory('128Mi', '256Mi'),
               env_+: {
                 // General
                 RabbitMQConnectionOptions__Hostname: 'rabbitmq',

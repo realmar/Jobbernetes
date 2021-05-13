@@ -14,3 +14,12 @@ config:
   # Must be reference in `config.file` to configure `client.url`.
   # See default config in `values.yaml`
   lokiAddress: http://loki-headless:3100/loki/api/v1/push
+
+# -- Resource requests and limits
+resources:
+  limits:
+    cpu: 200m
+    memory: 128Mi
+  requests:
+    cpu: 100m
+    memory: 128Mi

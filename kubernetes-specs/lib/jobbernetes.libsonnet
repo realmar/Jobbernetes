@@ -52,9 +52,52 @@ local JobImage(name) = Image(name) {
   fqn: image_fqn('job-' + name),
 };
 
+local Component(_name) = {
+  name: _name,
+  serviceName: image_name(_name),
+};
+
+local PrometheusAnnotations(port=3000) = {
+  annotations+: {
+    'prometheus.io/scrape': 'true',
+    'prometheus.io/path': '/metrics',
+    'prometheus.io/port': std.toString(port),
+  },
+};
+
+local WaitFor(name) = {
+  ['wait' + name]: kube.Container('wait-for-' + name) {
+    image: 'groundnuty/k8s-wait-for:v1.4',
+    imagePullPolicy: 'Always',
+    args: [
+      'pod',
+      '-lapp.kubernetes.io/name=' + name,
+    ],
+  },
+};
+
+local WaitForRabbitMQ() = WaitFor('rabbitmq');
+local WaitForMongoDB() = WaitFor('mongodb');
+local WaitForAll() = std.mergePatch(WaitForRabbitMQ(), WaitForMongoDB());
+
+local ResourcesMemory(request, limit) = {
+  requests: {
+    memory: request,
+  },
+  limits: {
+    memory: limit,
+  },
+};
+
 // exports
 {
   Storage:: Storage,
   Image:: Image,
   JobImage:: JobImage,
+  Component:: Component,
+  PrometheusAnnotations:: PrometheusAnnotations,
+  WaitForRabbitMQ:: WaitForRabbitMQ,
+  WaitForMongoDB:: WaitForMongoDB,
+  WaitForAll:: WaitForAll,
+  ResourcesMemory:: ResourcesMemory,
 }

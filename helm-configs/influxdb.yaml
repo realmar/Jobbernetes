@@ -9,6 +9,16 @@ securityContext:
   runAsUser: 1000
   runAsGroup: 1000
 
+## Configure resource requests and limits
+## ref: http://kubernetes.io/docs/user-guide/compute-resources/
+resources:
+  requests:
+    memory: 256Mi
+    cpu: 0.1
+  limits:
+    memory: 512Mi
+    cpu: 2
+
 # Allow executing custom init scripts
 #
 # If the container finds any files with the extensions .sh or .iql inside of the

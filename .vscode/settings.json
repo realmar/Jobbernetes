@@ -1,6 +1,12 @@
 {
     "python.analysis.extraPaths": [
-        "scripts"
+        "scripts",
+        "scripts/delete",
+        "scripts/deploy",
+        "scripts/docker",
+        "scripts/start",
+        "scripts/stop",
+        "scripts/tools",
     ],
     "triggerTaskOnSave.tasks": {
         "format_jsonnet": [

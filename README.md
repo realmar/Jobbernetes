@@ -27,6 +27,7 @@ https://kubernetes.io/docs/concepts/configuration/configmap/
 
 Configuration Best Practises:
 https://kubernetes.io/docs/concepts/configuration/overview/
+https://dev.to/drcloudycoder/kubernetes-cronjob-best-practices-4nlk
 
 https://github.com/evanlucas/fish-kubectl-completions
 
@@ -49,6 +50,26 @@ https://www.rabbitmq.com/tutorials/amqp-concepts.html
 https://www.rabbitmq.com/queues.html
 https://www.rabbitmq.com/amqp-0-9-1-reference.html
 https://www.rabbitmq.com/management.html
+
+## Docker Rate Limiting
+
+https://www.docker.com/increase-rate-limits?utm_source=docker&utm_medium=web%20referral&utm_campaign=increase%20rate%20limit&utm_budget=
+https://www.docker.com/pricing
+
+> On November 20, 2020, rate limits anonymous and free authenticated use of Docker Hub went into effect. > Anonymous and Free Docker Hub users are limited to 100 and 200 container image pull requests per six > hours. You can read here for more detailed information.
+> 
+> If you are affected by these changes you will receive this error message:
+> 
+> ERROR: toomanyrequests: Too Many Requests.
+> 
+> OR
+> You have reached your pull rate limit. You may increase the limit by authenticating and upgrading: > https://www.docker.com/increase-rate-limits. You must authenticate your pull requests.
+> 
+> To increase your pull rate limits you can upgrade your account to a Docker Pro or Team subscription.
+> 
+> The rate limits of 100 container image requests per six hours for anonymous usage, and 200 container > image requests per six hours for free Docker accounts are now in effect. Image requests exceeding these > limits will be denied until the six hour window elapses.
+> 
+> NOTE: Docker Pro and Docker Team accounts enable 50,000 pulls in a 24 hour period from Docker Hub.  
 
 ## Building Images
 
@@ -117,4 +138,12 @@ Switch context
 ```sh
 # https://k3d.io/usage/kubeconfig/
 set -gx KUBECONFIG (k3d kubeconfig write jobbernetes-cluster)
+```
+
+Manually trigger CronJobs:
+
+https://stackoverflow.com/questions/40401795/how-can-i-trigger-a-kubernetes-scheduled-job-manually
+
+```sh
+kubectl create job --from=cronjob/<cronjob-name> <job-name>
 ```

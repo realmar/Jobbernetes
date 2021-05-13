@@ -3,22 +3,22 @@ local jn = import 'lib/jobbernetes.libsonnet';
 local kube = import 'vendor/kube.libsonnet';
 
 {
-  name:: 'jn-ingress',
+  name:: 'jn-dataviewer',
 
   deployment: kube.Deployment(self.name) {
     metadata+: {
       labels: { app: $.name },
     },
     spec+: {
-      replicas: 2,
+      replicas: 1,
       template+: {
         metadata+: jn.PrometheusAnnotations(),
         spec+: {
           restartPolicy: 'Always',
-          initContainers_+: jn.WaitForRabbitMQ(),
+          initContainers_+: jn.WaitForMongoDB(),
           containers_+: {
             server: kube.Container($.name) {
-              image: jnci.ingress.fqn,
+              image: jnci.dataviewer.fqn,
               imagePullPolicy: 'Always',
               ports: [{ name: 'http', containerPort: 3000 }],
               resources: jn.ResourcesMemory('128Mi', '256Mi'),
@@ -27,15 +27,10 @@ local kube = import 'vendor/kube.libsonnet';
                 ASPNETCORE_URLS: 'http://0.0.0.0:3000',
                 ASPNETCORE_ENVIRONMENT: 'Production',
 
-                // General
-                RabbitMQConnectionOptions__Hostname: 'rabbitmq',
-                RabbitMQConnectionOptions__Username: 'admin',
-                RabbitMQConnectionOptions__Password: 'admin',
-
-                // Producer
-                RabbitMQProducerOptions__Exchange: 'jobbernetes',
-                RabbitMQProducerOptions__Queue: 'jn-images-ingress',
-                RabbitMQProducerOptions__RoutingKey: 'jn-images-ingress',
+                // MongoDB
+                MongoOptions__ConnectionString: 'mongodb://mongodb:27017',
+                MongoOptions__Database: 'jobbernetes',
+                MongoOptions__Collection: 'images',
               },
             },
           },
@@ -53,7 +48,7 @@ local kube = import 'vendor/kube.libsonnet';
     spec+: {
       rules+: [
         {
-          host: 'ingress.jn.localhost',
+          host: 'dataviewer.jn.localhost',
           http: {
             paths:
               [

@@ -14,7 +14,7 @@
         {
             "label": "format_jsonnet",
             "type": "shell",
-            "command": "./scripts/format_jsonnet.py"
+            "command": "./scripts/tools/format_jsonnet.py"
         }
     ]
 }

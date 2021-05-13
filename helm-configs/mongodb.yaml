@@ -12,11 +12,18 @@ podSecurityContext:
   enabled: true
   fsGroup: 1000
 
-
 containerSecurityContext:
   enabled: true
   runAsUser: 1000
   runAsNonRoot: true
+
+resources:
+  limits:
+    cpu: 2
+    memory: 512Mi
+  requests:
+    cpu: 1
+    memory: 128Mi
 
 arbiter:
   podSecurityContext:
@@ -40,11 +47,27 @@ externalAccess:
   autoDiscovery:
     enabled: true
 
+    resources:
+      limits:
+        cpu: 100m
+        memory: 128Mi
+      requests:
+        cpu: 100m
+        memory: 30Mi
+
 #  hidden:
 #    enabled: true
 
 metrics:
   enabled: true
+
+  resources:
+    limits:
+      cpu: 100m
+      memory: 128Mi
+    requests:
+      cpu: 100m
+      memory: 128Mi
 
 volumePermissions:
   enabled: true

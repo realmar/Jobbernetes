@@ -1,8 +1,12 @@
+local comp = import 'components.libsonnet';
 local jn = import 'jobbernetes.libsonnet';
 
 {
-  ingress: jn.Image('ingress'),
-  egress: jn.Image('egress'),
-  external_service: jn.Image('external-service'),
-  image_scraper_job: jn.JobImage('image-scraper-job'),
+  [std.strReplace(x.name, '-', '_')]: jn.Image(x.name)
+  for x in comp.services
+}
++
+{
+  [std.strReplace(x.name, '-', '_')]: jn.JobImage(x.name)
+  for x in comp.jobs
 }
