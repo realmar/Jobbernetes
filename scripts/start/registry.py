@@ -1,11 +1,7 @@
 #!/usr/bin/env python3
 
-from lib import run_shell_print, get_registry, run_shell
-
-
-def does_registry_exists(name):
-    result, _ = run_shell("k3d registry list", silent=True)
-    return name in result
+import __init__
+from lib import run_shell_print, get_registry, does_registry_exists
 
 
 def start():

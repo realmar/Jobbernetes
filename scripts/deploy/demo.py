@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
 
-import delete_cluster_and_data
-import start_cluster
-import deploy_all
-import publish_docker_images
+import __init__
+from delete import cluster_and_data as delete_cluster_and_data
+from start import cluster as start_cluster
+from deploy import all as deploy_all
+from docker import publish_docker_images
 
 
 if __name__ == "__main__":

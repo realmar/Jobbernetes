@@ -1,32 +1,25 @@
 #!/usr/bin/env python3
 
+import __init__
 import argparse
 import shutil
 import os
 from lib import is_windows, get_volumes, run_shell
-import delete_cluster
-import delete_registry
+import delete.cluster as cluster
+import delete.registry as registry
+import delete.data as data
 
 
 def run(force=False):
     if force:
         print("Force delete everything is activated")
 
-    delete_cluster.run()
+    cluster.run()
 
     if force:
-        delete_registry.delete()
+        registry.delete()
 
-    for volume in get_volumes():
-        if force or not volume["keep"]:
-            path = volume["host"]
-
-            if os.path.exists(path):
-                if not is_windows():
-                    uid = os.getuid()
-                    run_shell(f"sudo chown {uid}:{uid} {path} -R", silent=True)
-
-                shutil.rmtree(path)
+    data.run(force)
 
 
 if __name__ == "__main__":

@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 
+import __init__
 import argparse
 import signal
 import subprocess

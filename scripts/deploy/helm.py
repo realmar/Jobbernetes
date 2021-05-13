@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 
+import __init__
 import argparse
 from lib import is_windows, run_shell_print
 

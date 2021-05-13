@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 
+import __init__
 from lib import get_container_images, run_shell_print
 
 

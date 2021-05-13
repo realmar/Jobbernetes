@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 
+import __init__
 from itertools import chain
 from pathlib import Path
 from lib import run_shell_print, SPECS_DIR, K3D_VOLUMES_PATH
