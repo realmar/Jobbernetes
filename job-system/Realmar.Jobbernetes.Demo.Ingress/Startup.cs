@@ -8,6 +8,7 @@ using Prometheus;
 using Realmar.Jobbernetes.Framework.Messaging;
 using Realmar.Jobbernetes.Infrastructure.Metrics;
 
+#pragma warning disable CA1822 // Mark members as static
 namespace Realmar.Jobbernetes.Demo.Ingress
 {
     internal class Startup
@@ -34,7 +35,7 @@ namespace Realmar.Jobbernetes.Demo.Ingress
         public void ConfigureContainer(ContainerBuilder builder)
         {
             builder.RegisterModule<MessagingModule>();
-            builder.RegisterMetricsNameDecorator(factory => new SuffixMetricsNameFactory("ingress", factory));
+            builder.RegisterMetricsNameDecorator(factory => new PrefixMetricsNameFactory("ingress", factory));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -50,7 +51,8 @@ namespace Realmar.Jobbernetes.Demo.Ingress
 
             // app.UseHttpsRedirection();
             app.UseRouting();
-            app.UseAuthorization();
+            app.UseHttpMetrics();
+            // app.UseAuthorization();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
@@ -59,3 +61,4 @@ namespace Realmar.Jobbernetes.Demo.Ingress
         }
     }
 }
+#pragma warning restore CA1822 // Mark members as static

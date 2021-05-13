@@ -10,7 +10,7 @@ namespace Realmar.Jobbernetes.Infrastructure.Metrics
                    .AsImplementedInterfaces()
                    .SingleInstance();
 
-            builder.RegisterType<SuffixMetricsNameFactory>();
+            builder.RegisterType<PrefixMetricsNameFactory>();
         }
     }
 }

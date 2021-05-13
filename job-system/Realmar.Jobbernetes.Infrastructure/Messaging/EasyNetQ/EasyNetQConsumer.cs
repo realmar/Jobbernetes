@@ -7,10 +7,10 @@ using Realmar.Jobbernetes.Framework.Options;
 
 namespace Realmar.Jobbernetes.Framework.Messaging.EasyNetQ
 {
-    public class EasyNetQConsumer<TData> : EasyNetQBase, IQueueConsumer<TData>
+    internal class EasyNetQConsumer<TData> : EasyNetQBase, IQueueConsumer<TData>
     {
-        private readonly IBus        _bus;
-        private          IDisposable _subscription;
+        private readonly IBus         _bus;
+        private          IDisposable? _subscription;
 
         public EasyNetQConsumer(IBus                              bus,
                                 IOptions<RabbitMQConsumerOptions> rabbitMqOptions) : base(rabbitMqOptions, bus)
@@ -29,7 +29,7 @@ namespace Realmar.Jobbernetes.Framework.Messaging.EasyNetQ
 
         public Task StopAsync(CancellationToken _)
         {
-            _subscription.Dispose();
+            _subscription?.Dispose();
             return Task.CompletedTask;
         }
     }

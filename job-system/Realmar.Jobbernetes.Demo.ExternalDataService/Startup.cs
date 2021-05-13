@@ -10,6 +10,7 @@ using Realmar.Jobbernetes.Framework.Messaging;
 using Realmar.Jobbernetes.Infrastructure.Metrics;
 using SixLabors.Fonts;
 
+#pragma warning disable CA1822 // Mark members as static
 namespace Realmar.Jobbernetes.Demo.ExternalImageService
 {
     internal class Startup
@@ -40,7 +41,7 @@ namespace Realmar.Jobbernetes.Demo.ExternalImageService
         {
             builder.RegisterModule<MessagingModule>();
 
-            builder.Register(context =>
+            builder.Register(_ =>
             {
                 const int fontSize = 28;
                 FontCollection fonts = new();
@@ -49,7 +50,7 @@ namespace Realmar.Jobbernetes.Demo.ExternalImageService
                 return font.CreateFont(fontSize);
             }).As<Font>();
 
-            builder.RegisterMetricsNameDecorator(factory => new SuffixMetricsNameFactory("external_data_service", factory));
+            builder.RegisterMetricsNameDecorator(factory => new PrefixMetricsNameFactory("external_data_service", factory));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -65,7 +66,8 @@ namespace Realmar.Jobbernetes.Demo.ExternalImageService
                                                     "Realmar.Jobbernetes.Demo.ExternalImageService v1"));
 
             app.UseRouting();
-            app.UseAuthorization();
+            app.UseHttpMetrics();
+            // app.UseAuthorization();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
@@ -74,3 +76,4 @@ namespace Realmar.Jobbernetes.Demo.ExternalImageService
         }
     }
 }
+#pragma warning restore CA1822 // Mark members as static

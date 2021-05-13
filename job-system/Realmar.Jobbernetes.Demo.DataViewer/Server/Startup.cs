@@ -6,9 +6,11 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using MongoDB.Bson.Serialization.Conventions;
+using Prometheus;
 using Realmar.Jobbernetes.Demo.Infrastructure.MongoDB;
 using Realmar.Jobbernetes.Demo.Models;
 
+#pragma warning disable CA1822 // Mark members as static
 namespace Realmar.Jobbernetes.Demo.DataViewer.Server
 {
     internal class Startup
@@ -37,9 +39,8 @@ namespace Realmar.Jobbernetes.Demo.DataViewer.Server
         {
             builder.RegisterModule<MongoDBModule<Image>>();
 
-            var pack = new ConventionPack();
-            pack.Add(new IgnoreExtraElementsConvention(true));
-            ConventionRegistry.Register("My Solution Conventions", pack, t => true);
+            var pack = new ConventionPack { new IgnoreExtraElementsConvention(true) };
+            ConventionRegistry.Register("My Solution Conventions", pack, _ => true);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -61,6 +62,7 @@ namespace Realmar.Jobbernetes.Demo.DataViewer.Server
             app.UseBlazorFrameworkFiles();
             app.UseStaticFiles();
             app.UseRouting();
+            app.UseHttpMetrics();
 
             app.UseEndpoints(endpoints =>
             {
@@ -71,3 +73,4 @@ namespace Realmar.Jobbernetes.Demo.DataViewer.Server
         }
     }
 }
+#pragma warning restore CA1822 // Mark members as static

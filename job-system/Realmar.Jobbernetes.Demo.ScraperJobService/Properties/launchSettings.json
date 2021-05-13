@@ -30,9 +30,9 @@
                 "RabbitMQProducerOptions__RoutingKey": "jn-images-egress",
 
                 // Prometheus
-                "MetricsOptions__InstanceName": "localhost_scraper",
+                "MetricsOptions__InstanceName": "image_scraper_job",
                 "MetricPusherOptions__Endpoint": "http://localhost:9091/metrics",
-                "MetricPusherOptions__Job": "ScraperJobService",
+                "MetricPusherOptions__Job": "jobbernetes_jobs",
 
                 // Logging
                 "Logging__LogLevel__Default": "Trace"

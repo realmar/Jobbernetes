@@ -9,7 +9,7 @@ using Realmar.Jobbernetes.Framework.Options;
 
 namespace Realmar.Jobbernetes.Framework.Messaging.EasyNetQ
 {
-    public class EasyNetQBatchConsumer<TData> : EasyNetQBase, IQueueBatchConsumer<TData>, IDisposable
+    internal class EasyNetQBatchConsumer<TData> : EasyNetQBase, IQueueBatchConsumer<TData>, IDisposable
     {
         private readonly IBus                                  _bus;
         private readonly IOptions<JobOptions>                  _jobOptions;
@@ -18,7 +18,7 @@ namespace Realmar.Jobbernetes.Framework.Messaging.EasyNetQ
         private          ActionBlock<PullResult<TData>>?       _actionBlock;
         private          Task?                                 _dispatchTask;
         private          CancellationTokenSource?              _manualStopToken;
-        private          Func<TData, CancellationToken, Task>  _processor;
+        private          Func<TData, CancellationToken, Task>? _processor;
         private          IPullingConsumer<PullResult<TData>>?  _pullingConsumer;
         private          Action<Exception>?                    _readErrorHandler;
 
@@ -62,14 +62,19 @@ namespace Realmar.Jobbernetes.Framework.Messaging.EasyNetQ
                     MaxMessagesPerTask     = _jobOptions.Value.MaxMessagesPerTask
                 });
 
+#pragma warning disable CA2016 // Forward the 'CancellationToken' parameter to methods that take one
             _dispatchTask = Task.Run(DispatchMessages);
+#pragma warning restore CA2016 // Forward the 'CancellationToken' parameter to methods that take one
         }
 
         public async Task WaitForBatchAsync(CancellationToken cancellationToken)
         {
             try
             {
-                await _dispatchTask.ConfigureAwait(false);
+                if (_dispatchTask != null)
+                {
+                    await _dispatchTask.ConfigureAwait(false);
+                }
             }
             catch (OperationCanceledException)
             {
@@ -82,7 +87,10 @@ namespace Realmar.Jobbernetes.Framework.Messaging.EasyNetQ
 
             try
             {
-                await _actionBlock.Completion.ConfigureAwait(false);
+                if (_actionBlock != null)
+                {
+                    await _actionBlock.Completion.ConfigureAwait(false);
+                }
             }
             catch (OperationCanceledException)
             {
@@ -109,7 +117,7 @@ namespace Realmar.Jobbernetes.Framework.Messaging.EasyNetQ
                 if (_stopToken.IsCancellationRequested)
                 {
                     _logger.LogInformation("Cancellation requested, stop processing new messages");
-                    _actionBlock.Complete();
+                    _actionBlock!.Complete();
 
                     return;
                 }
@@ -117,28 +125,46 @@ namespace Realmar.Jobbernetes.Framework.Messaging.EasyNetQ
                 if (Interlocked.Increment(ref counter) > _jobOptions.Value.BatchSize)
                 {
                     _logger.LogInformation("Batch size reached, stop processing new messages");
-                    _actionBlock.Complete();
+                    _actionBlock!.Complete();
 
                     return;
                 }
 
+                PullResult<TData>? result = null;
                 try
                 {
-                    var result = await _pullingConsumer.PullAsync(_manualStopToken.Token).ConfigureAwait(false);
+                    result = await _pullingConsumer!.PullAsync(_manualStopToken!.Token).ConfigureAwait(false);
 
-                    if (result.IsAvailable == false)
+                    if (result.Value.IsAvailable == false)
                     {
                         _logger.LogInformation("No more message available");
-                        _actionBlock.Complete();
+                        _actionBlock!.Complete();
 
                         return;
                     }
 
-                    _actionBlock.Post(result);
+                    _actionBlock!.Post(result.Value);
                 }
                 catch (Exception readException) when (readException is not OperationCanceledException)
                 {
-                    HandleReadException(readException);
+                    try
+                    {
+                        HandleReadException(readException);
+                    }
+                    catch (Exception e)
+                    {
+                        _logger.LogError(e, "Exception while handling read exception");
+                    }
+
+                    if (result != null)
+                    {
+                        // TODO write to an error queue
+                        _logger.LogError("Failed to read message, ACKing it regardless (assuming we"     +
+                                         "can't read it next time either). Better solution would be to " +
+                                         "write that message to an error queue.");
+
+                        await _pullingConsumer!.AckAsync(result.Value.ReceivedInfo.DeliveryTag).ConfigureAwait(false);
+                    }
                 }
             }
         }
@@ -149,11 +175,11 @@ namespace Realmar.Jobbernetes.Framework.Messaging.EasyNetQ
             {
                 var data = result.Message.Body;
 
-                await _processor.Invoke(data, _manualStopToken.Token).ConfigureAwait(false);
+                await _processor!.Invoke(data, _manualStopToken!.Token).ConfigureAwait(false);
 
                 try
                 {
-                    await _pullingConsumer.AckAsync(result.ReceivedInfo.DeliveryTag).ConfigureAwait(false);
+                    await _pullingConsumer!.AckAsync(result.ReceivedInfo.DeliveryTag).ConfigureAwait(false);
                     _logger.LogInformation($"Successfully processed job {result.ReceivedInfo}");
                 }
                 catch (Exception ackException)
@@ -170,8 +196,8 @@ namespace Realmar.Jobbernetes.Framework.Messaging.EasyNetQ
 
                 try
                 {
-                    await _pullingConsumer.RejectAsync(result.ReceivedInfo.DeliveryTag, requeue: true)
-                                          .ConfigureAwait(false);
+                    await _pullingConsumer!.RejectAsync(result.ReceivedInfo.DeliveryTag, requeue: true)
+                                           .ConfigureAwait(false);
                 }
                 catch (Exception rejectException)
                 {

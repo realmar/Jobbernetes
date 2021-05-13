@@ -11,7 +11,6 @@ namespace Realmar.Jobbernetes.Framework.Messaging.EasyNetQ
         private readonly IBus                              _bus;
         private readonly IOptions<RabbitMQProducerOptions> _options;
 
-
         public EasyNetQProducer(IOptions<RabbitMQProducerOptions> options, IBus bus) : base(options, bus)
         {
             _bus     = bus;

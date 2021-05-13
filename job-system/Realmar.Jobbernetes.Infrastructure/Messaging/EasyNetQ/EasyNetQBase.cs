@@ -7,11 +7,13 @@ using Realmar.Jobbernetes.Framework.Options;
 
 namespace Realmar.Jobbernetes.Framework.Messaging.EasyNetQ
 {
-    public abstract class EasyNetQBase
+    internal abstract class EasyNetQBase
     {
         private readonly IBus                            _bus;
         private readonly IOptions<RabbitMQPubSubOptions> _options;
-        private          IBinding?                       _binding;
+#pragma warning disable IDE0052 // Remove unread private members
+        private IBinding? _binding;
+#pragma warning restore IDE0052 // Remove unread private members
 
         protected EasyNetQBase(IOptions<RabbitMQPubSubOptions> options, IBus bus)
         {

@@ -27,25 +27,24 @@ namespace Realmar.Jobbernetes.Hosting
             return host.RunConsoleAsync();
         }
 
-        public static Task RunJobAsync<TData>(string[]                                        args,
-                                              Action<HostBuilderContext, IServiceCollection>? configureServices  = null,
-                                              Action<ContainerBuilder>?                       configureContainer = null) =>
-            RunConsoleAsync(args,
-                            (context, services) =>
-                            {
-                                services.AddHostedService<JobService>();
-                                configureServices?.Invoke(context, services);
-                            },
-                            builder =>
-                            {
-                                builder.RegisterModule<FacadeModule<TData>>();
-                                builder.RegisterModule<JobsModule>();
-                                builder.RegisterModule<MessagingModule>();
+        public static Task RunJobAsync<TData>(string[] args,
+                                              Action<HostBuilderContext, IServiceCollection>? configureServices = null,
+                                              Action<ContainerBuilder>? configureContainer = null) => RunConsoleAsync(args,
+            (context, services) =>
+            {
+                services.AddHostedService<JobService>();
+                configureServices?.Invoke(context, services);
+            },
+            builder =>
+            {
+                builder.RegisterModule<FacadeModule<TData>>();
+                builder.RegisterModule<JobsModule>();
+                builder.RegisterModule<MessagingModule>();
 
-                                builder.RegisterMetricsNameDecorator(factory => new SuffixMetricsNameFactory("job", factory));
-                                builder.RegisterMetricsPusher();
+                builder.RegisterMetricsNameDecorator(factory => new PrefixMetricsNameFactory("job", factory));
+                builder.RegisterMetricsPusher();
 
-                                configureContainer?.Invoke(builder);
-                            });
+                configureContainer?.Invoke(builder);
+            });
     }
 }

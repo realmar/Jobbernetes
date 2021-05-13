@@ -6,7 +6,7 @@ using Realmar.Jobbernetes.Framework.Options;
 
 namespace Realmar.Jobbernetes.Infrastructure.Metrics
 {
-    public class AutofacMetricsActivator : IStartable, IDisposable
+    internal class AutofacMetricsActivator : IStartable, IDisposable
     {
         private readonly IOptions<MetricsOptions> _options;
         private readonly IMetricServer            _server;

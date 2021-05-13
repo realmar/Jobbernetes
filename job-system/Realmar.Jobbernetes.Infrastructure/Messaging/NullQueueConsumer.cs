@@ -5,7 +5,7 @@ using Realmar.Jobbernetes.Framework.Jobs;
 
 namespace Realmar.Jobbernetes.Framework.Messaging
 {
-    public class NullQueueConsumer : IQueueConsumer<NullInput>
+    internal class NullQueueConsumer : IQueueConsumer<NullInput>
     {
         public Task StartAsync(Func<NullInput, CancellationToken, Task> processor, CancellationToken cancellationToken) =>
             Task.Run(async () =>

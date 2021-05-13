@@ -7,7 +7,7 @@ using Realmar.Jobbernetes.Framework.Options;
 
 namespace Realmar.Jobbernetes.Framework.Messaging.EasyNetQ
 {
-    public class EasyNetQModule : Module
+    internal class EasyNetQModule : Module
     {
         protected override void Load(ContainerBuilder builder)
         {
