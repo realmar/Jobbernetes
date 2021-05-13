@@ -10,16 +10,16 @@ import delete.registry as registry
 import delete.data as data
 
 
-def run(force=False):
+def delete(force=False):
     if force:
         print("Force delete everything is activated")
 
-    cluster.run()
+    cluster.delete()
 
     if force:
         registry.delete()
 
-    data.run(force)
+    data.delete(force)
 
 
 if __name__ == "__main__":
@@ -30,4 +30,4 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
 
-    run(args.force)
+    delete(args.force)

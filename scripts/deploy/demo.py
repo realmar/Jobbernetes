@@ -14,7 +14,7 @@ if __name__ == "__main__":
     print('################################################################')
     print()
 
-    delete_cluster_and_data.run(force=True)
+    delete_cluster_and_data.delete(force=True)
 
     print()
     print('################################################################')
@@ -22,7 +22,7 @@ if __name__ == "__main__":
     print('################################################################')
     print()
 
-    start_cluster.run()
+    start_cluster.start()
 
     print()
     print('################################################################')

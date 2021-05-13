@@ -42,7 +42,7 @@ def does_cluster_exist():
     return K3D_CLUSTER_NAME in result
 
 
-def run():
+def start():
     # TODO: also check linux commands
     commands = required_commands
     if not is_windows():
@@ -82,4 +82,4 @@ def run():
 
 
 if __name__ == "__main__":
-    run()
+    start()

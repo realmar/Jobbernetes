@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
 
 import __init__
-from lib.jobbernetes import task
+from lib import infrastructure
 
 
 def delete():
-    task("delete")
+    infrastructure.task('delete')
 
 
 if __name__ == "__main__":

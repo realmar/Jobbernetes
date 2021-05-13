@@ -1,13 +1,13 @@
 #!/usr/bin/env python3
 
 import __init__
-import deploy.kubernetes as kubernetes
+import deploy.infrastructure as infrastructure
 import deploy.helm as helm
 import deploy.jobbernetes as jobbernetes
 
 
 def deploy():
-    kubernetes.deploy()
+    infrastructure.deploy()
     helm.deploy()
     jobbernetes.deploy()
 

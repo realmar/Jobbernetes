@@ -17,7 +17,7 @@ SERVICES = [
 ]
 
 
-def run(event, silent, name, ports):
+def main(event, silent, name, ports):
     while event.is_set() == False:
         command = f"kubectl port-forward --namespace default {name} {ports}"
         print(command)
@@ -57,7 +57,7 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     for service in SERVICES:
-        thread = Thread(target=run, args=(event, args.silent, *service), daemon=True)
+        thread = Thread(target=main, args=(event, args.silent, *service), daemon=True)
         thread.start()
         threads.append(thread)
 
