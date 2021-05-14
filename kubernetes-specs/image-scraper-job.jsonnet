@@ -63,7 +63,9 @@ local ImageJob(name, prometheus_instance) = kube.CronJob(name) {
                   Logging__LogLevel__Default: 'Information',
 
                   // Demo
-                  DemoOptions__ProcessingDelaySeconds: '0.2',
+                  DemoOptions__ProcessingDelayMilliseconds__Min: '100',
+                  DemoOptions__ProcessingDelayMilliseconds__Max: '300',
+                  DemoOptions__FailureProbability: '0.2',
                 },
               },
             },
