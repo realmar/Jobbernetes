@@ -65,15 +65,17 @@ server:
   ##
   resources:
     limits:
-      cpu: 500m
+      cpu: 3
       memory: 512Mi
     requests:
-      cpu: 500m
+      cpu: 0.5
       memory: 256Mi
 
 
 pushgateway:
-  enabled: true
+  # we use prom-aggregation-gateway instead
+  # see: https://github.com/weaveworks/prom-aggregation-gateway
+  enabled: false
 
   ## Security context to be added to push-gateway pods
   ##
@@ -86,11 +88,11 @@ pushgateway:
   ##
   resources:
     limits:
-      cpu: 100m
-      memory: 32Mi
+      cpu: 2
+      memory: 256Mi
     requests:
-      cpu: 100m
-      memory: 32Mi
+      cpu: 0.2
+      memory: 128Mi
 
   persistentVolume:
     enabled: false

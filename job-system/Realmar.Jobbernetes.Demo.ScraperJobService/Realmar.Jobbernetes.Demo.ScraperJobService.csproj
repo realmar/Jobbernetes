@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk.Web">
 
     <PropertyGroup>
         <OutputType>Exe</OutputType>
@@ -7,6 +7,7 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <ProjectReference Include="..\Realmar.Jobbernetes.Demo.Infrastructure\Realmar.Jobbernetes.Demo.Infrastructure.csproj" />
         <ProjectReference Include="..\Realmar.Jobbernetes.Demo.Models\Realmar.Jobbernetes.Demo.Models.csproj" />
         <ProjectReference Include="..\Realmar.Jobbernetes.Hosting\Realmar.Jobbernetes.Hosting.csproj" />
         <ProjectReference Include="..\Realmar.Jobbernetes.Infrastructure\Realmar.Jobbernetes.Infrastructure.csproj" />

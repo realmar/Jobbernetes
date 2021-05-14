@@ -3,6 +3,7 @@ import subprocess
 import pathlib
 import json
 import os
+import sys
 
 # region Constants
 
@@ -40,18 +41,26 @@ def __is_windows():
     return os.name == 'nt'
 
 
-def __run_shell(command: str, silent=False):
+def __run_shell(command: str, silent=False, pipe=False):
     if not silent:
         print(command)
 
-    result = subprocess.run(command.split(" "),
-                            stdout=subprocess.PIPE,
-                            stderr=subprocess.PIPE)
+    args = {}
+    if not pipe:
+        args = {
+            'stdout': subprocess.PIPE,
+            'stderr': subprocess.PIPE
+        }
+
+    result = subprocess.run(command.split(" "), **args)
 
     error = ""
 
     if result.stderr:
-        error = result.stderr.decode("utf-8")
+        if pipe:
+            error = str(result.returncode)
+        else:
+            error = result.stderr.decode("utf-8")
 
     if result.returncode != 0:
 
@@ -61,7 +70,7 @@ def __run_shell(command: str, silent=False):
 
         raise Exception(error)
 
-    return (result.stdout.decode("utf-8"), error)
+    return (result.stdout.decode("utf-8") if not pipe else "", error)
 
 
 def __read_jsonnet(path):
@@ -108,15 +117,7 @@ def run_shell(command: str, silent=False):
 
 
 def run_shell_print(command: str):
-    stdout, stderr = run_shell(command)
-
-    if stdout:
-        print(stdout)
-
-    if stderr:
-        print(stderr)
-
-    return (stdout, stderr)
+    __run_shell(command, pipe=True)
 
 
 def get_volumes():
@@ -124,7 +125,8 @@ def get_volumes():
 
 
 def get_container_images():
-    return __read_jsonnet(os.path.join(SPECS_DIR, 'lib', 'container_images.libsonnet'))
+    components = __read_jsonnet(os.path.join(SPECS_DIR, 'lib', 'components.libsonnet'))
+    return [v['image'] for k, v in components.items()]
 
 
 def get_registry():

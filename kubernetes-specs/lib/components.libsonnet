@@ -1,15 +1,49 @@
-local jn = import 'jobbernetes.libsonnet';
+local Registry = import '../lib/registry.libsonnet';
 
-{
+local image_name(name) = 'jn-' + name;
+
+local image_fqn(name) = Registry.registryUrl + '/' + image_name(name);
+
+local Image(name) = Registry {
+  relativeName: name,
+  imageName: image_name(name),
+  fqn: image_fqn(name),
+};
+
+local JobImage(name) = Image(name) {
+  fqn: image_fqn('job-' + name),
+};
+
+local Component(_name, _ingress=null) = {
+  name: _name,
+  serviceName: image_name(_name),
+  ingress: if std.isString(_ingress) then _ingress,
+};
+
+local collection = {
   services:
     [
-      jn.Component('dataviewer'),
-      jn.Component('ingress'),
-      jn.Component('egress'),
-      jn.Component('external-service'),
+      Component('dataviewer', 'dataviewer.jn.localhost'),
+      Component('ingress', 'ingress.jn.localhost'),
+      Component('egress'),
+      Component('external-service', 'external-service.jn.localhost'),
     ],
 
   jobs: [
-    jn.Component('image-scraper-job'),
+    Component('image-scraper-job'),
   ],
+};
+
+{
+  [std.strReplace(x.name, '-', '_')]: x {
+    image: Image(x.name),
+  }
+  for x in collection.services
+}
++
+{
+  [std.strReplace(x.name, '-', '_')]: x {
+    image: JobImage(x.name),
+  }
+  for x in collection.jobs
 }

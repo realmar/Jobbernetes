@@ -7,7 +7,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using Prometheus;
+using Prometheus.Client.DependencyInjection;
 using Realmar.Jobbernetes.Framework.Facade;
 using Realmar.Jobbernetes.Infrastructure.Metrics;
 
@@ -15,18 +15,17 @@ namespace Realmar.Jobbernetes.Hosting
 {
     public static class JobberHostExtensions
     {
-        public static IHostBuilder ConfigureJobberConsoleApp(this IHostBuilder builder) =>
-            builder.ConfigureCommon();
+        public static IHostBuilder ConfigureJobberConsoleApp(this IHostBuilder builder) => builder.ConfigureCommon();
 
-        public static IHostBuilder ConfigureJobberAspNet(this IHostBuilder builder) =>
-            builder.ConfigureCommon();
+        public static IHostBuilder ConfigureJobberAspNet(this IHostBuilder builder) => builder.ConfigureCommon();
 
         private static IHostBuilder ConfigureCommon(this IHostBuilder builder) =>
             builder.UseServiceProviderFactory(new AutofacServiceProviderFactory())
                    .ConfigureContainer<ContainerBuilder>(ConfigureContainer)
                    .ConfigureLogging(ConfigureLogging)
                    .ConfigureAppConfiguration(ConfigureAppConfiguration)
-                   .ConfigureServices(ConfigureServices);
+                   .ConfigureServices(ConfigureOptions)
+                   .ConfigureServices(ConfigureMetrics);
 
         private static void ConfigureContainer(ContainerBuilder builder)
         {
@@ -43,14 +42,15 @@ namespace Realmar.Jobbernetes.Hosting
             config.AddEnvironmentVariables();
         }
 
-        private static void ConfigureServices(HostBuilderContext context, IServiceCollection services)
+        private static void ConfigureOptions(HostBuilderContext context, IServiceCollection services)
         {
-            void Configure<TOptions>() where TOptions : class =>
-                services.Configure<TOptions>(context.Configuration.GetSection(typeof(TOptions).Name));
+            // void Configure<TOptions>() where TOptions : class =>
+            //     services.Configure<TOptions>(context.Configuration.GetSection(typeof(TOptions).Name));
 
             var options = typeof(IJobbernetes).Assembly.GetTypes()
-                                              .Where(type => type.Namespace  == "Realmar.Jobbernetes.Framework.Options")
-                                              .Where(type => type.IsAbstract == false)
+                                              .Where(type =>
+                                                         type!.Namespace!.StartsWith("Realmar.Jobbernetes.Framework.Options") &&
+                                                         type!.IsAbstract == false)
                                               .ToArray();
 
             var           extensionsType = typeof(OptionsConfigurationServiceCollectionExtensions);
@@ -72,8 +72,11 @@ namespace Realmar.Jobbernetes.Hosting
                 registerMethod.MakeGenericMethod(option)
                               .Invoke(null, new object?[] { services, context.Configuration.GetSection(option.Name) });
             }
+        }
 
-            Configure<MetricPusherOptions>();
+        private static void ConfigureMetrics(HostBuilderContext context, IServiceCollection services)
+        {
+            services.AddMetricFactory();
         }
     }
 }

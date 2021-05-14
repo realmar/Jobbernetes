@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using NetVips;
-using Prometheus;
+using Prometheus.Client;
 using Realmar.Jobbernetes.Infrastructure.Metrics;
 
 namespace Realmar.Jobbernetes.Demo.ExternalImageService.Controllers
@@ -9,11 +9,12 @@ namespace Realmar.Jobbernetes.Demo.ExternalImageService.Controllers
     [ApiController]
     public class ImagesController : ControllerBase
     {
-        private readonly Counter _counter;
+        private readonly ICounter _counter;
 
-        public ImagesController(IMetricsNameFactory nameFactory)
+        public ImagesController(IMetricsNameFactory nameFactory, IMetricFactory metricFactory)
         {
-            _counter = Metrics.CreateCounter(nameFactory.Create("bytes_total"), "Number of bytes of all generated images");
+            _counter = metricFactory.CreateCounter(nameFactory.Create("bytes_total"),
+                                                   "Number of bytes of all generated images");
         }
 
         [HttpGet("{name}")]

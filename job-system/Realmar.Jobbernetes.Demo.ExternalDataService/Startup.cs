@@ -1,26 +1,22 @@
-using System.IO;
 using Autofac;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Prometheus;
+using Prometheus.Client.AspNetCore;
+using Prometheus.Client.HttpRequestDurations;
 using Realmar.Jobbernetes.Framework.Messaging;
 using Realmar.Jobbernetes.Infrastructure.Metrics;
-using SixLabors.Fonts;
 
 #pragma warning disable CA1822 // Mark members as static
 namespace Realmar.Jobbernetes.Demo.ExternalImageService
 {
     internal class Startup
     {
-        private readonly IHostEnvironment _hostingEnvironment;
-
-        public Startup(IConfiguration configuration, IHostEnvironment hostingEnvironment)
+        public Startup(IConfiguration configuration)
         {
-            Configuration       = configuration;
-            _hostingEnvironment = hostingEnvironment;
+            Configuration = configuration;
         }
 
         public IConfiguration Configuration { get; }
@@ -33,23 +29,17 @@ namespace Realmar.Jobbernetes.Demo.ExternalImageService
             {
                 c.SwaggerDoc(
                     "v1",
-                    new() { Title = "Realmar.Jobbernetes.Demo.ExternalImageService", Version = "v1" });
+                    new()
+                    {
+                        Title   = "Realmar.Jobbernetes.Demo.ExternalImageService",
+                        Version = "v1"
+                    });
             });
         }
 
         public void ConfigureContainer(ContainerBuilder builder)
         {
             builder.RegisterModule<MessagingModule>();
-
-            builder.Register(_ =>
-            {
-                const int fontSize = 28;
-                FontCollection fonts = new();
-                var font = fonts.Install(Path.Combine(_hostingEnvironment.ContentRootPath, "Fonts/JetBrainsMono-Regular.ttf"));
-
-                return font.CreateFont(fontSize);
-            }).As<Font>();
-
             builder.RegisterMetricsNameDecorator(factory => new PrefixMetricsNameFactory("external_data_service", factory));
         }
 
@@ -66,13 +56,11 @@ namespace Realmar.Jobbernetes.Demo.ExternalImageService
                                                     "Realmar.Jobbernetes.Demo.ExternalImageService v1"));
 
             app.UseRouting();
-            app.UseHttpMetrics();
-            // app.UseAuthorization();
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapControllers();
-                endpoints.MapMetrics();
-            });
+
+            app.UsePrometheusServer();
+            app.UsePrometheusRequestDurations();
+
+            app.UseEndpoints(endpoints => endpoints.MapControllers());
         }
     }
 }

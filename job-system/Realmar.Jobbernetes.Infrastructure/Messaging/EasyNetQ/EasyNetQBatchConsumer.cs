@@ -5,7 +5,8 @@ using System.Threading.Tasks.Dataflow;
 using EasyNetQ;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Realmar.Jobbernetes.Framework.Options;
+using Realmar.Jobbernetes.Framework.Options.Jobs;
+using Realmar.Jobbernetes.Framework.Options.RabbitMQ;
 
 namespace Realmar.Jobbernetes.Framework.Messaging.EasyNetQ
 {

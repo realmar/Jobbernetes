@@ -1,5 +1,5 @@
 using Microsoft.Extensions.Options;
-using Realmar.Jobbernetes.Framework.Options;
+using Realmar.Jobbernetes.Framework.Options.Metrics;
 
 namespace Realmar.Jobbernetes.Infrastructure.Metrics
 {

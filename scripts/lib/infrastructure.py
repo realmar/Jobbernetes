@@ -8,6 +8,7 @@ def task(action):
     commands = [
         "kubernetes-specs/storage.jsonnet",
         "kubernetes-specs/pod-reader-rbac.jsonnet",
+        "kubernetes-specs/prom-aggregation-gateway.jsonnet",
     ]
 
     kubecfg.run(action, commands)

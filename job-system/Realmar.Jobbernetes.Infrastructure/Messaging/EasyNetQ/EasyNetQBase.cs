@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using EasyNetQ;
 using EasyNetQ.Topology;
 using Microsoft.Extensions.Options;
-using Realmar.Jobbernetes.Framework.Options;
+using Realmar.Jobbernetes.Framework.Options.RabbitMQ;
 
 namespace Realmar.Jobbernetes.Framework.Messaging.EasyNetQ
 {

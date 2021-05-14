@@ -17,7 +17,7 @@ resources:
     cpu: 0.1
   limits:
     memory: 512Mi
-    cpu: 2
+    cpu: 3
 
 # Allow executing custom init scripts
 #

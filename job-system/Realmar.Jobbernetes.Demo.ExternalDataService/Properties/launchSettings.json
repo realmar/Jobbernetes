@@ -17,7 +17,7 @@
                 "ASPNETCORE_ENVIRONMENT": "Development"
             }
         },*/
-        "Realmar.Jobbernetes.Demo.ExternalImageService": {
+        /*"Realmar.Jobbernetes.Demo.ExternalImageService": {
             "commandName": "Project",
             "launchBrowser": true,
             "launchUrl": "swagger",
@@ -26,7 +26,7 @@
             },
             "dotnetRunMessages": "true",
             "applicationUrl": "http://localhost:5001"
-        },
+        },*/
         "WSL 2": {
             "commandName": "WSL2",
             "launchBrowser": true,

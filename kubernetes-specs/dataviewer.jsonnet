@@ -1,9 +1,10 @@
-local jnci = import 'lib/container_images.libsonnet';
+local components = import 'lib/components.libsonnet';
+local constants = import 'lib/constants.libsonnet';
 local jn = import 'lib/jobbernetes.libsonnet';
 local kube = import 'vendor/kube.libsonnet';
 
 {
-  name:: 'jn-dataviewer',
+  name:: components.dataviewer.serviceName,
 
   deployment: kube.Deployment(self.name) {
     metadata+: {
@@ -18,17 +19,21 @@ local kube = import 'vendor/kube.libsonnet';
           initContainers_+: jn.WaitForMongoDB(),
           containers_+: {
             server: kube.Container($.name) {
-              image: jnci.dataviewer.fqn,
+              image: components.dataviewer.image.fqn,
               imagePullPolicy: 'Always',
               ports: [{ name: 'http', containerPort: 3000 }],
-              resources: jn.ResourcesMemory('128Mi', '256Mi'),
+              resources: jn.ResourcesDefaults() {
+                limits+: {
+                  cpu: '500m',
+                },
+              },
               env_+: {
                 // ASPNET
                 ASPNETCORE_URLS: 'http://0.0.0.0:3000',
                 ASPNETCORE_ENVIRONMENT: 'Production',
 
                 // MongoDB
-                MongoOptions__ConnectionString: 'mongodb://mongodb:27017',
+                MongoOptions__ConnectionString: 'mongodb://' + constants.mongoDBDns + ':27017',
                 MongoOptions__Database: 'jobbernetes',
                 MongoOptions__Collection: 'images',
               },
@@ -48,7 +53,7 @@ local kube = import 'vendor/kube.libsonnet';
     spec+: {
       rules+: [
         {
-          host: 'dataviewer.jn.localhost',
+          host: components.dataviewer.ingress,
           http: {
             paths:
               [

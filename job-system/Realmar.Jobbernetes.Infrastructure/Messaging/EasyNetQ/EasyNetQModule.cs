@@ -3,7 +3,7 @@ using Autofac;
 using EasyNetQ;
 using EasyNetQ.Consumer;
 using Microsoft.Extensions.Options;
-using Realmar.Jobbernetes.Framework.Options;
+using Realmar.Jobbernetes.Framework.Options.RabbitMQ;
 
 namespace Realmar.Jobbernetes.Framework.Messaging.EasyNetQ
 {
@@ -23,6 +23,7 @@ namespace Realmar.Jobbernetes.Framework.Messaging.EasyNetQ
                                              PersistentMessages = true,
                                              UserName           = options.Username,
                                              Password           = options.Password,
+                                             PrefetchCount      = 1,
                                              Hosts = new List<HostConfiguration>
                                              {
                                                  new()

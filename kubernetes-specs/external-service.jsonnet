@@ -1,23 +1,23 @@
-local jnci = import 'lib/container_images.libsonnet';
+local components = import 'lib/components.libsonnet';
 local jn = import 'lib/jobbernetes.libsonnet';
 local kube = import 'vendor/kube.libsonnet';
 
 {
-  name:: 'jn-external-service',
+  name:: components.external_service.serviceName,
 
   deployment: kube.Deployment(self.name) {
     metadata+: {
       labels: { app: $.name },
     },
     spec+: {
-      replicas: 3,
+      replicas: 2,
       template+: {
         metadata+: jn.PrometheusAnnotations(),
         spec+: {
           restartPolicy: 'Always',
           containers_+: {
             server: kube.Container($.name) {
-              image: jnci.external_service.fqn,
+              image: components.external_service.image.fqn,
               imagePullPolicy: 'Always',
               ports: [{ name: 'http', containerPort: 3000 }],
               env_+: {
@@ -25,7 +25,7 @@ local kube = import 'vendor/kube.libsonnet';
                 ASPNETCORE_URLS: 'http://0.0.0.0:3000',
                 ASPNETCORE_ENVIRONMENT: 'Production',
               },
-              resources: jn.ResourcesMemory('128Mi', '256Mi'),
+              resources: jn.ResourcesDefaults(),
             },
           },
         },
@@ -42,7 +42,7 @@ local kube = import 'vendor/kube.libsonnet';
     spec+: {
       rules+: [
         {
-          host: 'external-service.jn.localhost',
+          host: components.external_service.ingress,
           http: {
             paths:
               [

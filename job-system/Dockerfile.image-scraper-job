@@ -24,7 +24,7 @@ COPY ./ ./
 RUN dotnet publish 'Realmar.Jobbernetes.Demo.ScraperJobService' -c Release -o /app/out
 
 # Production layer
-FROM mcr.microsoft.com/dotnet/runtime:5.0
+FROM mcr.microsoft.com/dotnet/aspnet:5.0
 WORKDIR /app
 COPY --from=publish /app/out .
 ENTRYPOINT ["dotnet", "Realmar.Jobbernetes.Demo.ScraperJobService.dll"]

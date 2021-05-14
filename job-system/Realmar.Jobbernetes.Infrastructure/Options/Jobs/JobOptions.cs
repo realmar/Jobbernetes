@@ -1,4 +1,4 @@
-namespace Realmar.Jobbernetes.Framework.Options
+namespace Realmar.Jobbernetes.Framework.Options.Jobs
 {
     public class JobOptions
     {

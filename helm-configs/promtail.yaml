@@ -18,8 +18,8 @@ config:
 # -- Resource requests and limits
 resources:
   limits:
-    cpu: 200m
-    memory: 128Mi
+    cpu: 500m
+    memory: 256Mi
   requests:
     cpu: 100m
     memory: 128Mi

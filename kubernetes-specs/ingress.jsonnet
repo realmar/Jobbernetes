@@ -1,9 +1,10 @@
-local jnci = import 'lib/container_images.libsonnet';
+local components = import 'lib/components.libsonnet';
+local constants = import 'lib/constants.libsonnet';
 local jn = import 'lib/jobbernetes.libsonnet';
 local kube = import 'vendor/kube.libsonnet';
 
 {
-  name:: 'jn-ingress',
+  name:: components.ingress.serviceName,
 
   deployment: kube.Deployment(self.name) {
     metadata+: {
@@ -18,17 +19,21 @@ local kube = import 'vendor/kube.libsonnet';
           initContainers_+: jn.WaitForRabbitMQ(),
           containers_+: {
             server: kube.Container($.name) {
-              image: jnci.ingress.fqn,
+              image: components.ingress.image.fqn,
               imagePullPolicy: 'Always',
               ports: [{ name: 'http', containerPort: 3000 }],
-              resources: jn.ResourcesMemory('128Mi', '256Mi'),
+              resources: jn.ResourcesDefaults() {
+                limits+: {
+                  cpu: '500m',
+                },
+              },
               env_+: {
                 // ASPNET
                 ASPNETCORE_URLS: 'http://0.0.0.0:3000',
                 ASPNETCORE_ENVIRONMENT: 'Production',
 
                 // General
-                RabbitMQConnectionOptions__Hostname: 'rabbitmq',
+                RabbitMQConnectionOptions__Hostname: constants.RabbitMQDns,
                 RabbitMQConnectionOptions__Username: 'admin',
                 RabbitMQConnectionOptions__Password: 'admin',
 
@@ -53,7 +58,7 @@ local kube = import 'vendor/kube.libsonnet';
     spec+: {
       rules+: [
         {
-          host: 'ingress.jn.localhost',
+          host: components.ingress.ingress,
           http: {
             paths:
               [

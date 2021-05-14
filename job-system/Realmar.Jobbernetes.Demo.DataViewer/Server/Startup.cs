@@ -6,7 +6,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using MongoDB.Bson.Serialization.Conventions;
-using Prometheus;
+using Prometheus.Client.AspNetCore;
+using Prometheus.Client.HttpRequestDurations;
 using Realmar.Jobbernetes.Demo.Infrastructure.MongoDB;
 using Realmar.Jobbernetes.Demo.Models;
 
@@ -58,11 +59,12 @@ namespace Realmar.Jobbernetes.Demo.DataViewer.Server
                 app.UseHsts();
             }
 
-            // app.UseHttpsRedirection();
             app.UseBlazorFrameworkFiles();
             app.UseStaticFiles();
             app.UseRouting();
-            app.UseHttpMetrics();
+
+            app.UsePrometheusServer();
+            app.UsePrometheusRequestDurations();
 
             app.UseEndpoints(endpoints =>
             {

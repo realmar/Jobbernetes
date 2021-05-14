@@ -10,8 +10,8 @@
                 "ExternalServiceOptions__Url": "http://localhost:5001/images",
 
                 // Processing
-                "JobOptions__BatchSize": "2000",
-                "JobOptions__MaxConcurrentJobs": "100",
+                "JobOptions__BatchSize": "2",
+                "JobOptions__MaxConcurrentJobs": "8",
                 "JobOptions__MaxMessagesPerTask": "20",
 
                 // General
@@ -30,12 +30,15 @@
                 "RabbitMQProducerOptions__RoutingKey": "jn-images-egress",
 
                 // Prometheus
-                "MetricsOptions__InstanceName": "image_scraper_job",
                 "MetricPusherOptions__Endpoint": "http://localhost:9091/metrics",
                 "MetricPusherOptions__Job": "jobbernetes_jobs",
+                "MetricPusherOptions__JobName": "image_scraper_job_name",
 
                 // Logging
-                "Logging__LogLevel__Default": "Trace"
+                "Logging__LogLevel__Default": "Trace",
+
+                // Demo
+                "DemoOptions__ProcessingDelaySeconds": "0.2"
             }
         }
         // "distributionName": ""

@@ -1,9 +1,11 @@
-local jnci = import 'lib/container_images.libsonnet';
+local components = import 'lib/components.libsonnet';
+local constants = import 'lib/constants.libsonnet';
 local jn = import 'lib/jobbernetes.libsonnet';
 local kube = import 'vendor/kube.libsonnet';
 
 {
-  name:: 'jn-egress',
+  name:: components.egress.serviceName,
+  prometheusPort:: 9098,
 
   deployment: kube.Deployment(self.name) {
     metadata+: {
@@ -12,19 +14,22 @@ local kube = import 'vendor/kube.libsonnet';
     spec+: {
       replicas: 2,
       template+: {
-        metadata+: jn.PrometheusAnnotations(),
+        metadata+: jn.PrometheusAnnotations($.prometheusPort),
         spec+: {
           restartPolicy: 'Always',
           initContainers_+: jn.WaitForAll(),
           containers_+: {
             server: kube.Container($.name) {
-              image: jnci.egress.fqn,
+              image: components.egress.image.fqn,
               imagePullPolicy: 'Always',
-              ports: [{ name: 'http', containerPort: 3000 }],
-              resources: jn.ResourcesMemory('128Mi', '256Mi'),
+              resources: jn.ResourcesDefaults() {
+                limits+: {
+                  cpu: '500m',
+                },
+              },
               env_+: {
                 // General
-                RabbitMQConnectionOptions__Hostname: 'rabbitmq',
+                RabbitMQConnectionOptions__Hostname: constants.RabbitMQDns,
                 RabbitMQConnectionOptions__Username: 'admin',
                 RabbitMQConnectionOptions__Password: 'admin',
 
@@ -34,9 +39,14 @@ local kube = import 'vendor/kube.libsonnet';
                 RabbitMQConsumerOptions__RoutingKey: 'jn-images-egress',
 
                 // MongoDB
-                MongoOptions__ConnectionString: 'mongodb://mongodb:27017',
+                MongoOptions__ConnectionString: 'mongodb://' + constants.mongoDBDns + ':27017',
                 MongoOptions__Database: 'jobbernetes',
                 MongoOptions__Collection: 'images',
+
+                // Prometheus
+                MetricServerOptions__Hostname: '0.0.0.0',
+                MetricServerOptions__Port: std.toString($.prometheusPort),
+                MetricServerOptions__Path: '/metrics',
               },
             },
           },

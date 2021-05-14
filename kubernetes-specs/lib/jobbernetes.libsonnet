@@ -34,29 +34,6 @@ local Storage(name) = {
   },
 };
 
-local Registry = import '../lib/registry.libsonnet';
-
-local image_name(name) = 'jn-' + name;
-
-local image_fqn(name) = Registry.registryUrl + '/' + image_name(name);
-
-local image_job_fqn(name) = image_fqn('job-' + name);
-
-local Image(name) = Registry {
-  relativeName: name,
-  imageName: image_name(name),
-  fqn: image_fqn(name),
-};
-
-local JobImage(name) = Image(name) {
-  fqn: image_fqn('job-' + name),
-};
-
-local Component(_name) = {
-  name: _name,
-  serviceName: image_name(_name),
-};
-
 local PrometheusAnnotations(port=3000) = {
   annotations+: {
     'prometheus.io/scrape': 'true',
@@ -89,15 +66,29 @@ local ResourcesMemory(request, limit) = {
   },
 };
 
+local ResourcesCpu(request, limit) = {
+  requests: {
+    cpu: request,
+  },
+  limits: {
+    cpu: limit,
+  },
+};
+
+local ResourcesDefaults() = std.mergePatch(
+  ResourcesMemory('128Mi', '256Mi'),
+  ResourcesCpu('100m', '1000m')
+);
+
 // exports
 {
   Storage:: Storage,
-  Image:: Image,
-  JobImage:: JobImage,
-  Component:: Component,
   PrometheusAnnotations:: PrometheusAnnotations,
+  WaitFor:: WaitFor,
   WaitForRabbitMQ:: WaitForRabbitMQ,
   WaitForMongoDB:: WaitForMongoDB,
   WaitForAll:: WaitForAll,
   ResourcesMemory:: ResourcesMemory,
+  ResourcesCpu:: ResourcesCpu,
+  ResourcesDefaults:: ResourcesDefaults,
 }

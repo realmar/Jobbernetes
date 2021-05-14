@@ -4,7 +4,8 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Prometheus;
+using Prometheus.Client.AspNetCore;
+using Prometheus.Client.HttpRequestDurations;
 using Realmar.Jobbernetes.Framework.Messaging;
 using Realmar.Jobbernetes.Infrastructure.Metrics;
 
@@ -28,7 +29,11 @@ namespace Realmar.Jobbernetes.Demo.Ingress
             {
                 c.SwaggerDoc(
                     "v1",
-                    new() { Title = "Realmar.Jobbernetes.Demo.Ingress", Version = "v1" });
+                    new()
+                    {
+                        Title   = "Realmar.Jobbernetes.Demo.Ingress",
+                        Version = "v1"
+                    });
             });
         }
 
@@ -49,15 +54,12 @@ namespace Realmar.Jobbernetes.Demo.Ingress
             app.UseSwagger();
             app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Realmar.Jobbernetes.Demo.Ingress v1"));
 
-            // app.UseHttpsRedirection();
             app.UseRouting();
-            app.UseHttpMetrics();
-            // app.UseAuthorization();
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapControllers();
-                endpoints.MapMetrics();
-            });
+
+            app.UsePrometheusServer();
+            app.UsePrometheusRequestDurations();
+
+            app.UseEndpoints(endpoints => endpoints.MapControllers());
         }
     }
 }

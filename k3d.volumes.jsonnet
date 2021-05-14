@@ -21,8 +21,6 @@ local Mapping(relativePath, keepOnClusterDestroy=false) =
   Mapping('grafana'),
   Mapping('loki'),
   Mapping('prometheus/server'),
-  Mapping('prometheus/alertmanager'),
-  Mapping('prometheus/pushgateway'),
   Mapping('rabbitmq'),
   Mapping('mongodb'),
 ]

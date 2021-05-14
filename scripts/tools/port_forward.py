@@ -10,7 +10,8 @@ from typing import List
 
 SERVICES = [
     ("svc/mongodb", "27017:27017"),
-    ("svc/prometheus-pushgateway", "9091:9091"),
+    ("svc/prometheus-server", "8080:80"),
+    ("svc/prometheus-aggregation-gateway", "9091:9091"),
     ("svc/grafana", "9092:80"),
     ("svc/rabbitmq", "5672:5672"),
     ("svc/rabbitmq", "15672:15672"),

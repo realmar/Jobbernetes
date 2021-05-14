@@ -2,9 +2,6 @@
 
 import __init__
 import argparse
-import shutil
-import os
-from lib import is_windows, get_volumes, run_shell
 import delete.cluster as cluster
 import delete.registry as registry
 import delete.data as data

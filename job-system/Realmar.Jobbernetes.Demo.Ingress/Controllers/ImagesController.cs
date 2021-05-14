@@ -3,7 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using Prometheus;
+using Prometheus.Client;
 using Realmar.Jobbernetes.Demo.Models;
 using Realmar.Jobbernetes.Framework.Messaging;
 using Realmar.Jobbernetes.Infrastructure.Metrics;
@@ -14,19 +14,20 @@ namespace Realmar.Jobbernetes.Demo.Ingress.Controllers
     [ApiController]
     public class ImagesController : ControllerBase
     {
-        private readonly Counter                      _counter;
-        private readonly ILogger<ImagesController>    _logger;
-        private readonly IQueueProducer<ImageIngress> _producer;
+        private readonly IMetricFamily<ICounter, ValueTuple<string>> _counter;
+        private readonly ILogger<ImagesController>                   _logger;
+        private readonly IQueueProducer<ImageIngress>                _producer;
 
         public ImagesController(IQueueProducer<ImageIngress> producer,
                                 IMetricsNameFactory          nameFactory,
-                                ILogger<ImagesController>    logger)
+                                ILogger<ImagesController>    logger,
+                                IMetricFactory               metricFactory)
         {
             _producer = producer;
             _logger   = logger;
 
             var name = nameFactory.Create("images_inserted");
-            _counter = Metrics.CreateCounter(name, "Number of images inserted into the system.", Labels.Keys.Status);
+            _counter = metricFactory.CreateCounter(name, "Number of images inserted into the system.", Labels.Keys.Status);
         }
 
         [HttpPut]
