@@ -2,7 +2,7 @@
 
 import __init__
 import argparse
-from lib import is_windows, run_shell_print
+from lib import is_windows, run_shell_print, print_medium_header
 
 
 repositories = [
@@ -29,7 +29,7 @@ def deploy(ignore_errors=False):
     repos = [f"helm repo add {name} {url}" for name, url in repositories]
     update = ["helm repo update"]
     install = [
-        f"helm install {name} {app} -f {config}" for name, app, config in charts]
+        f"helm upgrade --install {name} {app} -f {config}" for name, app, config in charts]
 
     for command in repos + update + install:
         try:

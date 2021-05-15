@@ -52,7 +52,10 @@ def __run_shell(command: str, silent=False, pipe=False):
             'stderr': subprocess.PIPE
         }
 
-    result = subprocess.run(command.split(" "), **args)
+    if '|' in command:
+        result = subprocess.run(command, shell=True, **args)
+    else:
+        result = subprocess.run(command.split(" "), **args)
 
     error = ""
 
@@ -152,5 +155,19 @@ def inject_private_secrets():
 
         private_secrets = __load_module("private_secrets", path)
         private_secrets.inject()
+
+
+def print_big_header(message):
+    print()
+    print('################################################################')
+    print('## \u001b[1m' + message + '\u001b[0m')
+    print('################################################################')
+    print()
+
+
+def print_medium_header(message):
+    print()
+    print('## \u001b[1m' + message + '\u001b[0m')
+    print()
 
 # endregion

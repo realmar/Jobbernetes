@@ -86,6 +86,7 @@ https://github.com/andrey-pohilko/registry-cli
 
 http://grafana.localhost/
 http://rabbitmq.localhost/
+https://rancher.localhost/
 
 Caveats:
 
