@@ -103,7 +103,7 @@ dashboards:
             "editable": true,
             "gnetId": null,
             "graphTooltip": 0,
-            "iteration": 1621085580898,
+            "iteration": 1621085580910,
             "links": [],
             "panels": [
                 {
@@ -120,8 +120,8 @@ dashboards:
                     "fill": 1,
                     "fillGradient": 0,
                     "gridPos": {
-                        "h": 10,
-                        "w": 16,
+                        "h": 11,
+                        "w": 15,
                         "x": 0,
                         "y": 0
                     },
@@ -213,10 +213,11 @@ dashboards:
                 },
                 {
                     "datasource": null,
+                    "description": "",
                     "fieldConfig": {
                         "defaults": {
                             "color": {
-                                "fixedColor": "green",
+                                "fixedColor": "blue",
                                 "mode": "fixed"
                             },
                             "mappings": [],
@@ -234,85 +235,17 @@ dashboards:
                         "overrides": []
                     },
                     "gridPos": {
-                        "h": 5,
-                        "w": 8,
-                        "x": 16,
+                        "h": 11,
+                        "w": 3,
+                        "x": 15,
                         "y": 0
-                    },
-                    "id": 8,
-                    "options": {
-                        "colorMode": "value",
-                        "graphMode": "area",
-                        "justifyMode": "auto",
-                        "orientation": "auto",
-                        "reduceOptions": {
-                            "calcs": [
-                                "lastNotNull"
-                            ],
-                            "fields": "",
-                            "values": false
-                        },
-                        "text": {},
-                        "textMode": "auto"
-                    },
-                    "pluginVersion": "7.5.5",
-                    "targets": [
-                        {
-                            "exemplar": true,
-                            "expr": "sum by (job_name, status) (increase(jobbernetes_job_processed_total{status=\"success\", job_name=~\"${jobname}\"}[${__range_s}s]))",
-                            "interval": "",
-                            "legendFormat": "",
-                            "refId": "Total"
-                        }
-                    ],
-                    "timeFrom": null,
-                    "timeShift": null,
-                    "title": "Total Successfull",
-                    "transformations": [
-                        {
-                            "id": "renameByRegex",
-                            "options": {
-                                "regex": ".+job_name=\"([^\"]+)\".+",
-                                "renamePattern": "$1"
-                            }
-                        }
-                    ],
-                    "type": "stat"
-                },
-                {
-                    "datasource": null,
-                    "description": "",
-                    "fieldConfig": {
-                        "defaults": {
-                            "color": {
-                                "fixedColor": "blue",
-                                "mode": "fixed"
-                            },
-                            "mappings": [],
-                            "thresholds": {
-                                "mode": "absolute",
-                                "steps": [
-                                    {
-                                        "color": "green",
-                                        "value": null
-                                    }
-                                ]
-                            }
-                        },
-                        "overrides": []
-                    },
-                    "gridPos": {
-                        "h": 5,
-                        "w": 4,
-                        "x": 16,
-                        "y": 5
                     },
                     "id": 4,
                     "options": {
                         "colorMode": "value",
                         "graphMode": "area",
                         "justifyMode": "auto",
-                        "orientation": "auto",
+                        "orientation": "horizontal",
                         "reduceOptions": {
                             "calcs": [
                                 "lastNotNull"
@@ -363,22 +296,23 @@ dashboards:
                                         "value": null
                                     }
                                 ]
-                            }
+                            },
+                            "unit": "short"
                         },
                         "overrides": []
                     },
                     "gridPos": {
-                        "h": 5,
-                        "w": 4,
-                        "x": 20,
-                        "y": 5
+                        "h": 11,
+                        "w": 3,
+                        "x": 18,
+                        "y": 0
                     },
                     "id": 6,
                     "options": {
                         "colorMode": "value",
                         "graphMode": "area",
                         "justifyMode": "auto",
-                        "orientation": "auto",
+                        "orientation": "horizontal",
                         "reduceOptions": {
                             "calcs": [
                                 "lastNotNull"
@@ -412,16 +346,84 @@ dashboards:
                     "type": "stat"
                 },
                 {
+                    "datasource": null,
+                    "fieldConfig": {
+                        "defaults": {
+                            "color": {
+                                "fixedColor": "green",
+                                "mode": "fixed"
+                            },
+                            "mappings": [],
+                            "thresholds": {
+                                "mode": "absolute",
+                                "steps": [
+                                    {
+                                        "color": "green",
+                                        "value": null
+                                    }
+                                ]
+                            },
+                            "unit": "short"
+                        },
+                        "overrides": []
+                    },
+                    "gridPos": {
+                        "h": 11,
+                        "w": 3,
+                        "x": 21,
+                        "y": 0
+                    },
+                    "id": 8,
+                    "options": {
+                        "colorMode": "value",
+                        "graphMode": "area",
+                        "justifyMode": "auto",
+                        "orientation": "horizontal",
+                        "reduceOptions": {
+                            "calcs": [
+                                "lastNotNull"
+                            ],
+                            "fields": "",
+                            "values": false
+                        },
+                        "text": {},
+                        "textMode": "auto"
+                    },
+                    "pluginVersion": "7.5.5",
+                    "targets": [
+                        {
+                            "exemplar": true,
+                            "expr": "sum by (job_name, status) (increase(jobbernetes_job_processed_total{status=\"success\", job_name=~\"${jobname}\"}[${__range_s}s]))",
+                            "interval": "",
+                            "legendFormat": "",
+                            "refId": "Total"
+                        }
+                    ],
+                    "timeFrom": null,
+                    "timeShift": null,
+                    "title": "Total Successfull",
+                    "transformations": [
+                        {
+                            "id": "renameByRegex",
+                            "options": {
+                                "regex": ".+job_name=\"([^\"]+)\".+",
+                                "renamePattern": "$1"
+                            }
+                        }
+                    ],
+                    "type": "stat"
+                },
+                {
                     "datasource": "Loki",
                     "fieldConfig": {
                         "defaults": {},
                         "overrides": []
                     },
                     "gridPos": {
-                        "h": 11,
+                        "h": 17,
                         "w": 24,
                         "x": 0,
-                        "y": 10
+                        "y": 11
                     },
                     "id": 11,
                     "options": {
@@ -440,39 +442,9 @@ dashboards:
                     ],
                     "title": "Exceptions Only",
                     "type": "logs"
-                },
-                {
-                    "datasource": "Loki",
-                    "fieldConfig": {
-                        "defaults": {},
-                        "overrides": []
-                    },
-                    "gridPos": {
-                        "h": 15,
-                        "w": 24,
-                        "x": 0,
-                        "y": 21
-                    },
-                    "id": 10,
-                    "options": {
-                        "dedupStrategy": "exact",
-                        "showLabels": false,
-                        "showTime": true,
-                        "sortOrder": "Descending",
-                        "wrapLogMessage": false
-                    },
-                    "pluginVersion": "7.5.5",
-                    "targets": [
-                        {
-                            "expr": "{jobbernetes_job_name=~\"${jobname}\"}",
-                            "refId": "A"
-                        }
-                    ],
-                    "title": "All Logs",
-                    "type": "logs"
                 }
             ],
-            "refresh": "10s",
+            "refresh": "",
             "schemaVersion": 27,
             "style": "dark",
             "tags": [],
@@ -481,7 +453,7 @@ dashboards:
                     {
                         "allValue": ".+",
                         "current": {
-                            "selected": false,
+                            "selected": true,
                             "text": "All",
                             "value": "$__all"
                         },
@@ -512,7 +484,7 @@ dashboards:
                 ]
             },
             "time": {
-                "from": "now-5m",
+                "from": "now-1h",
                 "to": "now"
             },
             "timepicker": {
