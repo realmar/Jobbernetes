@@ -2,7 +2,8 @@
 
 import __init__
 import argparse
-from lib import is_windows, run_shell_print, print_medium_header
+import os
+from lib import HELM_DIR, is_windows, run_shell_print
 
 
 repositories = [
@@ -14,14 +15,14 @@ repositories = [
 ]
 
 charts = [
-    ("influxdb", "influxdata/influxdb", "helm-configs/influxdb.yaml"),
-    ("grafana", "grafana/grafana", "helm-configs/grafana.yaml"),
-    ("fluent-bit", "grafana/fluent-bit", "helm-configs/fluent-bit.yaml"),
-    ("loki", "grafana/loki", "helm-configs/loki.yaml"),
-    ("prometheus", "prometheus-community/prometheus", "helm-configs/prometheus.yaml"),
-    ("mongodb", "bitnami/mongodb", "helm-configs/mongodb.yaml"),
-    ("rabbitmq", "groundhog2k/rabbitmq", "helm-configs/rabbitmq.yaml"),
-    ("prometheus-rabbitmq-exporter", "prometheus-community/prometheus-rabbitmq-exporter", "helm-configs/prometheus-rabbitmq-exporter.yaml"),
+    ("influxdb", "influxdata/influxdb", os.path.join(HELM_DIR, 'influxdb.yaml')),
+    ("grafana", "grafana/grafana", os.path.join(HELM_DIR, "grafana.yaml")),
+    ("fluent-bit", "grafana/fluent-bit", os.path.join(HELM_DIR, "fluent-bit.yaml")),
+    ("loki", "grafana/loki", os.path.join(HELM_DIR, "loki.yaml")),
+    ("prometheus", "prometheus-community/prometheus", os.path.join(HELM_DIR, "prometheus.yaml")),
+    ("mongodb", "bitnami/mongodb", os.path.join(HELM_DIR, "mongodb.yaml")),
+    ("rabbitmq", "groundhog2k/rabbitmq", os.path.join(HELM_DIR, "rabbitmq.yaml")),
+    ("prometheus-rabbitmq-exporter", "prometheus-community/prometheus-rabbitmq-exporter", os.path.join(HELM_DIR, "prometheus-rabbitmq-exporter.yaml")),
 ]
 
 

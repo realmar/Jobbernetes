@@ -2,7 +2,7 @@
 
 import __init__
 import os
-from lib import SPECS_DIR, run_shell_print
+from lib import HELM_DIR, SPECS_DIR, run_shell_print
 
 
 commands = [
@@ -20,7 +20,7 @@ commands = [
     f"kubectl wait pod --for condition=ready -l app=cert-manager --namespace cert-manager",
     f"kubectl wait pod --for condition=ready -l app=webhook --namespace cert-manager",
 
-    f"helm upgrade --install rancher rancher-latest/rancher --namespace cattle-system --set hostname=rancher.localhost"
+    f"helm upgrade --install rancher rancher-latest/rancher --namespace cattle-system -f {os.path.join(HELM_DIR, 'rancher.yaml')}"
 ]
 
 

@@ -31,6 +31,7 @@ K3D_CONFIG_PATH = os.path.join(ROOT_DIR, K3D_CONFIG_FILE)
 K3D_CLUSTER_NAME = "jobbernetes-cluster"
 
 SPECS_DIR = os.path.join(ROOT_DIR, "kubernetes-specs")
+HELM_DIR = os.path.join(ROOT_DIR, "helm-configs")
 
 # endregion
 

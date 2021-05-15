@@ -1,0 +1,14 @@
+# Fully qualified name to reach your Rancher server
+hostname: rancher.localhost
+
+# Number of Rancher server replicas.
+replicas: 1
+
+# Set pod resource requests/limits for Rancher.
+resources:
+  requests:
+    cpu: 1
+    memory: 128Mi
+  limits:
+    cpu: 2
+    memory: 256Mi
