@@ -103,7 +103,7 @@ dashboards:
             "editable": true,
             "gnetId": null,
             "graphTooltip": 0,
-            "iteration": 1621073991754,
+            "iteration": 1621085580898,
             "links": [],
             "panels": [
                 {
@@ -154,15 +154,7 @@ dashboards:
                     "targets": [
                         {
                             "exemplar": true,
-                            "expr": "sum by (job_name, status) (rate(jobbernetes_job_started_total{job_name=~\"${jobname}\"}[5m]))",
-                            "hide": true,
-                            "interval": "",
-                            "legendFormat": "",
-                            "refId": "Started"
-                        },
-                        {
-                            "exemplar": true,
-                            "expr": "sum by (job_name, status) (rate(jobbernetes_job_processed_total{job_name=~\"${jobname}\"}[5m]))",
+                            "expr": "sum by (job_name, status) (irate(jobbernetes_job_processed_total{job_name=~\"${jobname}\"}[5m]))",
                             "hide": false,
                             "interval": "",
                             "legendFormat": "",
@@ -442,7 +434,7 @@ dashboards:
                     "pluginVersion": "7.5.5",
                     "targets": [
                         {
-                            "expr": "{jobbernetes_job_name=~\"${jobname}\"} |~ \"Exception|ERR\"",
+                            "expr": "{jobbernetes_job_name=~\"${jobname}\"} |~ \"Error\"",
                             "refId": "A"
                         }
                     ],
@@ -487,9 +479,9 @@ dashboards:
             "templating": {
                 "list": [
                     {
-                        "allValue": ".*",
+                        "allValue": ".+",
                         "current": {
-                            "selected": true,
+                            "selected": false,
                             "text": "All",
                             "value": "$__all"
                         },
@@ -520,7 +512,7 @@ dashboards:
                 ]
             },
             "time": {
-                "from": "now-30m",
+                "from": "now-5m",
                 "to": "now"
             },
             "timepicker": {
