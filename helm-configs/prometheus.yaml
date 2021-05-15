@@ -64,13 +64,12 @@ server:
   ## Ref: http://kubernetes.io/docs/user-guide/compute-resources/
   ##
   resources:
-    limits:
-      cpu: 3
-      memory: 512Mi
     requests:
-      cpu: 0.5
-      memory: 256Mi
-
+      memory: 768Mi
+      cpu: 1
+    limits:
+      memory: 1280Mi
+      cpu: 3
 
 pushgateway:
   # we use prom-aggregation-gateway instead
