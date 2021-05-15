@@ -59,7 +59,7 @@ namespace Realmar.Jobbernetes.Demo.ImageScrapeJob
 
             var bytes = await response.Content.ReadAsByteArrayAsync(cancellationToken).ConfigureAwait(false);
 
-            await _producer.ProduceAsync(new(data.Name, Convert.ToBase64String(bytes)), cancellationToken)
+            await _producer.ProduceAsync(new(DateTime.UtcNow, data.Name, Convert.ToBase64String(bytes)), cancellationToken)
                            .ConfigureAwait(false);
         }
     }

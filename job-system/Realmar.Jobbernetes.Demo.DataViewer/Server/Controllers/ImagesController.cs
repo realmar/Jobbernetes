@@ -14,6 +14,10 @@ namespace Realmar.Jobbernetes.Demo.DataViewer.Server.Controllers
         public ImagesController(IMongoCollection<ImageOutput> collection) => _collection = collection;
 
         [HttpGet]
-        public IEnumerable<ImageOutput> Get() => _collection.AsQueryable();
+        public IEnumerable<ImageOutput> Get() =>
+            _collection.Find(FilterDefinition<ImageOutput>.Empty)
+                       .Limit(100)
+                       .Sort(new JsonSortDefinition<ImageOutput>("{'_id' : -1}"))
+                       .ToEnumerable();
     }
 }
