@@ -1,6 +1,6 @@
 {
     "profiles": {
-        /*"Realmar.Jobbernetes.Demo.Egress": {
+        /*"Realmar.Jobbernetes.Demo.OutputService": {
           "commandName": "Project"
         },*/
         "WSL 2": {
@@ -16,8 +16,8 @@
 
                 // Consumer
                 "RabbitMQConsumerOptions__Exchange": "jobbernetes",
-                "RabbitMQConsumerOptions__Queue": "jn-images-egress",
-                "RabbitMQConsumerOptions__RoutingKey": "jn-images-egress",
+                "RabbitMQConsumerOptions__Queue": "jn-images-output",
+                "RabbitMQConsumerOptions__RoutingKey": "jn-images-output",
 
                 // MongoDB
                 "MongoOptions__ConnectionString": "mongodb://localhost:27017",

@@ -41,11 +41,11 @@ else
 }
 
 @code {
-    private Image[]? _images;
+    private ImageOutput[]? _images;
 
     protected override async Task OnInitializedAsync()
     {
-        _images = await Http!.GetFromJsonAsync<Image[]>("/api/Images").ConfigureAwait(false);
+        _images = await Http!.GetFromJsonAsync<ImageOutput[]>("/api/Images").ConfigureAwait(false);
     }
 
 }

@@ -9,11 +9,11 @@ namespace Realmar.Jobbernetes.Demo.DataViewer.Server.Controllers
     [Route("api/[controller]")]
     public class ImagesController : ControllerBase
     {
-        private readonly IMongoCollection<Image> _collection;
+        private readonly IMongoCollection<ImageOutput> _collection;
 
-        public ImagesController(IMongoCollection<Image> collection) => _collection = collection;
+        public ImagesController(IMongoCollection<ImageOutput> collection) => _collection = collection;
 
         [HttpGet]
-        public IEnumerable<Image> Get() => _collection.AsQueryable();
+        public IEnumerable<ImageOutput> Get() => _collection.AsQueryable();
     }
 }

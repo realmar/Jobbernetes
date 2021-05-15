@@ -1,7 +1,7 @@
 using System.Threading.Tasks;
 using Realmar.Jobbernetes.Hosting;
 
-namespace Realmar.Jobbernetes.Demo.Ingress
+namespace Realmar.Jobbernetes.Demo.InputService
 {
     internal static class Program
     {

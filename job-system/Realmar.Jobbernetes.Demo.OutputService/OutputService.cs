@@ -9,22 +9,22 @@ using Realmar.Jobbernetes.Demo.Models;
 using Realmar.Jobbernetes.Framework.Messaging;
 using Realmar.Jobbernetes.Infrastructure.Metrics;
 
-namespace Realmar.Jobbernetes.Demo.Egress
+namespace Realmar.Jobbernetes.Demo.OutputService
 {
-    public class EgressService : BackgroundService
+    public class OutputService : BackgroundService
     {
         private readonly IHostApplicationLifetime                    _application;
-        private readonly IMongoCollection<Image>                     _collection;
-        private readonly IQueueConsumer<Image>                       _consumer;
+        private readonly IMongoCollection<ImageOutput>               _collection;
+        private readonly IQueueConsumer<ImageOutput>                 _consumer;
         private readonly IMetricFamily<ICounter, ValueTuple<string>> _counter;
-        private readonly ILogger<EgressService>                      _logger;
+        private readonly ILogger<OutputService>                      _logger;
 
-        public EgressService(IHostApplicationLifetime application,
-                             IQueueConsumer<Image>    consumer,
-                             IMongoCollection<Image>  collection,
-                             IMetricsNameFactory      nameFactory,
-                             ILogger<EgressService>   logger,
-                             IMetricFactory           metricFactory)
+        public OutputService(IHostApplicationLifetime      application,
+                             IQueueConsumer<ImageOutput>   consumer,
+                             IMongoCollection<ImageOutput> collection,
+                             IMetricsNameFactory           nameFactory,
+                             ILogger<OutputService>        logger,
+                             IMetricFactory                metricFactory)
         {
             _application = application;
             _consumer    = consumer;

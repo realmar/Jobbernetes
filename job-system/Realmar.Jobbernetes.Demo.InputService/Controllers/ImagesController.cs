@@ -8,7 +8,7 @@ using Realmar.Jobbernetes.Demo.Models;
 using Realmar.Jobbernetes.Framework.Messaging;
 using Realmar.Jobbernetes.Infrastructure.Metrics;
 
-namespace Realmar.Jobbernetes.Demo.Ingress.Controllers
+namespace Realmar.Jobbernetes.Demo.InputService.Controllers
 {
     [Route("[controller]")]
     [ApiController]
@@ -16,12 +16,12 @@ namespace Realmar.Jobbernetes.Demo.Ingress.Controllers
     {
         private readonly IMetricFamily<ICounter, ValueTuple<string>> _counter;
         private readonly ILogger<ImagesController>                   _logger;
-        private readonly IQueueProducer<ImageIngress>                _producer;
+        private readonly IQueueProducer<ImageInput>                  _producer;
 
-        public ImagesController(IQueueProducer<ImageIngress> producer,
-                                IMetricsNameFactory          nameFactory,
-                                ILogger<ImagesController>    logger,
-                                IMetricFactory               metricFactory)
+        public ImagesController(IQueueProducer<ImageInput> producer,
+                                IMetricsNameFactory        nameFactory,
+                                ILogger<ImagesController>  logger,
+                                IMetricFactory             metricFactory)
         {
             _producer = producer;
             _logger   = logger;

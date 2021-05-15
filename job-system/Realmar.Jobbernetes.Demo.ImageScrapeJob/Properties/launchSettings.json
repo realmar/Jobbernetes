@@ -1,6 +1,6 @@
 {
     "profiles": {
-        /*"Realmar.Jobbernetes.Demo.ScraperJobService": {
+        /*"Realmar.Jobbernetes.Demo.ImageScrapeJob": {
           "commandName": "Project"
         },*/
         "WSL 2": {
@@ -21,18 +21,18 @@
 
                 // Consumer
                 "RabbitMQConsumerOptions__Exchange": "jobbernetes",
-                "RabbitMQConsumerOptions__Queue": "jn-images-ingress",
-                "RabbitMQConsumerOptions__RoutingKey": "jn-images-ingress",
+                "RabbitMQConsumerOptions__Queue": "jn-images-input",
+                "RabbitMQConsumerOptions__RoutingKey": "jn-images-input",
 
                 // Producer
                 "RabbitMQProducerOptions__Exchange": "jobbernetes",
-                "RabbitMQProducerOptions__Queue": "jn-images-egress",
-                "RabbitMQProducerOptions__RoutingKey": "jn-images-egress",
+                "RabbitMQProducerOptions__Queue": "jn-images-output",
+                "RabbitMQProducerOptions__RoutingKey": "jn-images-output",
 
                 // Prometheus
                 "MetricPusherOptions__Endpoint": "http://localhost:9091/metrics",
                 "MetricPusherOptions__Job": "jobbernetes_jobs",
-                "MetricPusherOptions__JobName": "image_scraper_job_name",
+                "MetricPusherOptions__JobName": "image_scrape_job_name",
 
                 // Logging
                 "Serilog__MinimumLevel__Default": "Debug",

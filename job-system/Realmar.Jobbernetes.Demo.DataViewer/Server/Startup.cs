@@ -38,7 +38,7 @@ namespace Realmar.Jobbernetes.Demo.DataViewer.Server
         [UsedImplicitly]
         public void ConfigureContainer(ContainerBuilder builder)
         {
-            builder.RegisterModule<MongoDBModule<Image>>();
+            builder.RegisterModule<MongoDBModule<ImageOutput>>();
 
             var pack = new ConventionPack { new IgnoreExtraElementsConvention(true) };
             ConventionRegistry.Register("My Solution Conventions", pack, _ => true);

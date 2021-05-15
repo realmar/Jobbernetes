@@ -15,6 +15,11 @@ commands = [
     f"helm repo update",
 
     f"helm upgrade --install cert-manager jetstack/cert-manager --namespace cert-manager --version v1.0.4",
+
+    f"kubectl wait pod --for condition=ready -l app=cainjector --namespace cert-manager",
+    f"kubectl wait pod --for condition=ready -l app=cert-manager --namespace cert-manager",
+    f"kubectl wait pod --for condition=ready -l app=webhook --namespace cert-manager",
+
     f"helm upgrade --install rancher rancher-latest/rancher --namespace cattle-system --set hostname=rancher.localhost"
 ]
 

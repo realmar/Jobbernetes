@@ -21,10 +21,10 @@ RUN for file in $(ls *.csproj); do \
 # Build runtime image
 FROM build-env AS publish
 COPY ./ ./
-RUN dotnet publish 'Realmar.Jobbernetes.Demo.Egress' -c Release -o /app/out
+RUN dotnet publish 'Realmar.Jobbernetes.Demo.OutputService' -c Release -o /app/out
 
 # Production layer
 FROM mcr.microsoft.com/dotnet/aspnet:5.0
 WORKDIR /app
 COPY --from=publish /app/out .
-ENTRYPOINT ["dotnet", "Realmar.Jobbernetes.Demo.Egress.dll"]
+ENTRYPOINT ["dotnet", "Realmar.Jobbernetes.Demo.OutputService.dll"]

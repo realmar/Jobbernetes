@@ -29,7 +29,7 @@ local ImageJob(name, prometheus_instance) = kube.CronJob(name) {
             ),
             containers_+: {
               job: kube.Container(name) {
-                image: components.image_scraper_job.image.fqn,
+                image: components.image_scrape_job.image.fqn,
                 imagePullPolicy: 'Always',
                 resources: jn.ResourcesDefaults() {
                   limits+: {
@@ -38,8 +38,8 @@ local ImageJob(name, prometheus_instance) = kube.CronJob(name) {
                 },
                 env_+: config.Logging() +
                        config.RabbitMQConnection() +
-                       config.RabbitMQConsumer('jobbernetes', 'jn-images-ingress', 'jn-images-ingress') +
-                       config.RabbitMQProducer('jobbernetes', 'jn-images-egress', 'jn-images-egress') +
+                       config.RabbitMQConsumer('jobbernetes', 'jn-images-input', 'jn-images-input') +
+                       config.RabbitMQProducer('jobbernetes', 'jn-images-output', 'jn-images-output') +
                        config.MetricPusher(prometheus_instance) +
                        {
                          // ExternalService
@@ -66,6 +66,7 @@ local ImageJob(name, prometheus_instance) = kube.CronJob(name) {
 
 
 {
-  job01: ImageJob('jn-image-scraper-01-job', 'image_scraper_01_job'),
-  job02: ImageJob('jn-image-scraper-02-job', 'image_scraper_02_job'),
+  job01: ImageJob('jn-image-scrape-spaceship-job', 'image_scrape_spaceship_job'),
+  job02: ImageJob('jn-image-scrape-airplane-job', 'image_scrape_airplane_job'),
+  job03: ImageJob('jn-image-scrape-automobile-job', 'image_scrape_automobile_job'),
 }

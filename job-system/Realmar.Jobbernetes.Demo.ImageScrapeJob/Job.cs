@@ -9,18 +9,18 @@ using Realmar.Jobbernetes.Demo.Models;
 using Realmar.Jobbernetes.Framework.Jobs;
 using Realmar.Jobbernetes.Framework.Messaging;
 
-namespace Realmar.Jobbernetes.Demo.ScraperJobService
+namespace Realmar.Jobbernetes.Demo.ImageScrapeJob
 {
-    internal class Job : IJob<ImageIngress>
+    internal class Job : IJob<ImageInput>
     {
-        private readonly HttpClient            _httpClient;
-        private readonly IOptions<DemoOptions> _options;
-        private readonly IQueueProducer<Image> _producer;
-        private readonly Random                _random = new();
-        private readonly string                _url;
+        private readonly HttpClient                  _httpClient;
+        private readonly IOptions<DemoOptions>       _options;
+        private readonly IQueueProducer<ImageOutput> _producer;
+        private readonly Random                      _random = new();
+        private readonly string                      _url;
 
         public Job(HttpClient                       httpClient,
-                   IQueueProducer<Image>            producer,
+                   IQueueProducer<ImageOutput>      producer,
                    IOptions<ExternalServiceOptions> externalServiceOptions,
                    IOptions<DemoOptions>            demoOptions)
         {
@@ -33,7 +33,7 @@ namespace Realmar.Jobbernetes.Demo.ScraperJobService
         /// <exception cref="T:Realmar.Jobbernetes.Demo.Infrastructure.Exceptions.DemoException">
         ///     Synthetic error in demo to simulate a failure
         /// </exception>
-        public async Task Process(ImageIngress data, CancellationToken cancellationToken)
+        public async Task Process(ImageInput data, CancellationToken cancellationToken)
         {
             static int Clamp(DemoOptions.Range range, Func<int, int, int> reducer) =>
                 Math.Clamp(reducer.Invoke(range.Min, range.Max), 0, int.MaxValue);

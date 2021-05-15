@@ -5,7 +5,7 @@ local jn = import 'lib/jobbernetes.libsonnet';
 local kube = import 'vendor/kube.libsonnet';
 
 {
-  name:: components.egress.serviceName,
+  name:: components.output_service.serviceName,
   prometheusPort:: 9098,
 
   deployment: kube.Deployment(self.name) {
@@ -21,7 +21,7 @@ local kube = import 'vendor/kube.libsonnet';
           initContainers_+: jn.WaitForAll(),
           containers_+: {
             server: kube.Container($.name) {
-              image: components.egress.image.fqn,
+              image: components.output_service.image.fqn,
               imagePullPolicy: 'Always',
               resources: jn.ResourcesDefaults() {
                 limits+: {
@@ -30,7 +30,7 @@ local kube = import 'vendor/kube.libsonnet';
               },
               env_+: config.Logging() +
                      config.RabbitMQConnection() +
-                     config.RabbitMQConsumer('jobbernetes', 'jn-images-egress', 'jn-images-egress') +
+                     config.RabbitMQConsumer('jobbernetes', 'jn-images-output', 'jn-images-output') +
                      config.MongoDB('jobbernetes', 'images') +
                      config.MetricServer(std.toString($.prometheusPort)),
             },

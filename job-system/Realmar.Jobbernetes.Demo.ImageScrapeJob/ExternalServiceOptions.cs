@@ -1,4 +1,4 @@
-namespace Realmar.Jobbernetes.Demo.ScraperJobService
+namespace Realmar.Jobbernetes.Demo.ImageScrapeJob
 {
     public class ExternalServiceOptions
     {

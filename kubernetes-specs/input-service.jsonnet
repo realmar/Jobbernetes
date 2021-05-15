@@ -5,7 +5,7 @@ local jn = import 'lib/jobbernetes.libsonnet';
 local kube = import 'vendor/kube.libsonnet';
 
 {
-  name:: components.ingress.serviceName,
+  name:: components.input_service.serviceName,
 
   deployment: kube.Deployment(self.name) {
     metadata+: {
@@ -20,7 +20,7 @@ local kube = import 'vendor/kube.libsonnet';
           initContainers_+: jn.WaitForRabbitMQ(),
           containers_+: {
             server: kube.Container($.name) {
-              image: components.ingress.image.fqn,
+              image: components.input_service.image.fqn,
               imagePullPolicy: 'Always',
               ports: [{ name: 'http', containerPort: 3000 }],
               resources: jn.ResourcesDefaults() {
@@ -31,7 +31,7 @@ local kube = import 'vendor/kube.libsonnet';
               env_+: config.Logging() +
                      config.AspNetCore() +
                      config.RabbitMQConnection() +
-                     config.RabbitMQProducer('jobbernetes', 'jn-images-ingress', 'jn-images-ingress'),
+                     config.RabbitMQProducer('jobbernetes', 'jn-images-input', 'jn-images-input'),
             },
           },
         },
@@ -48,7 +48,7 @@ local kube = import 'vendor/kube.libsonnet';
     spec+: {
       rules+: [
         {
-          host: components.ingress.ingress,
+          host: components.input_service.ingress,
           http: {
             paths:
               [

@@ -8,7 +8,7 @@ using Realmar.Jobbernetes.Framework.Messaging;
 using Realmar.Jobbernetes.Hosting;
 using Realmar.Jobbernetes.Infrastructure.Metrics;
 
-namespace Realmar.Jobbernetes.Demo.Egress
+namespace Realmar.Jobbernetes.Demo.OutputService
 {
     internal static class Program
     {
@@ -18,16 +18,16 @@ namespace Realmar.Jobbernetes.Demo.Egress
                 args,
                 (context, services) =>
                 {
-                    services.AddHostedService<EgressService>();
+                    services.AddHostedService<OutputService>();
                     services.Configure<MongoOptions>(
                         context.Configuration.GetSection(nameof(MongoOptions)));
                 },
                 builder =>
                 {
-                    builder.RegisterModule<MongoDBModule<Image>>();
+                    builder.RegisterModule<MongoDBModule<ImageOutput>>();
                     builder.RegisterModule<MessagingModule>();
 
-                    builder.RegisterMetricsNameDecorator(factory => new PrefixMetricsNameFactory("egress", factory));
+                    builder.RegisterMetricsNameDecorator(factory => new PrefixMetricsNameFactory("output", factory));
                     builder.RegisterConsoleMetricServer();
                 });
         }

@@ -17,7 +17,7 @@
             "ASPNETCORE_ENVIRONMENT": "Development"
           }
         },
-        "Realmar.Jobbernetes.Demo.Ingress": {
+        "Realmar.Jobbernetes.Demo.InputService": {
             "commandName": "Project",
             "launchBrowser": true,
             "launchUrl": "swagger",
@@ -42,8 +42,8 @@
 
                 // Producer
                 "RabbitMQProducerOptions__Exchange": "jobbernetes",
-                "RabbitMQProducerOptions__Queue": "jn-images-ingress",
-                "RabbitMQProducerOptions__RoutingKey": "jn-images-ingress",
+                "RabbitMQProducerOptions__Queue": "jn-images-input",
+                "RabbitMQProducerOptions__RoutingKey": "jn-images-input",
 
                 // Logging
                 "Serilog__MinimumLevel__Default": "Debug",

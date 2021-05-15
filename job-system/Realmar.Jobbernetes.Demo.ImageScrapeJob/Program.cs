@@ -6,11 +6,11 @@ using Realmar.Jobbernetes.Demo.Infrastructure.Options;
 using Realmar.Jobbernetes.Demo.Models;
 using Realmar.Jobbernetes.Hosting;
 
-namespace Realmar.Jobbernetes.Demo.ScraperJobService
+namespace Realmar.Jobbernetes.Demo.ImageScrapeJob
 {
     internal static class Program
     {
-        private static Task Main(string[] args) => JobberHost.RunJobAsync<ImageIngress>(
+        private static Task Main(string[] args) => JobberHost.RunJobAsync<ImageInput>(
             args,
             (context, services) =>
             {

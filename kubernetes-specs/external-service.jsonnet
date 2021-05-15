@@ -23,6 +23,7 @@ local kube = import 'vendor/kube.libsonnet';
               ports: [{ name: 'http', containerPort: 3000 }],
               env_+: config.Logging() +
                      config.AspNetCore(),
+              resources: jn.ResourcesDefaults(),
             },
           },
         },

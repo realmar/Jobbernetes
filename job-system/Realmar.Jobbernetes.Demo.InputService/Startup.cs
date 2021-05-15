@@ -10,7 +10,7 @@ using Realmar.Jobbernetes.Framework.Messaging;
 using Realmar.Jobbernetes.Infrastructure.Metrics;
 
 #pragma warning disable CA1822 // Mark members as static
-namespace Realmar.Jobbernetes.Demo.Ingress
+namespace Realmar.Jobbernetes.Demo.InputService
 {
     internal class Startup
     {
@@ -31,7 +31,7 @@ namespace Realmar.Jobbernetes.Demo.Ingress
                     "v1",
                     new()
                     {
-                        Title   = "Realmar.Jobbernetes.Demo.Ingress",
+                        Title   = "Realmar.Jobbernetes.Demo.InputService",
                         Version = "v1"
                     });
             });
@@ -40,7 +40,7 @@ namespace Realmar.Jobbernetes.Demo.Ingress
         public void ConfigureContainer(ContainerBuilder builder)
         {
             builder.RegisterModule<MessagingModule>();
-            builder.RegisterMetricsNameDecorator(factory => new PrefixMetricsNameFactory("ingress", factory));
+            builder.RegisterMetricsNameDecorator(factory => new PrefixMetricsNameFactory("input", factory));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -52,7 +52,7 @@ namespace Realmar.Jobbernetes.Demo.Ingress
             }
 
             app.UseSwagger();
-            app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Realmar.Jobbernetes.Demo.Ingress v1"));
+            app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Realmar.Jobbernetes.Demo.InputService v1"));
 
             app.UseRouting();
 

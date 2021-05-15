@@ -24,13 +24,13 @@ local collection = {
   services:
     [
       Component('dataviewer', 'dataviewer.jn.localhost'),
-      Component('ingress', 'ingress.jn.localhost'),
-      Component('egress'),
+      Component('input-service', 'input-service.jn.localhost'),
+      Component('output-service'),
       Component('external-service', 'external-service.jn.localhost'),
     ],
 
   jobs: [
-    Component('image-scraper-job'),
+    Component('image-scrape-job'),
   ],
 };
 
