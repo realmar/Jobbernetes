@@ -5,7 +5,9 @@ local jn = import 'lib/jobbernetes.libsonnet';
 local kube = import 'vendor/kube.libsonnet';
 
 local ImageJob(name, prometheus_instance) = kube.CronJob(name) {
-  cpus:: 2,
+  processes:: 2,
+  threads:: 2,
+
   spec+: {
     schedule: '*/1 * * * *',
     successfulJobsHistoryLimit: 3,
@@ -13,8 +15,8 @@ local ImageJob(name, prometheus_instance) = kube.CronJob(name) {
     concurrencyPolicy: 'Forbid',
     jobTemplate+: {
       spec+: {
-        parallelism: 2,
-        completions: 2,
+        parallelism: $.processes,
+        completions: $.processes,
         template+: {
           metadata+: jn.LoggingAnnotations() {
             labels+: {
@@ -33,7 +35,7 @@ local ImageJob(name, prometheus_instance) = kube.CronJob(name) {
                 imagePullPolicy: 'Always',
                 resources: jn.ResourcesDefaults() {
                   limits+: {
-                    cpu: $.cpus,
+                    cpu: $.threads,
                   },
                 },
                 env_+: config.Logging() +
@@ -47,7 +49,7 @@ local ImageJob(name, prometheus_instance) = kube.CronJob(name) {
 
                          // Processing
                          JobOptions__BatchSize: '300',
-                         JobOptions__MaxConcurrentJobs: std.toString($.cpus),
+                         JobOptions__MaxConcurrentJobs: std.toString($.threads),
                          JobOptions__MaxMessagesPerTask: '20',
 
                          // Demo
