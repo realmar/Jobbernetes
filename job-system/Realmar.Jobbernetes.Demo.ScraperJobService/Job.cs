@@ -35,7 +35,7 @@ namespace Realmar.Jobbernetes.Demo.ScraperJobService
         /// </exception>
         public async Task Process(ImageIngress data, CancellationToken cancellationToken)
         {
-            int Clamp(DemoOptions.Range range, Func<int, int, int> reducer) =>
+            static int Clamp(DemoOptions.Range range, Func<int, int, int> reducer) =>
                 Math.Clamp(reducer.Invoke(range.Min, range.Max), 0, int.MaxValue);
 
             var delay = _options.Value.ProcessingDelayMilliseconds;

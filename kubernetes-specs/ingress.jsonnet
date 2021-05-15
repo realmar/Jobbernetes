@@ -1,4 +1,5 @@
 local components = import 'lib/components.libsonnet';
+local config = import 'lib/configuration.libsonnet';
 local constants = import 'lib/constants.libsonnet';
 local jn = import 'lib/jobbernetes.libsonnet';
 local kube = import 'vendor/kube.libsonnet';
@@ -13,7 +14,7 @@ local kube = import 'vendor/kube.libsonnet';
     spec+: {
       replicas: 2,
       template+: {
-        metadata+: jn.PrometheusAnnotations(),
+        metadata+: jn.AllAnnotations(),
         spec+: {
           restartPolicy: 'Always',
           initContainers_+: jn.WaitForRabbitMQ(),
@@ -27,21 +28,10 @@ local kube = import 'vendor/kube.libsonnet';
                   cpu: '500m',
                 },
               },
-              env_+: {
-                // ASPNET
-                ASPNETCORE_URLS: 'http://0.0.0.0:3000',
-                ASPNETCORE_ENVIRONMENT: 'Production',
-
-                // General
-                RabbitMQConnectionOptions__Hostname: constants.RabbitMQDns,
-                RabbitMQConnectionOptions__Username: 'admin',
-                RabbitMQConnectionOptions__Password: 'admin',
-
-                // Producer
-                RabbitMQProducerOptions__Exchange: 'jobbernetes',
-                RabbitMQProducerOptions__Queue: 'jn-images-ingress',
-                RabbitMQProducerOptions__RoutingKey: 'jn-images-ingress',
-              },
+              env_+: config.Logging() +
+                     config.AspNetCore() +
+                     config.RabbitMQConnection() +
+                     config.RabbitMQProducer('jobbernetes', 'jn-images-ingress', 'jn-images-ingress'),
             },
           },
         },

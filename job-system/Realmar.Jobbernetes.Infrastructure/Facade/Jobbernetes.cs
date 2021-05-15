@@ -53,7 +53,7 @@ namespace Realmar.Jobbernetes.Framework.Facade
         {
             try
             {
-                _counterStarted.Inc();
+                _counterStarted.WithLabels(_options.Value.GetLabelValues()).Inc();
                 await _dispatcher.Dispatch(data, token).ConfigureAwait(false);
                 _counterProcessed.WithSuccess(_options.Value.GetLabelValues()).Inc();
             }

@@ -10,7 +10,7 @@
                 "ExternalServiceOptions__Url": "http://localhost:5001/images",
 
                 // Processing
-                "JobOptions__BatchSize": "2",
+                "JobOptions__BatchSize": "20",
                 "JobOptions__MaxConcurrentJobs": "8",
                 "JobOptions__MaxMessagesPerTask": "20",
 
@@ -35,12 +35,14 @@
                 "MetricPusherOptions__JobName": "image_scraper_job_name",
 
                 // Logging
-                "Logging__LogLevel__Default": "Trace",
+                "Serilog__MinimumLevel__Default": "Debug",
+                "Serilog__Loki__Hostname": "http://localhost:3100/loki/api/v1/push",
+                "SerilogOptions__EnableSerilogDebugging": "true",
 
                 // Demo
                 "DemoOptions__ProcessingDelayMilliseconds__Min": "1000",
                 "DemoOptions__ProcessingDelayMilliseconds__Max": "3000",
-                "DemoOptions__FailureProbability": "0.2"
+                "DemoOptions__FailureProbability": "0.8"
             }
         }
         // "distributionName": ""

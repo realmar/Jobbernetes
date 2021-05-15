@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Prometheus.Client;
 
 namespace Realmar.Jobbernetes.Infrastructure.Metrics
@@ -23,15 +24,23 @@ namespace Realmar.Jobbernetes.Infrastructure.Metrics
                                                                params string[]     labels) =>
             factory.CreateCounter(name, help, AppendJobLabels(labels));
 
-        private static string[] AppendJobLabels(string[] labels) => ConcatLabels(Keys.JobName, labels);
+        private static string[] AppendJobLabels(string[] labels) => ConcatLabels(labels, Keys.JobName);
+
+        private static string[] ConcatLabels(string[] a, string b)
+        {
+            var result = new List<string>(a);
+            result.Add(b);
+
+            return result.ToArray();
+        }
 
         private static string[] ConcatLabels(string a, string[] b)
         {
-            var result = new string[b.Length + 1];
-            result[0] = a;
-            b.CopyTo(result, 1);
+            var result = new List<string>();
+            result.Add(a);
+            result.AddRange(b);
 
-            return result;
+            return result.ToArray();
         }
 
         public static class Keys

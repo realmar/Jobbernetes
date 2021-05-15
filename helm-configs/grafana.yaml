@@ -103,7 +103,7 @@ dashboards:
             "editable": true,
             "gnetId": null,
             "graphTooltip": 0,
-            "iteration": 1620921420323,
+            "iteration": 1621073991754,
             "links": [],
             "panels": [
                 {
@@ -154,7 +154,7 @@ dashboards:
                     "targets": [
                         {
                             "exemplar": true,
-                            "expr": "rate(jobbernetes_job_started_total{instance=~\"${instance}\"}[5m])",
+                            "expr": "sum by (job_name, status) (rate(jobbernetes_job_started_total{job_name=~\"${jobname}\"}[5m]))",
                             "hide": true,
                             "interval": "",
                             "legendFormat": "",
@@ -162,7 +162,7 @@ dashboards:
                         },
                         {
                             "exemplar": true,
-                            "expr": "rate(jobbernetes_job_processed_total{instance=~\"${instance}\"}[5m])",
+                            "expr": "sum by (job_name, status) (rate(jobbernetes_job_processed_total{job_name=~\"${jobname}\"}[5m]))",
                             "hide": false,
                             "interval": "",
                             "legendFormat": "",
@@ -179,6 +179,15 @@ dashboards:
                         "sort": 0,
                         "value_type": "individual"
                     },
+                    "transformations": [
+                        {
+                            "id": "renameByRegex",
+                            "options": {
+                                "regex": ".+job_name=\"([^\"]+)\",\\sstatus=\"([^\"]+)\".+",
+                                "renamePattern": "$1/$2"
+                            }
+                        }
+                    ],
                     "type": "graph",
                     "xaxis": {
                         "buckets": null,
@@ -258,15 +267,24 @@ dashboards:
                     "targets": [
                         {
                             "exemplar": true,
-                            "expr": "increase(jobbernetes_job_processed_total{status=\"success\", instance=~\"${instance}\"}[${__range_s}s])",
+                            "expr": "sum by (job_name, status) (increase(jobbernetes_job_processed_total{status=\"success\", job_name=~\"${jobname}\"}[${__range_s}s]))",
                             "interval": "",
                             "legendFormat": "",
-                            "refId": "A"
+                            "refId": "Total"
                         }
                     ],
                     "timeFrom": null,
                     "timeShift": null,
                     "title": "Total Successfull",
+                    "transformations": [
+                        {
+                            "id": "renameByRegex",
+                            "options": {
+                                "regex": ".+job_name=\"([^\"]+)\".+",
+                                "renamePattern": "$1"
+                            }
+                        }
+                    ],
                     "type": "stat"
                 },
                 {
@@ -317,13 +335,22 @@ dashboards:
                     "targets": [
                         {
                             "exemplar": true,
-                            "expr": "increase(jobbernetes_job_started_total{instance=~\"${instance}\"}[${__range_s}s])",
+                            "expr": "sum by (job_name, status) (increase(jobbernetes_job_started_total{job_name=~\"${jobname}\"}[${__range_s}s]))",
                             "interval": "",
                             "legendFormat": "",
                             "refId": "A"
                         }
                     ],
                     "title": "Total Started",
+                    "transformations": [
+                        {
+                            "id": "renameByRegex",
+                            "options": {
+                                "regex": ".+job_name=\"([^\"]+)\".+",
+                                "renamePattern": "$1"
+                            }
+                        }
+                    ],
                     "type": "stat"
                 },
                 {
@@ -374,13 +401,22 @@ dashboards:
                     "targets": [
                         {
                             "exemplar": true,
-                            "expr": "increase(jobbernetes_job_processed_total{status=\"fail\", instance=~\"${instance}\"}[${__range_s}s])",
+                            "expr": "sum by (job_name, status) (increase(jobbernetes_job_processed_total{status=\"fail\", job_name=~\"${jobname}\"}[${__range_s}s]))",
                             "interval": "",
                             "legendFormat": "",
                             "refId": "A"
                         }
                     ],
                     "title": "Total Failed",
+                    "transformations": [
+                        {
+                            "id": "renameByRegex",
+                            "options": {
+                                "regex": ".+job_name=\"([^\"]+)\".+",
+                                "renamePattern": "$1"
+                            }
+                        }
+                    ],
                     "type": "stat"
                 },
                 {
@@ -406,7 +442,7 @@ dashboards:
                     "pluginVersion": "7.5.5",
                     "targets": [
                         {
-                            "expr": "{app=\"jn-image-scraper-job\", pod=~\"${instance}\"} |= \"Exception\"",
+                            "expr": "{jobbernetes_job_name=~\"${jobname}\"} |~ \"Exception|ERR\"",
                             "refId": "A"
                         }
                     ],
@@ -436,11 +472,11 @@ dashboards:
                     "pluginVersion": "7.5.5",
                     "targets": [
                         {
-                            "expr": "{app=\"jn-image-scraper-job\", pod=~\"${instance}\"} != \"info\" != \"Success\" != \"No more messages\" != \"shutting down\"",
+                            "expr": "{jobbernetes_job_name=~\"${jobname}\"}",
                             "refId": "A"
                         }
                     ],
-                    "title": "Error Logs",
+                    "title": "All Logs",
                     "type": "logs"
                 }
             ],
@@ -458,17 +494,17 @@ dashboards:
                             "value": "$__all"
                         },
                         "datasource": null,
-                        "definition": "label_values(instance)",
+                        "definition": "label_values(job_name)",
                         "description": null,
                         "error": null,
                         "hide": 0,
                         "includeAll": true,
-                        "label": "Instance",
+                        "label": "Job Name",
                         "multi": false,
-                        "name": "instance",
+                        "name": "jobname",
                         "options": [],
                         "query": {
-                            "query": "label_values(instance)",
+                            "query": "label_values(job_name)",
                             "refId": "StandardVariableQuery"
                         },
                         "refresh": 1,
@@ -484,7 +520,7 @@ dashboards:
                 ]
             },
             "time": {
-                "from": "now-6h",
+                "from": "now-30m",
                 "to": "now"
             },
             "timepicker": {
@@ -506,7 +542,6 @@ dashboards:
             "uid": "Hud6lYCMz",
             "version": 1
         }
-
 
     custom-dashboard:
       file: dashboards/custom-dashboard.json

@@ -135,6 +135,8 @@ kubectl get pvc     # sc = PersistentVolumeClaim
 
 Switch context
 
+Also this: https://github.com/ahmetb/kubectx
+
 ```sh
 # https://k3d.io/usage/kubeconfig/
 set -gx KUBECONFIG (k3d kubeconfig write jobbernetes-cluster)

@@ -1,0 +1,50 @@
+loki:
+  serviceName: "loki-headless"
+  servicePort: 3100
+  serviceScheme: http
+  servicePath: /loki/api/v1/push
+
+config:
+  loglevel: info
+  lineFormat: json
+  k8sLoggingExclude: "On"
+  k8sLoggingParser: "On"
+  removeKeys:
+    - kubernetes
+    - stream
+    - '@t'
+  labelMap:
+    kubernetes:
+      namespace_name: namespace
+      labels:
+        app: app
+        release: release
+        jobbernetes_job_name: jobbernetes_job_name
+        name: name
+      host: node
+      container_name: container
+      pod_name: instance
+
+  parsers:
+    - Name: serilog_formatting_compact
+      Format: json
+      Time_Key: '@t'
+      Time_Format: "%Y-%m-%dT%H:%M:%S%z"
+
+  # parsers: # Allow to define custom parsers. The key here is the same as the one in the [PARSER] section of parsers.conf file.
+  #  - Name: json
+  #    Format: json
+  #    Time_Key: time
+  #    Time_Format: "%d/%b/%Y:%H:%M:%S %z"
+
+  # extraOutputs: # Allow to define extra outputs in addition to the one automatically created
+  #   - Name: stdout
+  #     Format: json
+  #     json_date_format: time
+
+resources:
+  limits:
+    memory: 100Mi
+  requests:
+    cpu: 100m
+    memory: 100Mi

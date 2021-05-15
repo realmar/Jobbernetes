@@ -16,7 +16,7 @@ repositories = [
 charts = [
     ("influxdb", "influxdata/influxdb", "helm-configs/influxdb.yaml"),
     ("grafana", "grafana/grafana", "helm-configs/grafana.yaml"),
-    ("promtail", "grafana/promtail", "helm-configs/promtail.yaml"),
+    ("fluent-bit", "grafana/fluent-bit", "helm-configs/fluent-bit.yaml"),
     ("loki", "grafana/loki", "helm-configs/loki.yaml"),
     ("prometheus", "prometheus-community/prometheus", "helm-configs/prometheus.yaml"),
     ("mongodb", "bitnami/mongodb", "helm-configs/mongodb.yaml"),

@@ -1,4 +1,5 @@
 local components = import 'lib/components.libsonnet';
+local config = import 'lib/configuration.libsonnet';
 local jn = import 'lib/jobbernetes.libsonnet';
 local kube = import 'vendor/kube.libsonnet';
 
@@ -12,7 +13,7 @@ local kube = import 'vendor/kube.libsonnet';
     spec+: {
       replicas: 2,
       template+: {
-        metadata+: jn.PrometheusAnnotations(),
+        metadata+: jn.AllAnnotations(),
         spec+: {
           restartPolicy: 'Always',
           containers_+: {
@@ -20,12 +21,8 @@ local kube = import 'vendor/kube.libsonnet';
               image: components.external_service.image.fqn,
               imagePullPolicy: 'Always',
               ports: [{ name: 'http', containerPort: 3000 }],
-              env_+: {
-                // ASPNET
-                ASPNETCORE_URLS: 'http://0.0.0.0:3000',
-                ASPNETCORE_ENVIRONMENT: 'Production',
-              },
-              resources: jn.ResourcesDefaults(),
+              env_+: config.Logging() +
+                     config.AspNetCore(),
             },
           },
         },

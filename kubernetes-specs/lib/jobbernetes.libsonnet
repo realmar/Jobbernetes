@@ -42,6 +42,18 @@ local PrometheusAnnotations(port=3000) = {
   },
 };
 
+local LoggingAnnotations() = {
+  annotations+: {
+    // 'fluentbit.io/exclude': 'true',
+    'fluentbit.io/parser': 'serilog_formatting_compact',
+  },
+};
+
+local AllAnnotations(prometheusPort=3000) = std.mergePatch(
+  PrometheusAnnotations(prometheusPort),
+  LoggingAnnotations()
+);
+
 local WaitFor(name) = {
   ['wait' + name]: kube.Container('wait-for-' + name) {
     image: 'groundnuty/k8s-wait-for:v1.4',
@@ -83,7 +95,9 @@ local ResourcesDefaults() = std.mergePatch(
 // exports
 {
   Storage:: Storage,
+  AllAnnotations:: AllAnnotations,
   PrometheusAnnotations:: PrometheusAnnotations,
+  LoggingAnnotations:: LoggingAnnotations,
   WaitFor:: WaitFor,
   WaitForRabbitMQ:: WaitForRabbitMQ,
   WaitForMongoDB:: WaitForMongoDB,

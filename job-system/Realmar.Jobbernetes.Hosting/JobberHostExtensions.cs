@@ -6,10 +6,13 @@ using Autofac.Extensions.DependencyInjection;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Prometheus.Client.DependencyInjection;
 using Realmar.Jobbernetes.Framework.Facade;
+using Realmar.Jobbernetes.Hosting.Logging.Options;
 using Realmar.Jobbernetes.Infrastructure.Metrics;
+using Serilog;
+using Serilog.Formatting.Compact;
 
 namespace Realmar.Jobbernetes.Hosting
 {
@@ -22,19 +25,35 @@ namespace Realmar.Jobbernetes.Hosting
         private static IHostBuilder ConfigureCommon(this IHostBuilder builder) =>
             builder.UseServiceProviderFactory(new AutofacServiceProviderFactory())
                    .ConfigureContainer<ContainerBuilder>(ConfigureContainer)
-                   .ConfigureLogging(ConfigureLogging)
                    .ConfigureAppConfiguration(ConfigureAppConfiguration)
                    .ConfigureServices(ConfigureOptions)
-                   .ConfigureServices(ConfigureMetrics);
+                   .ConfigureServices(ConfigureMetrics)
+                   .UseSerilog(ConfigureLogger);
+
+        private static void ConfigureLogger(HostBuilderContext  context,
+                                            IServiceProvider    services,
+                                            LoggerConfiguration configuration)
+        {
+            var lokiOptions = services.GetService<IOptions<SerilogOptions>>()!.Value;
+
+            configuration.ReadFrom.Configuration(context.Configuration)
+                         .ReadFrom.Services(services)
+                         .Enrich.FromLogContext()
+                         .WriteTo.Console(new RenderedCompactJsonFormatter());
+
+            // This does not work at the moment
+            //
+            // Install:
+            //      Serilog.Sinks.Loki.gRPC
+            //      Grpc.Core
+            //
+            // .WriteTo.LokigRPC(lokiOptions.Loki.Hostname);
+            // .WriteTo.GrafanaLoki(lokiOptions.Loki.Hostname);
+        }
 
         private static void ConfigureContainer(ContainerBuilder builder)
         {
             builder.RegisterModule<MetricsModule>();
-        }
-
-        private static void ConfigureLogging(HostBuilderContext context, ILoggingBuilder builder)
-        {
-            builder.AddConsole();
         }
 
         private static void ConfigureAppConfiguration(HostBuilderContext context, IConfigurationBuilder config)
@@ -44,8 +63,8 @@ namespace Realmar.Jobbernetes.Hosting
 
         private static void ConfigureOptions(HostBuilderContext context, IServiceCollection services)
         {
-            // void Configure<TOptions>() where TOptions : class =>
-            //     services.Configure<TOptions>(context.Configuration.GetSection(typeof(TOptions).Name));
+            void Configure<TOptions>(string? sectionName = null) where TOptions : class =>
+                services.Configure<TOptions>(context.Configuration.GetSection(sectionName ?? typeof(TOptions).Name));
 
             var options = typeof(IJobbernetes).Assembly.GetTypes()
                                               .Where(type =>
@@ -72,6 +91,8 @@ namespace Realmar.Jobbernetes.Hosting
                 registerMethod.MakeGenericMethod(option)
                               .Invoke(null, new object?[] { services, context.Configuration.GetSection(option.Name) });
             }
+
+            Configure<SerilogOptions>(SerilogOptions.Position);
         }
 
         private static void ConfigureMetrics(HostBuilderContext context, IServiceCollection services)

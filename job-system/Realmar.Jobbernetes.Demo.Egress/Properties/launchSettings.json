@@ -22,7 +22,12 @@
                 // MongoDB
                 "MongoOptions__ConnectionString": "mongodb://localhost:27017",
                 "MongoOptions__Database": "jobbernetes",
-                "MongoOptions__Collection": "images"
+                "MongoOptions__Collection": "images",
+
+                // Logging
+                "Serilog__MinimumLevel__Default": "Debug",
+                "Serilog__Loki__Hostname": "http://localhost:3100/loki/api/v1/push",
+                "SerilogOptions__EnableSerilogDebugging": "true"
             },
             "distributionName": ""
         }

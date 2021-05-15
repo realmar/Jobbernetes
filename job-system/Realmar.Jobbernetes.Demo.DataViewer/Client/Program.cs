@@ -13,7 +13,7 @@ namespace Realmar.Jobbernetes.Demo.DataViewer.Client
             builder.RootComponents.Add<App>("#app");
 
             builder.Services
-                   .AddScoped(sp => new HttpClient { BaseAddress = new(builder.HostEnvironment.BaseAddress) });
+                   .AddScoped(_ => new HttpClient { BaseAddress = new(builder.HostEnvironment.BaseAddress) });
 
             return builder.Build().RunAsync();
         }

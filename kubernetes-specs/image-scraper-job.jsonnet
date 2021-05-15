@@ -1,4 +1,5 @@
 local components = import 'lib/components.libsonnet';
+local config = import 'lib/configuration.libsonnet';
 local constants = import 'lib/constants.libsonnet';
 local jn = import 'lib/jobbernetes.libsonnet';
 local kube = import 'vendor/kube.libsonnet';
@@ -15,6 +16,11 @@ local ImageJob(name, prometheus_instance) = kube.CronJob(name) {
         parallelism: 2,
         completions: 2,
         template+: {
+          metadata+: jn.LoggingAnnotations() {
+            labels+: {
+              jobbernetes_job_name: prometheus_instance,
+            },
+          },
           spec+: {
             restartPolicy: 'OnFailure',
             initContainers_+: std.mergePatch(
@@ -30,43 +36,25 @@ local ImageJob(name, prometheus_instance) = kube.CronJob(name) {
                     cpu: $.cpus,
                   },
                 },
-                env_+: {
-                  // ExternalService
-                  ExternalServiceOptions__Url: 'http://' + components.external_service.serviceName + ':3000/images',
+                env_+: config.Logging() +
+                       config.RabbitMQConnection() +
+                       config.RabbitMQConsumer('jobbernetes', 'jn-images-ingress', 'jn-images-ingress') +
+                       config.RabbitMQProducer('jobbernetes', 'jn-images-egress', 'jn-images-egress') +
+                       config.MetricPusher(prometheus_instance) +
+                       {
+                         // ExternalService
+                         ExternalServiceOptions__Url: 'http://' + components.external_service.serviceName + ':3000/images',
 
-                  // Processing
-                  JobOptions__BatchSize: '300',
-                  JobOptions__MaxConcurrentJobs: std.toString($.cpus),
-                  JobOptions__MaxMessagesPerTask: '20',
+                         // Processing
+                         JobOptions__BatchSize: '300',
+                         JobOptions__MaxConcurrentJobs: std.toString($.cpus),
+                         JobOptions__MaxMessagesPerTask: '20',
 
-                  // General
-                  RabbitMQConnectionOptions__Hostname: constants.RabbitMQDns,
-                  RabbitMQConnectionOptions__Username: 'admin',
-                  RabbitMQConnectionOptions__Password: 'admin',
-
-                  // Consumer
-                  RabbitMQConsumerOptions__Exchange: 'jobbernetes',
-                  RabbitMQConsumerOptions__Queue: 'jn-images-ingress',
-                  RabbitMQConsumerOptions__RoutingKey: 'jn-images-ingress',
-
-                  // Producer
-                  RabbitMQProducerOptions__Exchange: 'jobbernetes',
-                  RabbitMQProducerOptions__Queue: 'jn-images-egress',
-                  RabbitMQProducerOptions__RoutingKey: 'jn-images-egress',
-
-                  // Prometheus
-                  MetricPusherOptions__Endpoint: 'http://' + constants.prometheusGatewayDns + ':9091/metrics',
-                  MetricPusherOptions__Job: 'jobbernetes_jobs',
-                  MetricPusherOptions__JobName: prometheus_instance,
-
-                  // Logging
-                  Logging__LogLevel__Default: 'Information',
-
-                  // Demo
-                  DemoOptions__ProcessingDelayMilliseconds__Min: '100',
-                  DemoOptions__ProcessingDelayMilliseconds__Max: '300',
-                  DemoOptions__FailureProbability: '0.2',
-                },
+                         // Demo
+                         DemoOptions__ProcessingDelayMilliseconds__Min: '100',
+                         DemoOptions__ProcessingDelayMilliseconds__Max: '300',
+                         DemoOptions__FailureProbability: '0.2',
+                       },
               },
             },
           },

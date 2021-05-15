@@ -11,7 +11,7 @@ local kube = import 'vendor/kube.libsonnet';
       labels: { app: $.name },
     },
     spec+: {
-      replicas: 1,
+      replicas: 3,
       template+: {
         metadata+: jn.PrometheusAnnotations($.port) {
           labels+: {
@@ -28,12 +28,12 @@ local kube = import 'vendor/kube.libsonnet';
               args_+: { listen: '0.0.0.0:' + $.port },
               resources: {
                 limits: {
-                  cpu: 2,
-                  memory: '256Mi',
+                  cpu: 0.3,
+                  memory: '60Mi',
                 },
                 requests: {
-                  cpu: 0.2,
-                  memory: '128Mi',
+                  cpu: 0.1,
+                  memory: '10Mi',
                 },
               },
             },

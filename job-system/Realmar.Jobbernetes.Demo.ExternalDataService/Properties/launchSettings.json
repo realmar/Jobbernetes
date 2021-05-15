@@ -33,7 +33,12 @@
             "launchUrl": "http://localhost:5001/swagger",
             "environmentVariables": {
                 "ASPNETCORE_URLS": "http://localhost:5001",
-                "ASPNETCORE_ENVIRONMENT": "Development"
+                "ASPNETCORE_ENVIRONMENT": "Development",
+
+                // Logging
+                "Serilog__MinimumLevel__Default": "Debug",
+                "Serilog__Loki__Hostname": "http://localhost:3100/loki/api/v1/push",
+                "SerilogOptions__EnableSerilogDebugging": "true"
             },
             "distributionName": ""
         }

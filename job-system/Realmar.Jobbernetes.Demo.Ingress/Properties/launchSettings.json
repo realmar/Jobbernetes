@@ -43,7 +43,12 @@
                 // Producer
                 "RabbitMQProducerOptions__Exchange": "jobbernetes",
                 "RabbitMQProducerOptions__Queue": "jn-images-ingress",
-                "RabbitMQProducerOptions__RoutingKey": "jn-images-ingress"
+                "RabbitMQProducerOptions__RoutingKey": "jn-images-ingress",
+
+                // Logging
+                "Serilog__MinimumLevel__Default": "Debug",
+                "Serilog__Loki__Hostname": "http://localhost:3100/loki/api/v1/push",
+                "SerilogOptions__EnableSerilogDebugging": "true"
             },
             "distributionName": ""
         }

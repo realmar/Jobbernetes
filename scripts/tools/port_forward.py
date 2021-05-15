@@ -15,6 +15,7 @@ SERVICES = [
     ("svc/grafana", "9092:80"),
     ("svc/rabbitmq", "5672:5672"),
     ("svc/rabbitmq", "15672:15672"),
+    ("svc/loki", "3100:3100"),
 ]
 
 

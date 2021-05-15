@@ -1,4 +1,5 @@
 local components = import 'lib/components.libsonnet';
+local config = import 'lib/configuration.libsonnet';
 local constants = import 'lib/constants.libsonnet';
 local jn = import 'lib/jobbernetes.libsonnet';
 local kube = import 'vendor/kube.libsonnet';
@@ -13,7 +14,7 @@ local kube = import 'vendor/kube.libsonnet';
     spec+: {
       replicas: 1,
       template+: {
-        metadata+: jn.PrometheusAnnotations(),
+        metadata+: jn.AllAnnotations(),
         spec+: {
           restartPolicy: 'Always',
           initContainers_+: jn.WaitForMongoDB(),
@@ -27,16 +28,9 @@ local kube = import 'vendor/kube.libsonnet';
                   cpu: '500m',
                 },
               },
-              env_+: {
-                // ASPNET
-                ASPNETCORE_URLS: 'http://0.0.0.0:3000',
-                ASPNETCORE_ENVIRONMENT: 'Production',
-
-                // MongoDB
-                MongoOptions__ConnectionString: 'mongodb://' + constants.mongoDBDns + ':27017',
-                MongoOptions__Database: 'jobbernetes',
-                MongoOptions__Collection: 'images',
-              },
+              env_+: config.Logging() +
+                     config.AspNetCore() +
+                     config.MongoDB('jobbernetes', 'images'),
             },
           },
         },
