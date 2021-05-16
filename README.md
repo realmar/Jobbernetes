@@ -150,3 +150,16 @@ https://stackoverflow.com/questions/40401795/how-can-i-trigger-a-kubernetes-sche
 ```sh
 kubectl create job --from=cronjob/<cronjob-name> <job-name>
 ```
+
+## sysctl
+
+```sh
+sudo sysctl -w sysctl vm.swappiness=2
+sudo sysctl -w fs.inotify.max_user_instances=512
+```
+
+Show swap usage per process
+
+```sh
+for file in /proc/*/status ; awk '/VmSwap|Name/{printf $2 " " $3}END{ print ""}' $file; end | sort -k 2 -n -r
+```
