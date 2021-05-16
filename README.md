@@ -163,3 +163,11 @@ Show swap usage per process
 ```sh
 for file in /proc/*/status ; awk '/VmSwap|Name/{printf $2 " " $3}END{ print ""}' $file; end | sort -k 2 -n -r
 ```
+
+## Dependencies
+
+Not needed
+
+```sh
+sudo apt-get install -y libfontconfig1
+```

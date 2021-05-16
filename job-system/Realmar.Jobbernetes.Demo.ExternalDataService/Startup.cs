@@ -1,3 +1,4 @@
+using System.IO;
 using Autofac;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -8,15 +9,19 @@ using Prometheus.Client.AspNetCore;
 using Prometheus.Client.HttpRequestDurations;
 using Realmar.Jobbernetes.Framework.Messaging;
 using Realmar.Jobbernetes.Infrastructure.Metrics;
+using SkiaSharp;
 
 #pragma warning disable CA1822 // Mark members as static
 namespace Realmar.Jobbernetes.Demo.ExternalImageService
 {
     internal class Startup
     {
-        public Startup(IConfiguration configuration)
+        private readonly IHostEnvironment _environment;
+
+        public Startup(IHostEnvironment environment, IConfiguration configuration)
         {
             Configuration = configuration;
+            _environment  = environment;
         }
 
         public IConfiguration Configuration { get; }
@@ -41,6 +46,10 @@ namespace Realmar.Jobbernetes.Demo.ExternalImageService
         {
             builder.RegisterModule<MessagingModule>();
             builder.RegisterMetricsNameDecorator(factory => new PrefixMetricsNameFactory("external_data_service", factory));
+            builder.Register(_ => SKTypeface.FromFile(Path.Combine(
+                                                          _environment.ContentRootPath,
+                                                          "Fonts",
+                                                          "JetBrainsMono-Regular.ttf")));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

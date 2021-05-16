@@ -4,6 +4,9 @@
         <TargetFramework>net5.0</TargetFramework>
         <UserSecretsId>8d1c4d2b-cc6b-43fc-bef8-4efc2a5cc04b</UserSecretsId>
         <Nullable>enable</Nullable>
+
+        <ServerGarbageCollection>false</ServerGarbageCollection>
+        <ConcurrentGarbageCollection>true</ConcurrentGarbageCollection>
     </PropertyGroup>
 
     <ItemGroup>

@@ -1,9 +1,7 @@
-using System.IO;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Hosting;
-using NetVips;
 using Prometheus.Client;
 using Realmar.Jobbernetes.Infrastructure.Metrics;
+using SkiaSharp;
 
 namespace Realmar.Jobbernetes.Demo.ExternalImageService.Controllers
 {
@@ -11,12 +9,12 @@ namespace Realmar.Jobbernetes.Demo.ExternalImageService.Controllers
     [ApiController]
     public class ImagesController : ControllerBase
     {
-        private readonly ICounter         _counter;
-        private readonly IHostEnvironment _environment;
+        private readonly ICounter   _counter;
+        private readonly SKTypeface _typeface;
 
-        public ImagesController(IHostEnvironment environment, IMetricsNameFactory nameFactory, IMetricFactory metricFactory)
+        public ImagesController(SKTypeface typeface, IMetricsNameFactory nameFactory, IMetricFactory metricFactory)
         {
-            _environment = environment;
+            _typeface = typeface;
             _counter = metricFactory.CreateCounter(nameFactory.Create("bytes_total"),
                                                    "Number of bytes of all generated images");
         }
@@ -24,24 +22,28 @@ namespace Realmar.Jobbernetes.Demo.ExternalImageService.Controllers
         [HttpGet("{name}")]
         public IActionResult Get(string name)
         {
-            const int width  = 256;
-            const int height = 256;
-
-            if (ModuleInitializer.VipsInitialized)
+            using SKPaint textPaint = new()
             {
-                using var textImage = Image.Text(name, width: width, height: height, dpi: 600,
-                                                 font: "JetBrains Mono",
-                                                 fontfile: Path.Combine(_environment.ContentRootPath,
-                                                                        "Fonts",
-                                                                        "JetBrainsMono-Regular.ttf"));
-                var fileContents = textImage.JpegsaveBuffer();
+                TextSize = 86,
+                Color    = SKColor.Parse("#FFFFFF"),
+                Typeface = _typeface
+            };
 
-                _counter.Inc(fileContents.Length);
+            var bounds = new SKRect();
+            textPaint.MeasureText(name, ref bounds);
 
-                return File(fileContents, "image/jpeg");
-            }
+            var helloBitmap = new SKBitmap((int) bounds.Right, (int) bounds.Height);
 
-            throw ModuleInitializer.Exception;
+            using var bitmapCanvas = new SKCanvas(helloBitmap);
+            bitmapCanvas.Clear();
+            bitmapCanvas.DrawText(name, 0, -bounds.Top, textPaint);
+
+            using var data         = helloBitmap.Encode(SKEncodedImageFormat.Jpeg, 28);
+            var       fileContents = data.ToArray();
+
+            _counter.Inc(fileContents.Length);
+
+            return File(fileContents, "image/jpeg");
         }
     }
 }

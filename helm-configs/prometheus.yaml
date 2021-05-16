@@ -68,7 +68,7 @@ server:
       memory: 768Mi
       cpu: 1
     limits:
-      memory: 1280Mi
+      memory: 1768Mi
       cpu: 3
 
 pushgateway:
