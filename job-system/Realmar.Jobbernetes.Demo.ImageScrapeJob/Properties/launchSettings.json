@@ -42,7 +42,7 @@
                 // Demo
                 "DemoOptions__ProcessingDelayMilliseconds__Min": "1000",
                 "DemoOptions__ProcessingDelayMilliseconds__Max": "3000",
-                "DemoOptions__FailureProbability": "0.8"
+                "DemoOptions__FailureProbability": "0.2"
             }
         }
         // "distributionName": ""

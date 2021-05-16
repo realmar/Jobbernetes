@@ -41,7 +41,7 @@ namespace Realmar.Jobbernetes.Framework.Facade
 
         public async Task Run(CancellationToken cancellationToken)
         {
-            await _consumer.StartAsync(ConsumeData, ProcessJobError, cancellationToken)
+            await _consumer.StartAsync(ConsumeData, ProcessReadError, cancellationToken)
                            .ConfigureAwait(false);
 
             await _consumer.WaitForBatchAsync(cancellationToken).ConfigureAwait(false);
@@ -64,12 +64,23 @@ namespace Realmar.Jobbernetes.Framework.Facade
             }
         }
 
-        private void ProcessJobError(Exception exception)
+        private void ProcessReadError(Exception exception, string data)
+        {
+            ProcessJobError(exception, $" received data = {data}");
+        }
+
+        private void ProcessJobError(Exception exception, string additionalMessage = null)
         {
             if (exception is not OperationCanceledException)
             {
                 _counterProcessed.WithFail(_options.Value.GetLabelValues()).Inc();
-                _logger.LogError(exception, "Job failed to process");
+                var message = "Job failed to process";
+                if (additionalMessage != null)
+                {
+                    message += $" {additionalMessage}";
+                }
+
+                _logger.LogError(exception, message);
             }
         }
     }

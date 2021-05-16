@@ -35,7 +35,11 @@ namespace Realmar.Jobbernetes.Framework.Messaging.EasyNetQ
                                              }
                                          };
                                      },
-                                     register => register.Register<IConsumerErrorStrategy, ConsumerErrorStrategy>());
+                                     register =>
+                                     {
+                                         register.Register<ISerializer, SerializerAdapter>();
+                                         register.Register<IConsumerErrorStrategy, ConsumerErrorStrategy>();
+                                     });
         }
     }
 }
