@@ -70,5 +70,5 @@ local ImageJob(name, prometheus_instance) = kube.CronJob(name) {
 {
   job01: ImageJob('jn-image-scrape-spaceship-job', 'image_scrape_spaceship_job'),
   job02: ImageJob('jn-image-scrape-airplane-job', 'image_scrape_airplane_job'),
-  job03: ImageJob('jn-image-scrape-automobile-job', 'image_scrape_automobile_job'),
+  job03: ImageJob('jn-image-scrape-car-job', 'image_scrape_car_job'),
 }
