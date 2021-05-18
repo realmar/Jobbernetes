@@ -2,7 +2,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using Autofac;
 using Microsoft.Extensions.DependencyInjection;
-using Realmar.Jobbernetes.Demo.Infrastructure.Options;
+using Realmar.Jobbernetes.Demo.ImageScrapeJob.Options;
 using Realmar.Jobbernetes.Demo.Models;
 using Realmar.Jobbernetes.Hosting;
 

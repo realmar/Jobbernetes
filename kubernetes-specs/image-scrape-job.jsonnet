@@ -4,7 +4,7 @@ local constants = import 'lib/constants.libsonnet';
 local jn = import 'lib/jobbernetes.libsonnet';
 local kube = import 'vendor/kube.libsonnet';
 
-local ImageJob(name, prometheus_instance) = kube.CronJob(name) {
+local ImageJob(name, prometheusInstance, textPrefix, textPostfix) = kube.CronJob(name) {
   processes:: 2,
   threads:: 2,
 
@@ -20,7 +20,7 @@ local ImageJob(name, prometheus_instance) = kube.CronJob(name) {
         template+: {
           metadata+: jn.LoggingAnnotations() {
             labels+: {
-              jobbernetes_job_name: prometheus_instance,
+              jobbernetes_job_name: prometheusInstance,
             },
           },
           spec+: {
@@ -42,7 +42,7 @@ local ImageJob(name, prometheus_instance) = kube.CronJob(name) {
                        config.RabbitMQConnection() +
                        config.RabbitMQConsumer('jobbernetes', 'jn-images-input', 'jn-images-input') +
                        config.RabbitMQProducer('jobbernetes', 'jn-images-output', 'jn-images-output') +
-                       config.MetricPusher(prometheus_instance) +
+                       config.MetricPusher(prometheusInstance) +
                        {
                          // ExternalService
                          ExternalServiceOptions__Url: 'http://' + components.external_service.serviceName + ':3000/images',
@@ -53,6 +53,8 @@ local ImageJob(name, prometheus_instance) = kube.CronJob(name) {
                          JobOptions__MaxMessagesPerTask: '20',
 
                          // Demo
+                         DemoOptions__TextPrefix: textPrefix,
+                         DemoOptions__TextPostfix: textPostfix,
                          DemoOptions__ProcessingDelayMilliseconds__Min: '100',
                          DemoOptions__ProcessingDelayMilliseconds__Max: '300',
                          DemoOptions__FailureProbability: '0.2',
@@ -66,9 +68,8 @@ local ImageJob(name, prometheus_instance) = kube.CronJob(name) {
   },
 };
 
-
 {
-  job01: ImageJob('jn-image-scrape-spaceship-job', 'image_scrape_spaceship_job'),
-  job02: ImageJob('jn-image-scrape-airplane-job', 'image_scrape_airplane_job'),
-  job03: ImageJob('jn-image-scrape-car-job', 'image_scrape_car_job'),
+  job01: ImageJob('jn-image-scrape-spaceship-job', 'image_scrape_spaceship_job', 'SPACESHIP - ', ' - SPACESHIP'),
+  job02: ImageJob('jn-image-scrape-airplane-job', 'image_scrape_airplane_job', 'AIRPLANE - ', ' - AIRPLANE'),
+  job03: ImageJob('jn-image-scrape-car-job', 'image_scrape_car_job', 'CAR - ', ' - CAR'),
 }

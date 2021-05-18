@@ -1,8 +1,8 @@
 using System;
 
-namespace Realmar.Jobbernetes.Demo.Infrastructure.Exceptions
+namespace Realmar.Jobbernetes.Demo.ImageScrapeJob.Exceptions
 {
-    public class DemoException : Exception
+    internal class DemoException : Exception
     {
         public DemoException(string message) : base(message) { }
 

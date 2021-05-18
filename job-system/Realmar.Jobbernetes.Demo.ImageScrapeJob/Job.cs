@@ -3,8 +3,8 @@ using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Options;
-using Realmar.Jobbernetes.Demo.Infrastructure.Exceptions;
-using Realmar.Jobbernetes.Demo.Infrastructure.Options;
+using Realmar.Jobbernetes.Demo.ImageScrapeJob.Exceptions;
+using Realmar.Jobbernetes.Demo.ImageScrapeJob.Options;
 using Realmar.Jobbernetes.Demo.Models;
 using Realmar.Jobbernetes.Framework.Jobs;
 using Realmar.Jobbernetes.Framework.Messaging;
@@ -54,7 +54,10 @@ namespace Realmar.Jobbernetes.Demo.ImageScrapeJob
                 throw new DemoException("Synthetic error in demo to simulate a failure");
             }
 
-            var response = await _httpClient.GetAsync($"{_url}/{data.Name}", cancellationToken).ConfigureAwait(false);
+            var response = await _httpClient
+                                .GetAsync($"{_url}/{_options.Value.TextPrefix}{data.Name}{_options.Value.TextPostfix}",
+                                          cancellationToken)
+                                .ConfigureAwait(false);
             response.EnsureSuccessStatusCode();
 
             var bytes = await response.Content.ReadAsByteArrayAsync(cancellationToken).ConfigureAwait(false);
