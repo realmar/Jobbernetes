@@ -7,7 +7,7 @@ from lib import HELM_DIR, is_windows, run_shell_print
 
 
 repositories = [
-    ("influxdata", "https://helm.influxdata.com/"),
+    ("vm", "https://victoriametrics.github.io/helm-charts/"),
     ("grafana", "https://grafana.github.io/helm-charts"),
     ("prometheus-community", "https://prometheus-community.github.io/helm-charts"),
     ("bitnami", "https://charts.bitnami.com/bitnami"),
@@ -15,7 +15,7 @@ repositories = [
 ]
 
 charts = [
-    ("influxdb", "influxdata/influxdb", os.path.join(HELM_DIR, 'influxdb.yaml')),
+    ("victoria-metrics-single", "vm/victoria-metrics-single", os.path.join(HELM_DIR, 'victoria-metrics-single.yaml')),
     ("grafana", "grafana/grafana", os.path.join(HELM_DIR, "grafana.yaml")),
     ("fluent-bit", "grafana/fluent-bit", os.path.join(HELM_DIR, "fluent-bit.yaml")),
     ("loki", "grafana/loki", os.path.join(HELM_DIR, "loki.yaml")),

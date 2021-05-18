@@ -1,0 +1,28 @@
+server:
+  enabled: true
+
+  persistentVolume:
+    enabled: true
+    existingClaim: "victoria-metrics-single-pvc"
+
+  resources:
+    limits:
+      cpu: 3000m
+      memory: 1280Mi
+    requests:
+      cpu: 1000m
+      memory: 1024Mi
+
+  securityContext:
+    runAsUser: 1000
+    runAsNonRoot: true
+    runAsGroup: 1000
+    fsGroup: 1000
+
+  podSecurityContext:
+    runAsUser: 1000
+    runAsNonRoot: true
+    runAsGroup: 1000
+
+  statefulSet:
+    enabled: false

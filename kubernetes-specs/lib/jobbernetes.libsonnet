@@ -57,7 +57,7 @@ local AllAnnotations(prometheusPort=3000) = std.mergePatch(
 local WaitFor(name) = {
   ['wait' + name]: kube.Container('wait-for-' + name) {
     image: 'groundnuty/k8s-wait-for:v1.4',
-    imagePullPolicy: 'Always',
+    imagePullPolicy: 'IfNotPresent',
     args: [
       'pod',
       '-lapp.kubernetes.io/name=' + name,

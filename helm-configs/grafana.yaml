@@ -35,16 +35,15 @@ datasources:
   datasources.yaml:
     apiVersion: 1
     datasources:
+      - name: VictoriaMetrics
+        type: prometheus
+        url: http://victoria-metrics-single-server:8428
+        access: proxy
+        isDefault: true
       - name: Prometheus
         type: prometheus
         url: http://prometheus-server
         access: proxy
-        isDefault: true
-      - name: InfluxDB
-        type: influxdb
-        url: http://influxdb:8086
-        access: proxy
-        database: jobbernetes-prometheus
         isDefault: false
       - name: Loki
         type: loki
@@ -80,10 +79,10 @@ dashboards:
   default:
     rabbitmq:
       gnetId: 4371
-      datasource: Prometheus
+      datasource: VictoriaMetrics
     mongodb:
       gnetId: 7353
-      datasource: Prometheus
+      datasource: VictoriaMetrics
     jobs:
       json: |
         {

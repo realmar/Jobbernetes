@@ -17,7 +17,7 @@ local Mapping(relativePath, keepOnClusterDestroy=false) =
   };
 
 [
-  Mapping('influxdb'),
+  Mapping('victoria-metrics-single'),
   Mapping('grafana'),
   Mapping('loki'),
   Mapping('prometheus/server'),
