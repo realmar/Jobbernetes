@@ -102,7 +102,7 @@ dashboards:
             "editable": true,
             "gnetId": null,
             "graphTooltip": 0,
-            "iteration": 1621085580910,
+            "iteration": 1621366118205,
             "links": [],
             "panels": [
                 {
@@ -110,7 +110,7 @@ dashboards:
                     "bars": false,
                     "dashLength": 10,
                     "dashes": false,
-                    "datasource": null,
+                    "datasource": "${datasource}",
                     "description": "",
                     "fieldConfig": {
                         "defaults": {},
@@ -119,7 +119,7 @@ dashboards:
                     "fill": 1,
                     "fillGradient": 0,
                     "gridPos": {
-                        "h": 11,
+                        "h": 10,
                         "w": 15,
                         "x": 0,
                         "y": 0
@@ -211,7 +211,7 @@ dashboards:
                     }
                 },
                 {
-                    "datasource": null,
+                    "datasource": "${datasource}",
                     "description": "",
                     "fieldConfig": {
                         "defaults": {
@@ -234,7 +234,7 @@ dashboards:
                         "overrides": []
                     },
                     "gridPos": {
-                        "h": 11,
+                        "h": 16,
                         "w": 3,
                         "x": 15,
                         "y": 0
@@ -278,7 +278,7 @@ dashboards:
                     "type": "stat"
                 },
                 {
-                    "datasource": null,
+                    "datasource": "${datasource}",
                     "description": "",
                     "fieldConfig": {
                         "defaults": {
@@ -301,7 +301,7 @@ dashboards:
                         "overrides": []
                     },
                     "gridPos": {
-                        "h": 11,
+                        "h": 16,
                         "w": 3,
                         "x": 18,
                         "y": 0
@@ -345,7 +345,7 @@ dashboards:
                     "type": "stat"
                 },
                 {
-                    "datasource": null,
+                    "datasource": "${datasource}",
                     "fieldConfig": {
                         "defaults": {
                             "color": {
@@ -367,7 +367,7 @@ dashboards:
                         "overrides": []
                     },
                     "gridPos": {
-                        "h": 11,
+                        "h": 16,
                         "w": 3,
                         "x": 21,
                         "y": 0
@@ -413,7 +413,125 @@ dashboards:
                     "type": "stat"
                 },
                 {
-                    "datasource": "Loki",
+                    "aliasColors": {},
+                    "bars": false,
+                    "dashLength": 10,
+                    "dashes": false,
+                    "datasource": "${datasource}",
+                    "description": "",
+                    "fieldConfig": {
+                        "defaults": {},
+                        "overrides": []
+                    },
+                    "fill": 1,
+                    "fillGradient": 0,
+                    "gridPos": {
+                        "h": 6,
+                        "w": 15,
+                        "x": 0,
+                        "y": 10
+                    },
+                    "hiddenSeries": false,
+                    "id": 12,
+                    "legend": {
+                        "avg": false,
+                        "current": false,
+                        "max": false,
+                        "min": false,
+                        "show": true,
+                        "total": false,
+                        "values": false
+                    },
+                    "lines": true,
+                    "linewidth": 1,
+                    "nullPointMode": "null",
+                    "options": {
+                        "alertThreshold": true
+                    },
+                    "percentage": false,
+                    "pluginVersion": "7.5.5",
+                    "pointradius": 2,
+                    "points": false,
+                    "renderer": "flot",
+                    "seriesOverrides": [
+                        {
+                            "$$hashKey": "object:173",
+                            "alias": "fail",
+                            "color": "#F2495C"
+                        },
+                        {
+                            "$$hashKey": "object:181",
+                            "alias": "success",
+                            "color": "#73BF69"
+                        }
+                    ],
+                    "spaceLength": 10,
+                    "stack": false,
+                    "steppedLine": false,
+                    "targets": [
+                        {
+                            "exemplar": true,
+                            "expr": "sum by (status) (irate(jobbernetes_job_processed_total{job_name=~\"${jobname}\"}[5m]))",
+                            "hide": false,
+                            "interval": "",
+                            "legendFormat": "",
+                            "refId": "Processed"
+                        }
+                    ],
+                    "thresholds": [],
+                    "timeFrom": null,
+                    "timeRegions": [],
+                    "timeShift": null,
+                    "title": "Combined Rates Items/s",
+                    "tooltip": {
+                        "shared": true,
+                        "sort": 0,
+                        "value_type": "individual"
+                    },
+                    "transformations": [
+                        {
+                            "id": "renameByRegex",
+                            "options": {
+                                "regex": "{.?status=\"([^\"]+)\".?}",
+                                "renamePattern": "$1"
+                            }
+                        }
+                    ],
+                    "type": "graph",
+                    "xaxis": {
+                        "buckets": null,
+                        "mode": "time",
+                        "name": null,
+                        "show": true,
+                        "values": []
+                    },
+                    "yaxes": [
+                        {
+                            "$$hashKey": "object:130",
+                            "format": "short",
+                            "label": null,
+                            "logBase": 1,
+                            "max": null,
+                            "min": null,
+                            "show": true
+                        },
+                        {
+                            "$$hashKey": "object:131",
+                            "format": "short",
+                            "label": null,
+                            "logBase": 1,
+                            "max": null,
+                            "min": null,
+                            "show": true
+                        }
+                    ],
+                    "yaxis": {
+                        "align": false,
+                        "alignLevel": null
+                    }
+                },
+                {
+                    "datasource": "${logs}",
                     "fieldConfig": {
                         "defaults": {},
                         "overrides": []
@@ -422,7 +540,7 @@ dashboards:
                         "h": 17,
                         "w": 24,
                         "x": 0,
-                        "y": 11
+                        "y": 16
                     },
                     "id": 11,
                     "options": {
@@ -443,7 +561,7 @@ dashboards:
                     "type": "logs"
                 }
             ],
-            "refresh": "",
+            "refresh": "1m",
             "schemaVersion": 27,
             "style": "dark",
             "tags": [],
@@ -453,8 +571,13 @@ dashboards:
                         "allValue": ".+",
                         "current": {
                             "selected": true,
-                            "text": "All",
-                            "value": "$__all"
+                            "tags": [],
+                            "text": [
+                                "All"
+                            ],
+                            "value": [
+                                "$__all"
+                            ]
                         },
                         "datasource": null,
                         "definition": "label_values(job_name)",
@@ -463,7 +586,7 @@ dashboards:
                         "hide": 0,
                         "includeAll": true,
                         "label": "Job Name",
-                        "multi": false,
+                        "multi": true,
                         "name": "jobname",
                         "options": [],
                         "query": {
@@ -479,11 +602,53 @@ dashboards:
                         "tagsQuery": "",
                         "type": "query",
                         "useTags": false
+                    },
+                    {
+                        "current": {
+                            "selected": true,
+                            "text": "VictoriaMetrics",
+                            "value": "VictoriaMetrics"
+                        },
+                        "description": null,
+                        "error": null,
+                        "hide": 0,
+                        "includeAll": false,
+                        "label": "Datasource",
+                        "multi": false,
+                        "name": "datasource",
+                        "options": [],
+                        "query": "prometheus",
+                        "queryValue": "",
+                        "refresh": 1,
+                        "regex": "",
+                        "skipUrlSync": false,
+                        "type": "datasource"
+                    },
+                    {
+                        "current": {
+                            "selected": true,
+                            "text": "Loki",
+                            "value": "Loki"
+                        },
+                        "description": null,
+                        "error": null,
+                        "hide": 0,
+                        "includeAll": false,
+                        "label": "Logs",
+                        "multi": false,
+                        "name": "logs",
+                        "options": [],
+                        "query": "loki",
+                        "queryValue": "",
+                        "refresh": 1,
+                        "regex": "",
+                        "skipUrlSync": false,
+                        "type": "datasource"
                     }
                 ]
             },
             "time": {
-                "from": "now-1h",
+                "from": "now-30m",
                 "to": "now"
             },
             "timepicker": {
