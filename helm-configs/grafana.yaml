@@ -102,7 +102,7 @@ dashboards:
             "editable": true,
             "gnetId": null,
             "graphTooltip": 0,
-            "iteration": 1621426068574,
+            "iteration": 1621447028587,
             "links": [],
             "panels": [
                 {
@@ -322,7 +322,7 @@ dashboards:
                     "type": "stat"
                 },
                 {
-                    "collapsed": true,
+                    "collapsed": false,
                     "datasource": null,
                     "gridPos": {
                         "h": 1,
@@ -331,235 +331,236 @@ dashboards:
                         "y": 19
                     },
                     "id": 16,
-                    "panels": [
+                    "panels": [],
+                    "title": "Rates Items/s",
+                    "type": "row"
+                },
+                {
+                    "aliasColors": {},
+                    "bars": false,
+                    "dashLength": 10,
+                    "dashes": false,
+                    "datasource": "${datasource}",
+                    "description": "",
+                    "fieldConfig": {
+                        "defaults": {},
+                        "overrides": []
+                    },
+                    "fill": 1,
+                    "fillGradient": 0,
+                    "gridPos": {
+                        "h": 10,
+                        "w": 24,
+                        "x": 0,
+                        "y": 20
+                    },
+                    "hiddenSeries": false,
+                    "id": 2,
+                    "legend": {
+                        "avg": false,
+                        "current": false,
+                        "max": false,
+                        "min": false,
+                        "show": true,
+                        "total": false,
+                        "values": false
+                    },
+                    "lines": true,
+                    "linewidth": 1,
+                    "nullPointMode": "null",
+                    "options": {
+                        "alertThreshold": true
+                    },
+                    "percentage": false,
+                    "pluginVersion": "7.5.5",
+                    "pointradius": 2,
+                    "points": false,
+                    "renderer": "flot",
+                    "seriesOverrides": [],
+                    "spaceLength": 10,
+                    "stack": false,
+                    "steppedLine": false,
+                    "targets": [
                         {
-                            "aliasColors": {},
-                            "bars": false,
-                            "dashLength": 10,
-                            "dashes": false,
-                            "datasource": "${datasource}",
-                            "description": "",
-                            "fieldConfig": {
-                                "defaults": {},
-                                "overrides": []
-                            },
-                            "fill": 1,
-                            "fillGradient": 0,
-                            "gridPos": {
-                                "h": 10,
-                                "w": 24,
-                                "x": 0,
-                                "y": 2
-                            },
-                            "hiddenSeries": false,
-                            "id": 2,
-                            "legend": {
-                                "avg": false,
-                                "current": false,
-                                "max": false,
-                                "min": false,
-                                "show": true,
-                                "total": false,
-                                "values": false
-                            },
-                            "lines": true,
-                            "linewidth": 1,
-                            "nullPointMode": "null",
-                            "options": {
-                                "alertThreshold": true
-                            },
-                            "percentage": false,
-                            "pluginVersion": "7.5.5",
-                            "pointradius": 2,
-                            "points": false,
-                            "renderer": "flot",
-                            "seriesOverrides": [],
-                            "spaceLength": 10,
-                            "stack": false,
-                            "steppedLine": false,
-                            "targets": [
-                                {
-                                    "exemplar": true,
-                                    "expr": "sum by (job_name, status) (irate(jobbernetes_job_processed_total{job_name=~\"${jobname}\"}[5m]))",
-                                    "hide": false,
-                                    "interval": "",
-                                    "legendFormat": "",
-                                    "refId": "Processed"
-                                }
-                            ],
-                            "thresholds": [],
-                            "timeFrom": null,
-                            "timeRegions": [],
-                            "timeShift": null,
-                            "title": "Jobs",
-                            "tooltip": {
-                                "shared": true,
-                                "sort": 0,
-                                "value_type": "individual"
-                            },
-                            "transformations": [
-                                {
-                                    "id": "renameByRegex",
-                                    "options": {
-                                        "regex": ".+job_name=\"([^\"]+)\",\\sstatus=\"([^\"]+)\".+",
-                                        "renamePattern": "$1/$2"
-                                    }
-                                }
-                            ],
-                            "type": "graph",
-                            "xaxis": {
-                                "buckets": null,
-                                "mode": "time",
-                                "name": null,
-                                "show": true,
-                                "values": []
-                            },
-                            "yaxes": [
-                                {
-                                    "$$hashKey": "object:38",
-                                    "format": "short",
-                                    "label": null,
-                                    "logBase": 1,
-                                    "max": null,
-                                    "min": null,
-                                    "show": true
-                                },
-                                {
-                                    "$$hashKey": "object:39",
-                                    "format": "short",
-                                    "label": null,
-                                    "logBase": 1,
-                                    "max": null,
-                                    "min": null,
-                                    "show": true
-                                }
-                            ],
-                            "yaxis": {
-                                "align": false,
-                                "alignLevel": null
-                            }
-                        },
+                            "exemplar": true,
+                            "expr": "sum by (job_name, status) (rate(jobbernetes_job_processed_total{job_name=~\"${jobname}\"}[${rate_interval}]))",
+                            "hide": false,
+                            "instant": false,
+                            "interval": "",
+                            "intervalFactor": 1,
+                            "legendFormat": "",
+                            "refId": "Processed"
+                        }
+                    ],
+                    "thresholds": [],
+                    "timeFrom": null,
+                    "timeRegions": [],
+                    "timeShift": null,
+                    "title": "Jobs",
+                    "tooltip": {
+                        "shared": true,
+                        "sort": 0,
+                        "value_type": "individual"
+                    },
+                    "transformations": [
                         {
-                            "aliasColors": {},
-                            "bars": false,
-                            "dashLength": 10,
-                            "dashes": false,
-                            "datasource": "${datasource}",
-                            "description": "",
-                            "fieldConfig": {
-                                "defaults": {},
-                                "overrides": []
-                            },
-                            "fill": 1,
-                            "fillGradient": 0,
-                            "gridPos": {
-                                "h": 8,
-                                "w": 24,
-                                "x": 0,
-                                "y": 12
-                            },
-                            "hiddenSeries": false,
-                            "id": 12,
-                            "legend": {
-                                "avg": false,
-                                "current": false,
-                                "max": false,
-                                "min": false,
-                                "show": true,
-                                "total": false,
-                                "values": false
-                            },
-                            "lines": true,
-                            "linewidth": 1,
-                            "nullPointMode": "null",
+                            "id": "renameByRegex",
                             "options": {
-                                "alertThreshold": true
-                            },
-                            "percentage": false,
-                            "pluginVersion": "7.5.5",
-                            "pointradius": 2,
-                            "points": false,
-                            "renderer": "flot",
-                            "seriesOverrides": [
-                                {
-                                    "$$hashKey": "object:173",
-                                    "alias": "fail",
-                                    "color": "#F2495C"
-                                },
-                                {
-                                    "$$hashKey": "object:181",
-                                    "alias": "success",
-                                    "color": "#73BF69"
-                                }
-                            ],
-                            "spaceLength": 10,
-                            "stack": false,
-                            "steppedLine": false,
-                            "targets": [
-                                {
-                                    "exemplar": true,
-                                    "expr": "sum by (status) (irate(jobbernetes_job_processed_total{job_name=~\"${jobname}\"}[5m]))",
-                                    "hide": false,
-                                    "interval": "",
-                                    "legendFormat": "",
-                                    "refId": "Processed"
-                                }
-                            ],
-                            "thresholds": [],
-                            "timeFrom": null,
-                            "timeRegions": [],
-                            "timeShift": null,
-                            "title": "Combined Jobs",
-                            "tooltip": {
-                                "shared": true,
-                                "sort": 0,
-                                "value_type": "individual"
-                            },
-                            "transformations": [
-                                {
-                                    "id": "renameByRegex",
-                                    "options": {
-                                        "regex": "{.?status=\"([^\"]+)\".?}",
-                                        "renamePattern": "$1"
-                                    }
-                                }
-                            ],
-                            "type": "graph",
-                            "xaxis": {
-                                "buckets": null,
-                                "mode": "time",
-                                "name": null,
-                                "show": true,
-                                "values": []
-                            },
-                            "yaxes": [
-                                {
-                                    "$$hashKey": "object:130",
-                                    "format": "short",
-                                    "label": null,
-                                    "logBase": 1,
-                                    "max": null,
-                                    "min": null,
-                                    "show": true
-                                },
-                                {
-                                    "$$hashKey": "object:131",
-                                    "format": "short",
-                                    "label": null,
-                                    "logBase": 1,
-                                    "max": null,
-                                    "min": null,
-                                    "show": true
-                                }
-                            ],
-                            "yaxis": {
-                                "align": false,
-                                "alignLevel": null
+                                "regex": ".+job_name=\"([^\"]+)\",\\sstatus=\"([^\"]+)\".+",
+                                "renamePattern": "$1/$2"
                             }
                         }
                     ],
-                    "title": "Rates Items/s",
-                    "type": "row"
+                    "type": "graph",
+                    "xaxis": {
+                        "buckets": null,
+                        "mode": "time",
+                        "name": null,
+                        "show": true,
+                        "values": []
+                    },
+                    "yaxes": [
+                        {
+                            "$$hashKey": "object:38",
+                            "format": "short",
+                            "label": null,
+                            "logBase": 1,
+                            "max": null,
+                            "min": null,
+                            "show": true
+                        },
+                        {
+                            "$$hashKey": "object:39",
+                            "format": "short",
+                            "label": null,
+                            "logBase": 1,
+                            "max": null,
+                            "min": null,
+                            "show": true
+                        }
+                    ],
+                    "yaxis": {
+                        "align": false,
+                        "alignLevel": null
+                    }
+                },
+                {
+                    "aliasColors": {},
+                    "bars": false,
+                    "dashLength": 10,
+                    "dashes": false,
+                    "datasource": "${datasource}",
+                    "description": "",
+                    "fieldConfig": {
+                        "defaults": {},
+                        "overrides": []
+                    },
+                    "fill": 1,
+                    "fillGradient": 0,
+                    "gridPos": {
+                        "h": 8,
+                        "w": 24,
+                        "x": 0,
+                        "y": 30
+                    },
+                    "hiddenSeries": false,
+                    "id": 12,
+                    "legend": {
+                        "avg": false,
+                        "current": false,
+                        "max": false,
+                        "min": false,
+                        "show": true,
+                        "total": false,
+                        "values": false
+                    },
+                    "lines": true,
+                    "linewidth": 1,
+                    "nullPointMode": "null",
+                    "options": {
+                        "alertThreshold": true
+                    },
+                    "percentage": false,
+                    "pluginVersion": "7.5.5",
+                    "pointradius": 2,
+                    "points": false,
+                    "renderer": "flot",
+                    "seriesOverrides": [
+                        {
+                            "$$hashKey": "object:173",
+                            "alias": "fail",
+                            "color": "#F2495C"
+                        },
+                        {
+                            "$$hashKey": "object:181",
+                            "alias": "success",
+                            "color": "#73BF69"
+                        }
+                    ],
+                    "spaceLength": 10,
+                    "stack": false,
+                    "steppedLine": false,
+                    "targets": [
+                        {
+                            "exemplar": true,
+                            "expr": "sum by (status) (rate(jobbernetes_job_processed_total{job_name=~\"${jobname}\"}[${rate_interval}]))",
+                            "hide": false,
+                            "interval": "",
+                            "legendFormat": "",
+                            "refId": "Processed"
+                        }
+                    ],
+                    "thresholds": [],
+                    "timeFrom": null,
+                    "timeRegions": [],
+                    "timeShift": null,
+                    "title": "Combined Jobs",
+                    "tooltip": {
+                        "shared": true,
+                        "sort": 0,
+                        "value_type": "individual"
+                    },
+                    "transformations": [
+                        {
+                            "id": "renameByRegex",
+                            "options": {
+                                "regex": "{.?status=\"([^\"]+)\".?}",
+                                "renamePattern": "$1"
+                            }
+                        }
+                    ],
+                    "type": "graph",
+                    "xaxis": {
+                        "buckets": null,
+                        "mode": "time",
+                        "name": null,
+                        "show": true,
+                        "values": []
+                    },
+                    "yaxes": [
+                        {
+                            "$$hashKey": "object:130",
+                            "format": "short",
+                            "label": null,
+                            "logBase": 1,
+                            "max": null,
+                            "min": null,
+                            "show": true
+                        },
+                        {
+                            "$$hashKey": "object:131",
+                            "format": "short",
+                            "label": null,
+                            "logBase": 1,
+                            "max": null,
+                            "min": null,
+                            "show": true
+                        }
+                    ],
+                    "yaxis": {
+                        "align": false,
+                        "alignLevel": null
+                    }
                 },
                 {
                     "collapsed": true,
@@ -568,7 +569,7 @@ dashboards:
                         "h": 1,
                         "w": 24,
                         "x": 0,
-                        "y": 20
+                        "y": 38
                     },
                     "id": 14,
                     "panels": [
@@ -582,7 +583,7 @@ dashboards:
                                 "h": 17,
                                 "w": 24,
                                 "x": 0,
-                                "y": 21
+                                "y": 39
                             },
                             "id": 11,
                             "options": {
@@ -612,7 +613,7 @@ dashboards:
                                 "h": 17,
                                 "w": 24,
                                 "x": 0,
-                                "y": 38
+                                "y": 56
                             },
                             "id": 19,
                             "options": {
@@ -647,6 +648,7 @@ dashboards:
                         "allValue": ".+",
                         "current": {
                             "selected": true,
+                            "tags": [],
                             "text": [
                                 "All"
                             ],
@@ -680,7 +682,7 @@ dashboards:
                     },
                     {
                         "current": {
-                            "selected": false,
+                            "selected": true,
                             "text": "VictoriaMetrics",
                             "value": "VictoriaMetrics"
                         },
@@ -719,11 +721,93 @@ dashboards:
                         "regex": "",
                         "skipUrlSync": false,
                         "type": "datasource"
+                    },
+                    {
+                        "auto": true,
+                        "auto_count": 30,
+                        "auto_min": "5m",
+                        "current": {
+                            "selected": false,
+                            "text": "auto",
+                            "value": "$__auto_interval_rate_interval"
+                        },
+                        "description": null,
+                        "error": null,
+                        "hide": 0,
+                        "label": "Rate Interval",
+                        "name": "rate_interval",
+                        "options": [
+                            {
+                                "selected": true,
+                                "text": "auto",
+                                "value": "$__auto_interval_rate_interval"
+                            },
+                            {
+                                "selected": false,
+                                "text": "1m",
+                                "value": "1m"
+                            },
+                            {
+                                "selected": false,
+                                "text": "2m",
+                                "value": "2m"
+                            },
+                            {
+                                "selected": false,
+                                "text": "5m",
+                                "value": "5m"
+                            },
+                            {
+                                "selected": false,
+                                "text": "10m",
+                                "value": "10m"
+                            },
+                            {
+                                "selected": false,
+                                "text": "20m",
+                                "value": "20m"
+                            },
+                            {
+                                "selected": false,
+                                "text": "1h",
+                                "value": "1h"
+                            },
+                            {
+                                "selected": false,
+                                "text": "2h",
+                                "value": "2h"
+                            },
+                            {
+                                "selected": false,
+                                "text": "6h",
+                                "value": "6h"
+                            },
+                            {
+                                "selected": false,
+                                "text": "12h",
+                                "value": "12h"
+                            },
+                            {
+                                "selected": false,
+                                "text": "1d",
+                                "value": "1d"
+                            },
+                            {
+                                "selected": false,
+                                "text": "2d",
+                                "value": "2d"
+                            }
+                        ],
+                        "query": "1m,2m,5m,10m,20m,1h,2h,6h,12h,1d,2d,",
+                        "queryValue": "",
+                        "refresh": 2,
+                        "skipUrlSync": false,
+                        "type": "interval"
                     }
                 ]
             },
             "time": {
-                "from": "now-15m",
+                "from": "now-3h",
                 "to": "now"
             },
             "timepicker": {
