@@ -24,6 +24,7 @@ namespace Realmar.Jobbernetes.Framework.Messaging.EasyNetQ
                                              UserName           = options.Username,
                                              Password           = options.Password,
                                              PrefetchCount      = 1,
+                                             PublisherConfirms  = true,
                                              Hosts = new List<HostConfiguration>
                                              {
                                                  new()

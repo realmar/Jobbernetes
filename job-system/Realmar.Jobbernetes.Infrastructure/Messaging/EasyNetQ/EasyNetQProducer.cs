@@ -1,15 +1,18 @@
 using System.Threading;
 using System.Threading.Tasks;
+using DotNext.Threading;
 using EasyNetQ;
+using EasyNetQ.Topology;
 using Microsoft.Extensions.Options;
 using Realmar.Jobbernetes.Framework.Options.RabbitMQ;
 using ISerializer = Realmar.Jobbernetes.Framework.Messaging.Serialization.ISerializer;
 
 namespace Realmar.Jobbernetes.Framework.Messaging.EasyNetQ
 {
-    internal class EasyNetQProducer<TData> : EasyNetQBase, IQueueProducer<TData>
+    internal class EasyNetQProducer<TData> : IQueueProducer<TData>
     {
         private readonly IBus                              _bus;
+        private readonly AsyncLazy<IExchange>              _exchange;
         private readonly IOptions<RabbitMQProducerOptions> _options;
         private readonly ISerializer                       _serializer;
         private readonly ITypeNameSerializer               _typeNameSerializer;
@@ -17,22 +20,24 @@ namespace Realmar.Jobbernetes.Framework.Messaging.EasyNetQ
         public EasyNetQProducer(IBus                              bus,
                                 ISerializer                       serializer,
                                 ITypeNameSerializer               typeNameSerializer,
-                                IOptions<RabbitMQProducerOptions> options) : base(options, bus)
+                                IOptions<RabbitMQProducerOptions> options)
         {
             _bus                = bus;
             _serializer         = serializer;
             _typeNameSerializer = typeNameSerializer;
             _options            = options;
+
+            _exchange = new(() => bus.DeclareExchangeAsync(options, default));
         }
 
         public async Task ProduceAsync(TData data, CancellationToken cancellationToken)
         {
-            await PrepareCommunication(cancellationToken).ConfigureAwait(false);
-
             var bytes = _serializer.Serialize(data);
 
+            var exchange = await _exchange.ConfigureAwait(false);
+
             await _bus.Advanced
-                      .PublishAsync(Exchange,
+                      .PublishAsync(exchange,
                                     _options.Value.RoutingKey,
                                     mandatory: false,
                                     new()

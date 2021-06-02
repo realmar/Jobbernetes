@@ -14,12 +14,11 @@ local RabbitMQConnection() = {
 local RMQConsumer(exchange, queue, routingKey) = {
   RabbitMQConsumerOptions__Exchange: exchange,
   RabbitMQConsumerOptions__Queue: queue,
-  RabbitMQConsumerOptions__RoutingKey: routingKey,
+  RabbitMQConsumerOptions__BindingKey: routingKey,
 };
 
 local RMQProducer(exchange, queue, routingKey) = {
   RabbitMQProducerOptions__Exchange: exchange,
-  RabbitMQProducerOptions__Queue: queue,
   RabbitMQProducerOptions__RoutingKey: routingKey,
 };
 

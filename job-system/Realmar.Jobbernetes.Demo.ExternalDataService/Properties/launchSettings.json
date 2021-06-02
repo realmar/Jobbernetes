@@ -17,7 +17,7 @@
                 "ASPNETCORE_ENVIRONMENT": "Development"
             }
         },*/
-        /*"Realmar.Jobbernetes.Demo.ExternalImageService": {
+        /*"Realmar.Jobbernetes.Demo.ExternalDataService": {
             "commandName": "Project",
             "launchBrowser": true,
             "launchUrl": "swagger",

@@ -26,7 +26,7 @@ namespace Realmar.Jobbernetes.Demo.InputService.Controllers
             _producer = producer;
             _logger   = logger;
 
-            var name = nameFactory.Create("images_inserted");
+            var name = nameFactory.Create("input_text_total");
             _counter = metricFactory.CreateCounter(name, "Number of images inserted into the system.", Labels.Keys.Status);
         }
 

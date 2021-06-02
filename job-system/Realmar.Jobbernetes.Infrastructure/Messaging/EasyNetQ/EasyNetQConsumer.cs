@@ -7,23 +7,25 @@ using Realmar.Jobbernetes.Framework.Options.RabbitMQ;
 
 namespace Realmar.Jobbernetes.Framework.Messaging.EasyNetQ
 {
-    internal class EasyNetQConsumer<TData> : EasyNetQBase, IQueueConsumer<TData>
+    internal class EasyNetQConsumer<TData> : IQueueConsumer<TData>
     {
-        private readonly IBus         _bus;
-        private          IDisposable? _subscription;
+        private readonly IBus                              _bus;
+        private readonly IOptions<RabbitMQConsumerOptions> _rabbitMqOptions;
+        private          IDisposable?                      _subscription;
 
         public EasyNetQConsumer(IBus                              bus,
-                                IOptions<RabbitMQConsumerOptions> rabbitMqOptions) : base(rabbitMqOptions, bus)
+                                IOptions<RabbitMQConsumerOptions> rabbitMqOptions)
         {
-            _bus = bus;
+            _bus             = bus;
+            _rabbitMqOptions = rabbitMqOptions;
         }
 
         public async Task StartAsync(Func<TData, CancellationToken, Task> processor, CancellationToken cancellationToken)
         {
-            await PrepareCommunication(cancellationToken).ConfigureAwait(false);
+            var queue = await _bus.DeclareAndBindQueueAsync(_rabbitMqOptions, cancellationToken).ConfigureAwait(false);
 
             _subscription = _bus.Advanced.Consume<TData>(
-                Queue,
+                queue,
                 (message, _) => processor.Invoke(message.Body, cancellationToken));
         }
 

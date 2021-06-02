@@ -33,7 +33,7 @@ namespace Realmar.Jobbernetes.Demo.ImageScrapeJob
         /// <exception cref="T:Realmar.Jobbernetes.Demo.Infrastructure.Exceptions.DemoException">
         ///     Synthetic error in demo to simulate a failure
         /// </exception>
-        public async Task Process(ImageInput data, CancellationToken cancellationToken)
+        public async Task ProcessAsync(ImageInput data, CancellationToken cancellationToken)
         {
             static int Clamp(DemoOptions.Range range, Func<int, int, int> reducer) =>
                 Math.Clamp(reducer.Invoke(range.Min, range.Max), 0, int.MaxValue);

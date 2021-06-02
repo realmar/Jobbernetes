@@ -11,8 +11,7 @@
 
                 // Processing
                 "JobOptions__BatchSize": "20",
-                "JobOptions__MaxConcurrentJobs": "8",
-                "JobOptions__MaxMessagesPerTask": "20",
+                "JobOptions__MaxDegreeOfParallelism": "8",
 
                 // General
                 "RabbitMQConnectionOptions__Hostname": "localhost",
@@ -22,11 +21,10 @@
                 // Consumer
                 "RabbitMQConsumerOptions__Exchange": "jobbernetes",
                 "RabbitMQConsumerOptions__Queue": "jn-images-input",
-                "RabbitMQConsumerOptions__RoutingKey": "jn-images-input",
+                "RabbitMQConsumerOptions__BindingKey": "jn-images-input",
 
                 // Producer
                 "RabbitMQProducerOptions__Exchange": "jobbernetes",
-                "RabbitMQProducerOptions__Queue": "jn-images-output",
                 "RabbitMQProducerOptions__RoutingKey": "jn-images-output",
 
                 // Prometheus

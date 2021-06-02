@@ -12,7 +12,7 @@ using Realmar.Jobbernetes.Infrastructure.Metrics;
 using SkiaSharp;
 
 #pragma warning disable CA1822 // Mark members as static
-namespace Realmar.Jobbernetes.Demo.ExternalImageService
+namespace Realmar.Jobbernetes.Demo.ExternalDataService
 {
     internal class Startup
     {
@@ -36,7 +36,7 @@ namespace Realmar.Jobbernetes.Demo.ExternalImageService
                     "v1",
                     new()
                     {
-                        Title   = "Realmar.Jobbernetes.Demo.ExternalImageService",
+                        Title   = "Realmar.Jobbernetes.Demo.ExternalDataService",
                         Version = "v1"
                     });
             });
@@ -62,7 +62,7 @@ namespace Realmar.Jobbernetes.Demo.ExternalImageService
 
             app.UseSwagger();
             app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json",
-                                                    "Realmar.Jobbernetes.Demo.ExternalImageService v1"));
+                                                    "Realmar.Jobbernetes.Demo.ExternalDataService v1"));
 
             app.UseRouting();
 

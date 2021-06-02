@@ -13,7 +13,7 @@ namespace Realmar.Jobbernetes.Framework.Jobs
         public Task Dispatch(TData data, CancellationToken cancellationToken = default)
         {
             var job = _jobFactory.Invoke();
-            return job.Process(data, cancellationToken);
+            return job.ProcessAsync(data, cancellationToken);
         }
     }
 }

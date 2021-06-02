@@ -12,11 +12,12 @@ using ISerializer = Realmar.Jobbernetes.Framework.Messaging.Serialization.ISeria
 
 namespace Realmar.Jobbernetes.Framework.Messaging.EasyNetQ
 {
-    internal class EasyNetQBatchConsumer<TData> : EasyNetQBase, IQueueBatchConsumer<TData>, IDisposable
+    internal class EasyNetQBatchConsumer<TData> : IQueueBatchConsumer<TData>, IDisposable
     {
         private readonly IBus                                  _bus;
         private readonly IOptions<JobOptions>                  _jobOptions;
         private readonly ILogger<EasyNetQBatchConsumer<TData>> _logger;
+        private readonly IOptions<RabbitMQConsumerOptions>     _rabbitMqOptions;
         private readonly ISerializer                           _serializer;
         private readonly CancellationTokenSource               _stopToken = new();
         private          ActionBlock<PullResult<TData>>?       _actionBlock;
@@ -28,14 +29,15 @@ namespace Realmar.Jobbernetes.Framework.Messaging.EasyNetQ
 
         public EasyNetQBatchConsumer(IBus                                  bus,
                                      ISerializer                           serializer,
-                                     IOptions<RabbitMQConsumerOptions>     options,
+                                     IOptions<RabbitMQConsumerOptions>     rabbitMqOptions,
                                      IOptions<JobOptions>                  jobOptions,
-                                     ILogger<EasyNetQBatchConsumer<TData>> logger) : base(options, bus)
+                                     ILogger<EasyNetQBatchConsumer<TData>> logger)
         {
-            _bus        = bus;
-            _serializer = serializer;
-            _jobOptions = jobOptions;
-            _logger     = logger;
+            _bus             = bus;
+            _serializer      = serializer;
+            _rabbitMqOptions = rabbitMqOptions;
+            _jobOptions      = jobOptions;
+            _logger          = logger;
         }
 
         public void Dispose()
@@ -55,17 +57,17 @@ namespace Realmar.Jobbernetes.Framework.Messaging.EasyNetQ
 
             _manualStopToken = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken, _stopToken.Token);
 
-            await PrepareCommunication(_manualStopToken.Token).ConfigureAwait(false);
+            var queue = await _bus.DeclareAndBindQueueAsync(_rabbitMqOptions, cancellationToken)
+                                  .ConfigureAwait(false);
 
-            _pullingConsumer = _bus.Advanced.CreatePullingConsumer(Queue, autoAck: false);
+            _pullingConsumer = _bus.Advanced.CreatePullingConsumer(queue, autoAck: false);
 
             _actionBlock = new(
                 ProcessItem,
                 new()
                 {
-                    MaxDegreeOfParallelism = _jobOptions.Value.MaxConcurrentJobs,
-                    CancellationToken      = _manualStopToken.Token,
-                    MaxMessagesPerTask     = _jobOptions.Value.MaxMessagesPerTask
+                    MaxDegreeOfParallelism = _jobOptions.Value.MaxDegreeOfParallelism,
+                    CancellationToken      = _manualStopToken.Token
                 });
 
 #pragma warning disable CA2016 // Forward the 'CancellationToken' parameter to methods that take one

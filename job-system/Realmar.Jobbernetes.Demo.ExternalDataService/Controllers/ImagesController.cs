@@ -3,7 +3,7 @@ using Prometheus.Client;
 using Realmar.Jobbernetes.Infrastructure.Metrics;
 using SkiaSharp;
 
-namespace Realmar.Jobbernetes.Demo.ExternalImageService.Controllers
+namespace Realmar.Jobbernetes.Demo.ExternalDataService.Controllers
 {
     [Route("[controller]")]
     [ApiController]

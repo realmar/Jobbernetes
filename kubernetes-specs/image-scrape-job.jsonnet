@@ -49,8 +49,7 @@ local ImageJob(name, prometheusInstance, textPrefix, textPostfix) = kube.CronJob
 
                          // Processing
                          JobOptions__BatchSize: '300',
-                         JobOptions__MaxConcurrentJobs: std.toString($.threads),
-                         JobOptions__MaxMessagesPerTask: '20',
+                         JobOptions__MaxDegreeOfParallelism: std.toString($.threads),
 
                          // Demo
                          DemoOptions__TextPrefix: textPrefix,

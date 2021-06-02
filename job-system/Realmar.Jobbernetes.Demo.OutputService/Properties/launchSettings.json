@@ -17,7 +17,7 @@
                 // Consumer
                 "RabbitMQConsumerOptions__Exchange": "jobbernetes",
                 "RabbitMQConsumerOptions__Queue": "jn-images-output",
-                "RabbitMQConsumerOptions__RoutingKey": "jn-images-output",
+                "RabbitMQConsumerOptions__BindingKey": "jn-images-output",
 
                 // MongoDB
                 "MongoOptions__ConnectionString": "mongodb://localhost:27017",

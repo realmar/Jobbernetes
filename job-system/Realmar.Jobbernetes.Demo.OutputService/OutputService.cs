@@ -31,7 +31,7 @@ namespace Realmar.Jobbernetes.Demo.OutputService
             _collection  = collection;
             _logger      = logger;
 
-            var name = nameFactory.Create("exported_total");
+            var name = nameFactory.Create("output_images_total");
             _counter = metricFactory.CreateCounter(name, "Number of processed images", Labels.Keys.Status);
         }
 
