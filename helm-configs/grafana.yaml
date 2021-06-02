@@ -332,7 +332,7 @@ dashboards:
                     },
                     "id": 16,
                     "panels": [],
-                    "title": "Rates Items/s",
+                    "title": "Rates Messages/s",
                     "type": "row"
                 },
                 {
