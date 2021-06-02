@@ -42,6 +42,8 @@
 
                 // Producer
                 "RabbitMQProducerOptions__Exchange": "jobbernetes",
+                "RabbitMQProducerOptions__Queue": "jn-images-input",
+                "RabbitMQProducerOptions__BindingKey": "jn-images-input",
                 "RabbitMQProducerOptions__RoutingKey": "jn-images-input",
 
                 // Logging

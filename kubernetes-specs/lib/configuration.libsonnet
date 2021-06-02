@@ -15,10 +15,13 @@ local RMQConsumer(exchange, queue, routingKey) = {
   RabbitMQConsumerOptions__Exchange: exchange,
   RabbitMQConsumerOptions__Queue: queue,
   RabbitMQConsumerOptions__BindingKey: routingKey,
+  RabbitMQConsumerOptions__RoutingKey: routingKey,
 };
 
 local RMQProducer(exchange, queue, routingKey) = {
   RabbitMQProducerOptions__Exchange: exchange,
+  RabbitMQProducerOptions__Queue: queue,
+  RabbitMQProducerOptions__BindingKey: routingKey,
   RabbitMQProducerOptions__RoutingKey: routingKey,
 };
 

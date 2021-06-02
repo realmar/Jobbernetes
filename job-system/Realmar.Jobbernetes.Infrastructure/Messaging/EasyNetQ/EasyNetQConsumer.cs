@@ -22,7 +22,7 @@ namespace Realmar.Jobbernetes.Framework.Messaging.EasyNetQ
 
         public async Task StartAsync(Func<TData, CancellationToken, Task> processor, CancellationToken cancellationToken)
         {
-            var queue = await _bus.DeclareAndBindQueueAsync(_rabbitMqOptions, cancellationToken).ConfigureAwait(false);
+            var (_, queue) = await _bus.DeclareAndBindQueueAsync(_rabbitMqOptions, cancellationToken).ConfigureAwait(false);
 
             _subscription = _bus.Advanced.Consume<TData>(
                 queue,

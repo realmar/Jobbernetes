@@ -27,7 +27,9 @@ namespace Realmar.Jobbernetes.Framework.Messaging.EasyNetQ
             _typeNameSerializer = typeNameSerializer;
             _options            = options;
 
-            _exchange = new(() => bus.DeclareExchangeAsync(options, default));
+            _exchange = new(async () => (await bus
+                                              .DeclareAndBindQueueAsync(options, default)
+                                              .ConfigureAwait(false)).Item1);
         }
 
         public async Task ProduceAsync(TData data, CancellationToken cancellationToken)

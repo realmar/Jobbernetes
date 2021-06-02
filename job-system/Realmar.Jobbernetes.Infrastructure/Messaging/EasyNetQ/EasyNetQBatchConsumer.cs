@@ -57,8 +57,8 @@ namespace Realmar.Jobbernetes.Framework.Messaging.EasyNetQ
 
             _manualStopToken = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken, _stopToken.Token);
 
-            var queue = await _bus.DeclareAndBindQueueAsync(_rabbitMqOptions, cancellationToken)
-                                  .ConfigureAwait(false);
+            var (_, queue) = await _bus.DeclareAndBindQueueAsync(_rabbitMqOptions, cancellationToken)
+                                       .ConfigureAwait(false);
 
             _pullingConsumer = _bus.Advanced.CreatePullingConsumer(queue, autoAck: false);
 
@@ -176,7 +176,7 @@ namespace Realmar.Jobbernetes.Framework.Messaging.EasyNetQ
                                      "can't read it next time either). Better solution would be to " +
                                      "write that message to an error queue.");
 
-                    await _pullingConsumer!.AckAsync(result.Value.ReceivedInfo.DeliveryTag).ConfigureAwait(false);
+                    await _pullingConsumer!.AckAsync(result!.Value.ReceivedInfo.DeliveryTag).ConfigureAwait(false);
                 }
             }
         }

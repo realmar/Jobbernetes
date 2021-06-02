@@ -93,6 +93,8 @@ namespace Realmar.Jobbernetes.Hosting
             }
 
             Configure<SerilogOptions>(SerilogOptions.Position);
+
+            services.Configure<HostOptions>(hostOptions => hostOptions.ShutdownTimeout = TimeSpan.FromSeconds(120));
         }
 
         private static void ConfigureMetrics(HostBuilderContext context, IServiceCollection services)
