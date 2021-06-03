@@ -22,19 +22,19 @@ else
     <table class="table">
         <thead>
         <tr>
-            <th>CreateDate</th>
-            <th>Name</th>
-            <th>Image</th>
+            <th class="jobberentes-table">CreateDate</th>
+            <th class="jobberentes-table">Name</th>
+            <th class="jobberentes-table">Image</th>
         </tr>
         </thead>
         <tbody>
         @foreach (var image in _images)
         {
             <tr>
-                <td>@image.CreateDate.ToLocalTime().ToString("dd/MM/yyyy HH:mm:ss.fff")</td>
-                <td>@image.Name</td>
-                <td>
-                    <img style="width: 38rem" src="data:image/png;base64, @image.DataBase64"/>
+                <td class="jobberentes-table">@image.CreateDate.ToLocalTime().ToString("dd/MM/yyyy HH:mm:ss.fff")</td>
+                <td class="jobberentes-table">@image.Name</td>
+                <td class="jobberentes-table">
+                    <img class="jobberentes-image" src="data:image/png;base64, @image.DataBase64"/>
                 </td>
             </tr>
         }
