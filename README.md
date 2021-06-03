@@ -166,6 +166,12 @@ for file in /proc/*/status ; awk '/VmSwap|Name/{printf $2 " " $3}END{ print ""}'
 
 ## Dependencies
 
+Python
+
+```sh
+pip install requests
+```
+
 Not needed
 
 ```sh
