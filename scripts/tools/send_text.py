@@ -14,12 +14,15 @@ def work(event: Event, delay: float):
     print("Request thread started")
 
     while not event.is_set():
-        req = requests.put(f"http://{dns}/Images?name={uuid.uuid4()}")
+        try:
+            req = requests.put(f"http://{dns}/Images?name={uuid.uuid4()}")
 
-        if req.status_code != 200:
-            print(f"Request failed {req.reason}")
+            if req.status_code != 200:
+                print(f"Request failed {req.reason}")
 
-        sleep(delay)
+            sleep(delay)
+        except Exception as e:
+            print(str(e))
 
 
 if __name__ == "__main__":
