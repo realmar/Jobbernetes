@@ -4,10 +4,10 @@ using DotNext.Threading;
 using EasyNetQ;
 using EasyNetQ.Topology;
 using Microsoft.Extensions.Options;
-using Realmar.Jobbernetes.Framework.Options.RabbitMQ;
-using ISerializer = Realmar.Jobbernetes.Framework.Messaging.Serialization.ISerializer;
+using Realmar.Jobbernetes.Infrastructure.Options.RabbitMQ;
+using ISerializer = Realmar.Jobbernetes.Infrastructure.Messaging.Serialization.ISerializer;
 
-namespace Realmar.Jobbernetes.Framework.Messaging.EasyNetQ
+namespace Realmar.Jobbernetes.Infrastructure.Messaging.EasyNetQ
 {
     internal class EasyNetQProducer<TData> : IQueueProducer<TData>
     {

@@ -1,6 +1,6 @@
 using System;
 
-namespace Realmar.Jobbernetes.Framework.Messaging.Serialization
+namespace Realmar.Jobbernetes.Infrastructure.Messaging.Serialization
 {
     public interface ISerializer
     {

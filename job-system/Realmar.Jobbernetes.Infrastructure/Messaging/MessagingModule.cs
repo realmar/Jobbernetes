@@ -1,18 +1,15 @@
 using Autofac;
-using Realmar.Jobbernetes.Framework.Jobs;
-using Realmar.Jobbernetes.Framework.Messaging.EasyNetQ;
-using Realmar.Jobbernetes.Framework.Messaging.Serialization;
+using Realmar.Jobbernetes.Infrastructure.Messaging.EasyNetQ;
+using Realmar.Jobbernetes.Infrastructure.Messaging.Serialization;
 
-namespace Realmar.Jobbernetes.Framework.Messaging
+namespace Realmar.Jobbernetes.Infrastructure.Messaging
 {
     public class MessagingModule : Module
     {
         protected override void Load(ContainerBuilder builder)
         {
             builder.UseJsonSerialization();
-
             builder.RegisterModule<EasyNetQModule>();
-            builder.RegisterType<NullQueueConsumer>().As<IQueueConsumer<NullInput>>();
         }
     }
 }

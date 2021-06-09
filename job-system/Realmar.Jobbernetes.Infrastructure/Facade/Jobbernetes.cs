@@ -4,12 +4,12 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Prometheus.Client;
-using Realmar.Jobbernetes.Framework.Jobs;
-using Realmar.Jobbernetes.Framework.Messaging;
-using Realmar.Jobbernetes.Framework.Options.Metrics;
+using Realmar.Jobbernetes.Infrastructure.Jobs;
+using Realmar.Jobbernetes.Infrastructure.Messaging;
 using Realmar.Jobbernetes.Infrastructure.Metrics;
+using Realmar.Jobbernetes.Infrastructure.Options.Metrics;
 
-namespace Realmar.Jobbernetes.Framework.Facade
+namespace Realmar.Jobbernetes.Infrastructure.Facade
 {
     internal class Jobbernetes<TData> : IJobbernetes
     {
@@ -69,7 +69,7 @@ namespace Realmar.Jobbernetes.Framework.Facade
             ProcessJobError(exception, $" received data = {data}");
         }
 
-        private void ProcessJobError(Exception exception, string additionalMessage = null)
+        private void ProcessJobError(Exception exception, string? additionalMessage = null)
         {
             if (exception is not OperationCanceledException)
             {

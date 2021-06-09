@@ -2,7 +2,7 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Realmar.Jobbernetes.Framework.Messaging
+namespace Realmar.Jobbernetes.Infrastructure.Messaging
 {
     public interface IQueueConsumer<TData>
     {

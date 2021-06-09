@@ -1,7 +1,7 @@
 using System.Text.Json;
 using Autofac;
 
-namespace Realmar.Jobbernetes.Framework.Messaging.Serialization
+namespace Realmar.Jobbernetes.Infrastructure.Messaging.Serialization
 {
     public static class AutofacExtensions
     {

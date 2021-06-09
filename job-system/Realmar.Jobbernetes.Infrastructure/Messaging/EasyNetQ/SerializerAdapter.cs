@@ -1,7 +1,7 @@
 using System;
 using EasyNetQ;
 
-namespace Realmar.Jobbernetes.Framework.Messaging.EasyNetQ
+namespace Realmar.Jobbernetes.Infrastructure.Messaging.EasyNetQ
 {
     public class SerializerAdapter : ISerializer
     {

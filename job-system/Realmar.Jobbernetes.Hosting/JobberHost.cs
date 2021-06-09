@@ -4,10 +4,10 @@ using Autofac;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Realmar.Jobbernetes.Framework.Facade;
-using Realmar.Jobbernetes.Framework.Jobs;
-using Realmar.Jobbernetes.Framework.Messaging;
 using Realmar.Jobbernetes.Hosting.Logging;
+using Realmar.Jobbernetes.Infrastructure.Facade;
+using Realmar.Jobbernetes.Infrastructure.Jobs;
+using Realmar.Jobbernetes.Infrastructure.Messaging;
 using Realmar.Jobbernetes.Infrastructure.Metrics;
 using Serilog;
 

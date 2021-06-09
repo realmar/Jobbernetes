@@ -6,7 +6,7 @@ using Microsoft.Extensions.Logging;
 using MongoDB.Driver;
 using Prometheus.Client;
 using Realmar.Jobbernetes.Demo.Models;
-using Realmar.Jobbernetes.Framework.Messaging;
+using Realmar.Jobbernetes.Infrastructure.Messaging;
 using Realmar.Jobbernetes.Infrastructure.Metrics;
 
 namespace Realmar.Jobbernetes.Demo.OutputService

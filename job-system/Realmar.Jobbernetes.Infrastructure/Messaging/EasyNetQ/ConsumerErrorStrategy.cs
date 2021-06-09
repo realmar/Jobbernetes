@@ -2,7 +2,7 @@ using System;
 using EasyNetQ.Consumer;
 using Microsoft.Extensions.Logging;
 
-namespace Realmar.Jobbernetes.Framework.Messaging.EasyNetQ
+namespace Realmar.Jobbernetes.Infrastructure.Messaging.EasyNetQ
 {
     internal class ConsumerErrorStrategy : IConsumerErrorStrategy
     {

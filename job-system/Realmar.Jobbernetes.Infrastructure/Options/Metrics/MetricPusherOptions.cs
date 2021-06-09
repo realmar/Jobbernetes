@@ -1,4 +1,4 @@
-namespace Realmar.Jobbernetes.Framework.Options.Metrics
+namespace Realmar.Jobbernetes.Infrastructure.Options.Metrics
 {
     public class MetricPusherOptions
     {

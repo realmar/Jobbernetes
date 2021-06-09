@@ -1,6 +1,6 @@
 using Autofac;
 
-namespace Realmar.Jobbernetes.Framework.Facade
+namespace Realmar.Jobbernetes.Infrastructure.Facade
 {
     public class FacadeModule<TData> : Module
     {

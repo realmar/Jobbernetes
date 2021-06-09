@@ -5,12 +5,12 @@ using System.Threading.Tasks.Dataflow;
 using EasyNetQ;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Realmar.Jobbernetes.Framework.Messaging.Serialization;
-using Realmar.Jobbernetes.Framework.Options.Jobs;
-using Realmar.Jobbernetes.Framework.Options.RabbitMQ;
-using ISerializer = Realmar.Jobbernetes.Framework.Messaging.Serialization.ISerializer;
+using Realmar.Jobbernetes.Infrastructure.Messaging.Serialization;
+using Realmar.Jobbernetes.Infrastructure.Options.Jobs;
+using Realmar.Jobbernetes.Infrastructure.Options.RabbitMQ;
+using ISerializer = Realmar.Jobbernetes.Infrastructure.Messaging.Serialization.ISerializer;
 
-namespace Realmar.Jobbernetes.Framework.Messaging.EasyNetQ
+namespace Realmar.Jobbernetes.Infrastructure.Messaging.EasyNetQ
 {
     internal class EasyNetQBatchConsumer<TData> : IQueueBatchConsumer<TData>, IDisposable
     {

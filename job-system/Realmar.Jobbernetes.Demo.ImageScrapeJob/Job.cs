@@ -6,8 +6,8 @@ using Microsoft.Extensions.Options;
 using Realmar.Jobbernetes.Demo.ImageScrapeJob.Exceptions;
 using Realmar.Jobbernetes.Demo.ImageScrapeJob.Options;
 using Realmar.Jobbernetes.Demo.Models;
-using Realmar.Jobbernetes.Framework.Jobs;
-using Realmar.Jobbernetes.Framework.Messaging;
+using Realmar.Jobbernetes.Infrastructure.Jobs;
+using Realmar.Jobbernetes.Infrastructure.Messaging;
 
 namespace Realmar.Jobbernetes.Demo.ImageScrapeJob
 {

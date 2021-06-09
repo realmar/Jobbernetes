@@ -1,6 +1,6 @@
 using Autofac;
 
-namespace Realmar.Jobbernetes.Framework.Jobs
+namespace Realmar.Jobbernetes.Infrastructure.Jobs
 {
     public class JobsModule : Module
     {

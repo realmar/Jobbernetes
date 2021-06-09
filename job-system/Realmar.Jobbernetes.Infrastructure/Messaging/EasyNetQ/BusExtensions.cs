@@ -3,9 +3,9 @@ using System.Threading.Tasks;
 using EasyNetQ;
 using EasyNetQ.Topology;
 using Microsoft.Extensions.Options;
-using Realmar.Jobbernetes.Framework.Options.RabbitMQ;
+using Realmar.Jobbernetes.Infrastructure.Options.RabbitMQ;
 
-namespace Realmar.Jobbernetes.Framework.Messaging.EasyNetQ
+namespace Realmar.Jobbernetes.Infrastructure.Messaging.EasyNetQ
 {
     internal static class BusExtensions
     {

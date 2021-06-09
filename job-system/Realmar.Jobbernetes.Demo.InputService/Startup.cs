@@ -6,7 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Prometheus.Client.AspNetCore;
 using Prometheus.Client.HttpRequestDurations;
-using Realmar.Jobbernetes.Framework.Messaging;
+using Realmar.Jobbernetes.Infrastructure.Messaging;
 using Realmar.Jobbernetes.Infrastructure.Metrics;
 
 #pragma warning disable CA1822 // Mark members as static

@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Prometheus.Client.MetricPusher;
-using Realmar.Jobbernetes.Framework.Facade;
+using Realmar.Jobbernetes.Infrastructure.Facade;
 
 namespace Realmar.Jobbernetes.Hosting
 {

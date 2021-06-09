@@ -1,7 +1,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Realmar.Jobbernetes.Framework.Jobs
+namespace Realmar.Jobbernetes.Infrastructure.Jobs
 {
     internal interface IJobDispatcher<in TData>
     {

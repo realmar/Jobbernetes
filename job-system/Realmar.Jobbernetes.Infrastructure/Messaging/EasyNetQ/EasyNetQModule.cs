@@ -3,9 +3,9 @@ using Autofac;
 using EasyNetQ;
 using EasyNetQ.Consumer;
 using Microsoft.Extensions.Options;
-using Realmar.Jobbernetes.Framework.Options.RabbitMQ;
+using Realmar.Jobbernetes.Infrastructure.Options.RabbitMQ;
 
-namespace Realmar.Jobbernetes.Framework.Messaging.EasyNetQ
+namespace Realmar.Jobbernetes.Infrastructure.Messaging.EasyNetQ
 {
     internal class EasyNetQModule : Module
     {

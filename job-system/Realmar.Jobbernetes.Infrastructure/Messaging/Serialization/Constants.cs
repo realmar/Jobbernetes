@@ -1,4 +1,4 @@
-namespace Realmar.Jobbernetes.Framework.Messaging.Serialization
+namespace Realmar.Jobbernetes.Infrastructure.Messaging.Serialization
 {
     internal static class Constants
     {

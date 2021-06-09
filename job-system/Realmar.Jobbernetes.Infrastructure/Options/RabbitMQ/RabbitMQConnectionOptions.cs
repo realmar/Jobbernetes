@@ -1,4 +1,4 @@
-namespace Realmar.Jobbernetes.Framework.Options.RabbitMQ
+namespace Realmar.Jobbernetes.Infrastructure.Options.RabbitMQ
 {
     public class RabbitMQConnectionOptions
     {

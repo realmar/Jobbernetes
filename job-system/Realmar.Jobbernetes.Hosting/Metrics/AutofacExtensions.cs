@@ -6,8 +6,8 @@ using Prometheus.Client;
 using Prometheus.Client.Collectors;
 using Prometheus.Client.MetricPusher;
 using Prometheus.Client.MetricServer;
-using Realmar.Jobbernetes.Framework.Options.Metrics;
-using MetricServerOptions = Realmar.Jobbernetes.Framework.Options.Metrics.MetricServerOptions;
+using Realmar.Jobbernetes.Infrastructure.Options.Metrics;
+using MetricServerOptions = Realmar.Jobbernetes.Infrastructure.Options.Metrics.MetricServerOptions;
 
 namespace Realmar.Jobbernetes.Infrastructure.Metrics
 {
