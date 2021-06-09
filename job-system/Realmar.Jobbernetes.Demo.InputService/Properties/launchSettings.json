@@ -16,17 +16,34 @@
           "environmentVariables": {
             "ASPNETCORE_ENVIRONMENT": "Development"
           }
-        },
+        },*/
         "Realmar.Jobbernetes.Demo.InputService": {
             "commandName": "Project",
             "launchBrowser": true,
-            "launchUrl": "swagger",
+            "launchUrl": "http://localhost:5000/swagger",
             "environmentVariables": {
-                "ASPNETCORE_ENVIRONMENT": "Development"
+                "ASPNETCORE_URLS": "http://localhost:5000",
+                "ASPNETCORE_ENVIRONMENT": "Development",
+
+                // General
+                "RabbitMQConnectionOptions__Hostname": "localhost",
+                "RabbitMQConnectionOptions__Username": "admin",
+                "RabbitMQConnectionOptions__Password": "admin",
+
+                // Producer
+                "RabbitMQProducerOptions__Exchange": "jobbernetes",
+                "RabbitMQProducerOptions__Queue": "jn-images-input",
+                "RabbitMQProducerOptions__BindingKey": "jn-images-input",
+                "RabbitMQProducerOptions__RoutingKey": "jn-images-input",
+
+                // Logging
+                "Serilog__MinimumLevel__Default": "Debug",
+                "Serilog__Loki__Hostname": "http://localhost:3100/loki/api/v1/push",
+                "SerilogOptions__EnableSerilogDebugging": "true"
             },
             "dotnetRunMessages": "true",
-            "applicationUrl": "https://localhost:5001;http://localhost:5000",
-        },*/
+            "applicationUrl": "http://localhost:5000"
+        },
         "WSL 2": {
             "commandName": "WSL2",
             "launchBrowser": true,

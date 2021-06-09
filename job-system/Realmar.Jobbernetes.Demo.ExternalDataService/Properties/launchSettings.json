@@ -17,16 +17,22 @@
                 "ASPNETCORE_ENVIRONMENT": "Development"
             }
         },*/
-        /*"Realmar.Jobbernetes.Demo.ExternalDataService": {
+        "Realmar.Jobbernetes.Demo.ExternalDataService": {
             "commandName": "Project",
             "launchBrowser": true,
-            "launchUrl": "swagger",
+            "launchUrl": "http://localhost:5001/swagger",
             "environmentVariables": {
-                "ASPNETCORE_ENVIRONMENT": "Development"
+                "ASPNETCORE_URLS": "http://localhost:5001",
+                "ASPNETCORE_ENVIRONMENT": "Development",
+
+                // Logging
+                "Serilog__MinimumLevel__Default": "Debug",
+                "Serilog__Loki__Hostname": "http://localhost:3100/loki/api/v1/push",
+                "SerilogOptions__EnableSerilogDebugging": "true"
             },
             "dotnetRunMessages": "true",
             "applicationUrl": "http://localhost:5001"
-        },*/
+        },
         "WSL 2": {
             "commandName": "WSL2",
             "launchBrowser": true,

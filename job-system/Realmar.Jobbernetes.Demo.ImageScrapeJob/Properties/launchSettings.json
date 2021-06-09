@@ -1,14 +1,57 @@
 {
     "profiles": {
-        /*"Realmar.Jobbernetes.Demo.ImageScrapeJob": {
-          "commandName": "Project"
-        },*/
+        "Realmar.Jobbernetes.Demo.ImageScrapeJob": {
+            "commandName": "Project",
+            "environmentVariables": {
+                // ExternalService
+                "ExternalServiceOptions__Url": "http://localhost:5001/images",
+                // "ExternalServiceOptions__Url": "http://external-service.jn.localhost/images",
+
+                // Processing
+                "JobOptions__BatchSize": "2000",
+                "JobOptions__MaxDegreeOfParallelism": "8",
+
+                // General
+                "RabbitMQConnectionOptions__Hostname": "localhost",
+                "RabbitMQConnectionOptions__Username": "admin",
+                "RabbitMQConnectionOptions__Password": "admin",
+
+                // Consumer
+                "RabbitMQConsumerOptions__Exchange": "jobbernetes",
+                "RabbitMQConsumerOptions__Queue": "jn-images-input",
+                "RabbitMQConsumerOptions__BindingKey": "jn-images-input",
+                "RabbitMQConsumerOptions__RoutingKey": "jn-images-input",
+
+                // Producer
+                "RabbitMQProducerOptions__Exchange": "jobbernetes",
+                "RabbitMQProducerOptions__Queue": "jn-images-output",
+                "RabbitMQProducerOptions__BindingKey": "jn-images-output",
+                "RabbitMQProducerOptions__RoutingKey": "jn-images-output",
+
+                // Prometheus
+                "MetricPusherOptions__Endpoint": "http://localhost:9091/metrics",
+                "MetricPusherOptions__Job": "jobbernetes_jobs",
+                "MetricPusherOptions__JobName": "image_scrape_job_name",
+
+                // Logging
+                "Serilog__MinimumLevel__Default": "Debug",
+                "Serilog__Loki__Hostname": "http://localhost:3100/loki/api/v1/push",
+                "SerilogOptions__EnableSerilogDebugging": "true",
+
+                // Demo
+                "DemoOptions__TextPrefix": "PREFIX - ",
+                "DemoOptions__TextPostfix": " - POSTFIX",
+                "DemoOptions__ProcessingDelayMilliseconds__Min": "1000",
+                "DemoOptions__ProcessingDelayMilliseconds__Max": "3000",
+                "DemoOptions__FailureProbability": "0.2"
+            }
+        },
         "WSL 2": {
             "commandName": "WSL2",
             "environmentVariables": {
                 // ExternalService
-                // "ExternalServiceOptions__Url": "http://localhost:5001/images",
-                "ExternalServiceOptions__Url": "http://external-service.jn.localhost/images",
+                "ExternalServiceOptions__Url": "http://localhost:5001/images",
+                // "ExternalServiceOptions__Url": "http://external-service.jn.localhost/images",
 
                 // Processing
                 "JobOptions__BatchSize": "2000",

@@ -1,8 +1,33 @@
 {
     "profiles": {
-        /*"Realmar.Jobbernetes.Demo.OutputService": {
-          "commandName": "Project"
-        },*/
+        "Realmar.Jobbernetes.Demo.OutputService": {
+            "commandName": "Project",
+            "environmentVariables": {
+                // ExternalService
+                "ExternalServiceOptions__Url": "http://localhost:5000/images",
+
+                // General
+                "RabbitMQConnectionOptions__Hostname": "localhost",
+                "RabbitMQConnectionOptions__Username": "admin",
+                "RabbitMQConnectionOptions__Password": "admin",
+
+                // Consumer
+                "RabbitMQConsumerOptions__Exchange": "jobbernetes",
+                "RabbitMQConsumerOptions__Queue": "jn-images-output",
+                "RabbitMQConsumerOptions__BindingKey": "jn-images-output",
+                "RabbitMQConsumerOptions__RoutingKey": "jn-images-output",
+
+                // MongoDB
+                "MongoOptions__ConnectionString": "mongodb://localhost:27017",
+                "MongoOptions__Database": "jobbernetes",
+                "MongoOptions__Collection": "images",
+
+                // Logging
+                "Serilog__MinimumLevel__Default": "Debug",
+                "Serilog__Loki__Hostname": "http://localhost:3100/loki/api/v1/push",
+                "SerilogOptions__EnableSerilogDebugging": "true"
+            }
+        },
         "WSL 2": {
             "commandName": "WSL2",
             "environmentVariables": {
