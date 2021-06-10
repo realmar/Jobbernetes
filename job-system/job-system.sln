@@ -27,11 +27,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Realmar.Jobbernetes.Demo.Ex
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Realmar.Jobbernetes.Infrastructure.Tests", "Realmar.Jobbernetes.Infrastructure.Tests\Realmar.Jobbernetes.Infrastructure.Tests.csproj", "{3A9C543E-E743-447C-92D8-F412825D8490}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{2BC7A3B3-6D73-409F-BA2C-AECF33C6FA55}"
-	ProjectSection(SolutionItems) = preProject
-		Tests.runsettings = Tests.runsettings
-	EndProjectSection
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
