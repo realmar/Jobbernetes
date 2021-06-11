@@ -1,6 +1,6 @@
 # Jobbernetes
 
-This README is a work in progress. Please refer to my thesis for more
+This README is a work in progress. Please refer to the thesis for more
 information.
 
 Note: developed and tested on WSL2 running Ubuntu 20.04.2 LTS.
@@ -22,26 +22,32 @@ Note: developed and tested on WSL2 running Ubuntu 20.04.2 LTS.
 
 # Start ingesting data into the work queue (using the InputService)
 #   Create 2 threads
-#   On every thread send a new UUID every 0.06 seconds
+#   On every thread, send a new UUID every 0.06 seconds
 ./scripts/tools/send_text.py 0.06 -p 2
 ```
 
-Navigate to http://grafana.localhost/ and open the Jobbernetes dashboard.
+Navigate to http://grafana.localhost/ and open the Jobbernetes dashboard and
+http://dataviewer.jn.localhost/images to see the generated images.
 
 ## Ingress
 
- - http://grafana.localhost/
- - http://rabbitmq.localhost/
- - https://rancher.localhost/
+See also: ./kubernetes-specs/lib/components.libsonnet
+
+ - [Grafana](http://grafana.localhost/)
+ - [RabbitMQ](http://rabbitmq.localhost/)
+ - [Rancher](https://rancher.localhost/)
+ - [DataViewer](http://dataviewer.jn.localhost/)
+ - [InputService](http://input-service.jn.localhost/swagger/index.html)
+ - [ExternalDataService](http://external-service.jn.localhost/swagger/index.html)
 
 Caveats:
 
-Grafana cannot tail logs vom Loki because it tries to connect to a `wss` web
-socket. The ingress is not configured to handle this. Firstly, it should not use
-encryption, and secondly, I suspect the ingress is not setting the correct
-headers.
+Grafana cannot tail logs from Loki because it connects to a `wss` web socket.
+Unfortunately, the ingress is not configured to handle this. Firstly, it should
+not use encryption, and secondly, I suspect the ingress is not setting the
+correct headers.
 
-You need to use port-forwarding to tail the logs:
+We need to use port-forwarding to tail the logs:
 
 ```sh
 ./scripts/tools/port_forward.py
