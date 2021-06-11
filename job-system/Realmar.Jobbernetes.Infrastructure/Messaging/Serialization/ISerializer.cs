@@ -2,6 +2,9 @@ using System;
 
 namespace Realmar.Jobbernetes.Infrastructure.Messaging.Serialization
 {
+    /// <summary>
+    ///     Serializes data.
+    /// </summary>
     public interface ISerializer
     {
         string ContentType { get; }
