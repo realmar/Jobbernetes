@@ -24,6 +24,7 @@ local collection = {
   services:
     [
       Component('dataviewer', 'dataviewer.jn.localhost'),
+      Component('adminweb', 'admin.jn.localhost'),
       Component('input-service', 'input-service.jn.localhost'),
       Component('output-service'),
       Component('external-service', 'external-service.jn.localhost'),

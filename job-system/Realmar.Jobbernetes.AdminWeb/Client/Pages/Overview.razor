@@ -1,0 +1,95 @@
+@page "/"
+
+<MudGrid>
+    <MudItem xs="3">
+        <OverviewCard Title="Success Rate">
+            <MudText Typo="Typo.h2" class="flex-grow-1 font-weight-bold">93.8%</MudText>
+        </OverviewCard>
+    </MudItem>
+    <MudItem xs="2">
+        <OverviewCard Title="Success">
+            <OverviewCardDetails Count="(int) (4.2 * 1000)" Throughput="136"/>
+        </OverviewCard>
+    </MudItem>
+    <MudItem xs="2">
+        <OverviewCard Title="Failed">
+            <OverviewCardDetails Count="300" Throughput="10"/>
+        </OverviewCard>
+    </MudItem>
+    <MudItem xs="2">
+        <OverviewCard Title="Total">
+            <OverviewCardDetails Count="(int) (4.5 * 1000)" Throughput="146"/>
+        </OverviewCard>
+    </MudItem>
+    <MudItem xs="3">
+        <OverviewCard Title="Top Errors">
+            <MudList Clickable="false" Dense="true" DisableGutters="true">
+                <MudListItem Text="40% Connection Timeout" Icon="@Icons.Filled.Error" IconColor="Color.Error"/>
+                <MudListItem Text="30% Server Returned 500" Icon="@Icons.Filled.Error" IconColor="Color.Error"/>
+                <MudListItem Text="20% Resource Unavailable" Icon="@Icons.Filled.Error" IconColor="Color.Error"/>
+                <MudListItem Text="10% Pod Error" Icon="@Icons.Filled.Error" IconColor="Color.Error"/>
+            </MudList>
+        </OverviewCard>
+    </MudItem>
+</MudGrid>
+
+
+<MudDivider Class="my-5"/>
+
+<OverviewJobsTable Title="Critical Jobs" Elements="@_critical"></OverviewJobsTable>
+
+<div class="py-2"></div>
+
+<OverviewJobsTable Title="Warning Jobs" Elements="@_warning"></OverviewJobsTable>
+
+<div class="py-2"></div>
+
+<OverviewJobsTable Title="Good Jobs" Elements="@_good"></OverviewJobsTable>
+
+@code {
+
+    private readonly List<Element> _good = new()
+    {
+        new()
+        {
+            Name = "Car Job",
+            Success = new(20200, 680),
+            Failed = new(1000, 34),
+            TopError = "Resource Unavailable",
+            HealthState = HealthState.Good
+        },
+        new()
+        {
+            Name = "Jet Job",
+            Success = new(3800, 120),
+            Failed = new(100, 3),
+            TopError = "Pod Error",
+            HealthState = HealthState.Good
+        }
+    };
+
+    private readonly List<Element> _warning = new()
+    {
+        new()
+        {
+            Name = "Airplane Job",
+            Success = new(1600, 220),
+            Failed = new(1200, 165),
+            TopError = "Server Returned 500",
+            HealthState = HealthState.Warning
+        }
+    };
+
+    private readonly List<Element> _critical = new()
+    {
+        new()
+        {
+            Name = "Spaceship Job",
+            Success = new(300, 2),
+            Failed = new(2600, 26),
+            TopError = "Connection Timeout",
+            HealthState = HealthState.Critical
+        }
+    };
+
+}

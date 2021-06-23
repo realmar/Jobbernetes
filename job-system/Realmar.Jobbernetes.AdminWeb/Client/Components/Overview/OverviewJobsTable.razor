@@ -1,0 +1,82 @@
+<MudTable Items="@Elements"
+          Dense="true"
+          Hover="true"
+          Bordered="false"
+          Striped="false"
+          Filter="Filter"
+          @bind-SelectedItem="_selectedItem">
+    <ToolBarContent>
+        <MudText Typo="Typo.h6">@Title</MudText>
+        <MudSpacer/>
+        <MudTextField @bind-Value="_searchString"
+                      Placeholder="Search"
+                      Adornment="Adornment.Start"
+                      AdornmentIcon="@Icons.Material.Filled.Search"
+                      IconSize="Size.Medium"
+                      Class="mt-0">
+        </MudTextField>
+    </ToolBarContent>
+    <ColGroup>
+        <col/>
+        <col/>
+        <col/>
+        <col/>
+        <col/>
+        <col style="width: 10rem;"/>
+    </ColGroup>
+    <HeaderContent>
+        <MudTh>
+            <MudTableSortLabel SortBy="(Element x) => x.Name">Name</MudTableSortLabel>
+        </MudTh>
+        <MudTh>
+            <MudTableSortLabel SortBy="(Element x) => x.Success.Count"
+                               InitialDirection="SortDirection.Descending">
+                Successful
+            </MudTableSortLabel>
+        </MudTh>
+        <MudTh>
+            <MudTableSortLabel SortBy="(Element x) => x.Failed.Count">Failed</MudTableSortLabel>
+        </MudTh>
+        <MudTh>
+            <MudTableSortLabel SortBy="(Element x) => x.Total.Count">Total</MudTableSortLabel>
+        </MudTh>
+        <MudTh>
+            <MudTableSortLabel SortBy="(Element x) => x.TopError">Top Error</MudTableSortLabel>
+        </MudTh>
+        <MudTh></MudTh>
+    </HeaderContent>
+    <RowTemplate>
+        <MudTd DataLabel="name">@context.Name</MudTd>
+        <MudTd DataLabel="successful">@context.Success</MudTd>
+        <MudTd DataLabel="failed">@context.Failed</MudTd>
+        <MudTd DataLabel="total">@context.Total</MudTd>
+        <MudTd DataLabel="toperror">@context.TopError</MudTd>
+        <MudTd DataLabel="actions">
+            <MudIconButton Icon="@Icons.Filled.Insights"/>
+            <MudIconButton Icon="@Icons.Filled.DynamicFeed"/>
+        </MudTd>
+    </RowTemplate>
+    <PagerContent>
+        <MudTablePager/>
+    </PagerContent>
+</MudTable>
+
+@code {
+
+    [Parameter]
+    public string Title { get; set; }
+
+    [Parameter]
+    public List<Element> Elements { get; set; }
+
+    private string _searchString = "";
+    private Element _selectedItem = null;
+    private HashSet<Element> _selectedItems = new();
+
+
+    private bool Filter(Element arg)
+    {
+        return arg.Name.IndexOf(_searchString, StringComparison.InvariantCultureIgnoreCase) != -1;
+    }
+
+}

@@ -1,0 +1,43 @@
+FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build-env
+WORKDIR /app
+
+# Copy the main source project files
+COPY ./*/*.csproj ./
+COPY ./*/*/*.csproj ./
+
+# Restore folder structure and restore dependencies
+RUN \
+    mkdir -p Realmar.Jobbernetes.AdminWeb/Client \
+ && mkdir -p Realmar.Jobbernetes.AdminWeb/Server \
+ && mkdir -p Realmar.Jobbernetes.AdminWeb/Shared \
+ && mv ./Realmar.Jobbernetes.AdminWeb.Client.csproj Realmar.Jobbernetes.AdminWeb/Client/. \
+ && mv ./Realmar.Jobbernetes.AdminWeb.Server.csproj Realmar.Jobbernetes.AdminWeb/Server/. \
+ && mv ./Realmar.Jobbernetes.AdminWeb.Shared.csproj Realmar.Jobbernetes.AdminWeb/Shared/. \
+ && for file in $(ls *.csproj); do \
+        mkdir -p ./${file%.*}/ \
+     && mv $file ./${file%.*}/; \
+    done \
+ # && apt update && apt install -y tree && ls -al && tree && ls | grep Realmar.Jobbernetes \
+ && for file in $(ls | grep Realmar.Jobbernetes); do \
+        dotnet restore ./${file}; \
+    done \
+ && dotnet restore ./Realmar.Jobbernetes.AdminWeb/Client/ \
+ && dotnet restore ./Realmar.Jobbernetes.AdminWeb/Server/ \
+ && dotnet restore ./Realmar.Jobbernetes.AdminWeb/Shared/
+
+
+# # Copy the test project files
+# COPY test/*/*.csproj ./
+# RUN for file in $(ls *.csproj); do mkdir -p test/${file%.*}/ && mv $file test/${file%.*}/; done
+
+# Copy everything else
+# Build runtime image
+FROM build-env AS publish
+COPY ./ ./
+RUN dotnet publish 'Realmar.Jobbernetes.AdminWeb/Server' -c Release -o /app/out
+
+# Production layer
+FROM mcr.microsoft.com/dotnet/aspnet:5.0
+WORKDIR /app
+COPY --from=publish /app/out .
+ENTRYPOINT ["dotnet", "Realmar.Jobbernetes.AdminWeb.Server.dll"]

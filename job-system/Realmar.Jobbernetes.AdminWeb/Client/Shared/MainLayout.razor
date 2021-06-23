@@ -1,0 +1,71 @@
+@inherits LayoutComponentBase
+@inject NavigationManager _navigationManager
+
+<MudLayout>
+    <MudAppBar Color="Color.Primary"
+               Fixed="@true"
+               Elevation="3">
+        <!-- <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start"/> -->
+        <MudSpacer/>
+        <h1>@_title</h1>
+        <MudSpacer/>
+        <MudIconButton Icon="@Icons.Custom.Brands.GitHub"
+                       Color="Color.Inherit"
+                       Link="https://github.com/realmar/Jobbernetes"
+                       Target="__blank"/>
+    </MudAppBar>
+
+    <MudDrawer Style="z-index: 999999;"
+               @bind-Open="@_open"
+               Fixed="@true"
+               Elevation="3"
+               Variant="@DrawerVariant.Mini"
+               ClipMode="DrawerClipMode.Docked"
+               OpenMiniOnHover="@true">
+        <MudNavMenu>
+            <MudNavLink OnClick="OnOverviewClick"
+                        Class="my-1"
+                        Href="@OverviewUrl"
+                        Match="NavLinkMatch.All"
+                        Icon="@Icons.Filled.Home">
+                Overview
+            </MudNavLink>
+            <MudNavLink OnClick="OnBuilderClick"
+                        Class="my-1"
+                        Href="@BuilderUrl"
+                        Match="NavLinkMatch.All"
+                        Icon="@Icons.Filled.Build">
+                Builder
+            </MudNavLink>
+        </MudNavMenu>
+    </MudDrawer>
+
+    <MudMainContent>
+        <MudContainer MaxWidth="MaxWidth.Large" Style="margin: auto; padding: 1rem;">
+            @Body
+        </MudContainer>
+    </MudMainContent>
+</MudLayout>
+
+@code
+{
+        private const string OverviewTitle = "Jobbernetes Overview";
+        private const string OverviewUrl = "/";
+        private const string BuilderTitle = "Jobbernetes Builder";
+        private const string BuilderUrl = "/builder";
+
+    private bool _open = false;
+    private string _title = OverviewTitle;
+
+    private void OnOverviewClick()
+    {
+        _title = OverviewTitle;
+        _navigationManager.NavigateTo(OverviewUrl);
+    }
+
+    private void OnBuilderClick()
+    {
+        _title = BuilderTitle;
+        _navigationManager.NavigateTo(BuilderUrl);
+    }
+}

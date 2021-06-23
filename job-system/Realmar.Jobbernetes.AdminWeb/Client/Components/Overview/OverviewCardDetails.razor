@@ -1,0 +1,18 @@
+<MudGrid Class="py-2" Style="text-align: center">
+    <MudItem xs="12" Class="py-0">
+        <MudText Typo="Typo.h5">@(Count > 1000 ? Math.Round(Count / 1000d, 1) + "k" : Count)</MudText>
+    </MudItem>
+    <MudItem xs="12" Class="py-0">
+        <MudText Typo="Typo.h5">@Throughput/s</MudText>
+    </MudItem>
+</MudGrid>
+
+@code {
+
+    [Parameter]
+    public int Count { get; set; }
+
+    [Parameter]
+    public int Throughput { get; set; }
+
+}
