@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build-env
+FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build-env
 WORKDIR /app
 
 # Copy the main source project files
@@ -37,7 +37,7 @@ COPY ./ ./
 RUN dotnet publish 'Realmar.Jobbernetes.AdminWeb/Server' -c Release -o /app/out
 
 # Production layer
-FROM mcr.microsoft.com/dotnet/aspnet:5.0
+FROM mcr.microsoft.com/dotnet/aspnet:6.0
 WORKDIR /app
 COPY --from=publish /app/out .
 ENTRYPOINT ["dotnet", "Realmar.Jobbernetes.AdminWeb.Server.dll"]
