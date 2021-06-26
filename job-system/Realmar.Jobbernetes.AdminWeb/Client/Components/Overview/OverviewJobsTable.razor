@@ -1,4 +1,19 @@
-<MudTable Items="@Elements"
+@using Microsoft.AspNetCore.SignalR.Client
+@using System.Threading
+@using Autofac.Features.OwnedInstances
+@using Realmar.Jobbernetes.AdminWeb.Client.Formatters
+@using Realmar.Jobbernetes.AdminWeb.Shared.Http
+@using Realmar.Jobbernetes.AdminWeb.Shared.Models
+@using Realmar.Jobbernetes.AdminWeb.Shared.Primitives
+
+@inject Owned<TaskDisposer> _tasks
+@inject MudTheme _theme
+@inject HttpClient _http
+@inject ISnackbar _snackbar
+
+@implements IAsyncDisposable
+
+<MudTable Items="@_elements"
           Dense="true"
           Hover="true"
           Bordered="false"
@@ -6,7 +21,10 @@
           Filter="Filter"
           @bind-SelectedItem="_selectedItem">
     <ToolBarContent>
-        <MudText Typo="Typo.h6">@Title</MudText>
+        <MudText Typo="Typo.h6"
+                 Style="@($"padding: 0.2rem; width: 30%; background: linear-gradient(90deg, {HeaderColor} 0%, #FFFFFF 100%);")">
+            @_title
+        </MudText>
         <MudSpacer/>
         <MudTextField @bind-Value="_searchString"
                       Placeholder="Search"
@@ -22,38 +40,45 @@
         <col/>
         <col/>
         <col/>
-        <col style="width: 10rem;"/>
+        <col style="width: 12rem;"/>
     </ColGroup>
     <HeaderContent>
         <MudTh>
-            <MudTableSortLabel SortBy="(Element x) => x.Name">Name</MudTableSortLabel>
+            <MudTableSortLabel SortBy="(Job x) => x.Name">Name</MudTableSortLabel>
         </MudTh>
         <MudTh>
-            <MudTableSortLabel SortBy="(Element x) => x.Success.Count"
+            <MudTableSortLabel SortBy="(Job x) => x.Success.Count.Format()"
                                InitialDirection="SortDirection.Descending">
                 Successful
             </MudTableSortLabel>
         </MudTh>
         <MudTh>
-            <MudTableSortLabel SortBy="(Element x) => x.Failed.Count">Failed</MudTableSortLabel>
+            <MudTableSortLabel SortBy="(Job x) => x.Failed.Count.Format()">Failed</MudTableSortLabel>
         </MudTh>
         <MudTh>
-            <MudTableSortLabel SortBy="(Element x) => x.Total.Count">Total</MudTableSortLabel>
+            <MudTableSortLabel SortBy="(Job x) => x.Total.Count.Format()">Total</MudTableSortLabel>
         </MudTh>
         <MudTh>
-            <MudTableSortLabel SortBy="(Element x) => x.TopError">Top Error</MudTableSortLabel>
+            <MudTableSortLabel SortBy="(Job x) => x.TopError">Top Error</MudTableSortLabel>
         </MudTh>
         <MudTh></MudTh>
     </HeaderContent>
     <RowTemplate>
         <MudTd DataLabel="name">@context.Name</MudTd>
-        <MudTd DataLabel="successful">@context.Success</MudTd>
-        <MudTd DataLabel="failed">@context.Failed</MudTd>
-        <MudTd DataLabel="total">@context.Total</MudTd>
+        <MudTd DataLabel="successful">
+            <MudText Color="Color.Success">@Format(context.Success)</MudText>
+        </MudTd>
+        <MudTd DataLabel="failed">
+            <MudText Color="Color.Error">@Format(context.Failed)</MudText>
+        </MudTd>
+        <MudTd DataLabel="total">
+            <MudText Color="Color.Info">@Format(context.Total)</MudText>
+        </MudTd>
         <MudTd DataLabel="toperror">@context.TopError</MudTd>
         <MudTd DataLabel="actions">
             <MudIconButton Icon="@Icons.Filled.Insights"/>
             <MudIconButton Icon="@Icons.Filled.DynamicFeed"/>
+            <MudIconButton Disabled="@(CanBeDeleted(context) == false)" OnClick="@(() => DeleteJob(context))" Icon="@Icons.Filled.Delete"/>
         </MudTd>
     </RowTemplate>
     <PagerContent>
@@ -64,19 +89,93 @@
 @code {
 
     [Parameter]
-    public string Title { get; set; }
+    public HealthState Health { get; set; }
 
     [Parameter]
-    public List<Element> Elements { get; set; }
+    public HubConnection Hub { get; set; }
 
+    [Parameter]
+    public CancellationToken CancellationToken { get; set; }
+
+    private string HeaderColor => Health switch {
+        HealthState.Critical => _theme.Palette.Error,
+        HealthState.Warning => _theme.Palette.Warning,
+        _ => _theme.Palette.Success
+        };
+
+    private List<Job> _elements = new();
+    private string _title = "Jobs";
     private string _searchString = "";
-    private Element _selectedItem = null;
-    private HashSet<Element> _selectedItems = new();
+    private Job _selectedItem = null;
+    private HashSet<Job> _selectedItems = new();
+    private HashSet<Job> _deleting = new();
 
-
-    private bool Filter(Element arg)
+    protected override Task OnInitializedAsync()
     {
-        return arg.Name.IndexOf(_searchString, StringComparison.InvariantCultureIgnoreCase) != -1;
+        _title = $"{Health} Jobs";
+
+        var jobsStream = Hub.StreamAsync<List<Job>>("StreamJobs", Health, CancellationToken);
+
+        _tasks.Value.Add(Task.Run(async () =>
+        {
+            await foreach (var jobs in jobsStream)
+            {
+                _elements.Clear();
+                _elements.AddRange(jobs);
+
+                var remove = new List<Job>();
+                foreach (var job in _deleting)
+                {
+                    if (_elements.Find(storedJob => storedJob.Guid.Equals(job.Guid)) == null)
+                    {
+                        remove.Add(job);
+                    }
+                }
+                remove.ForEach(job => _deleting.Remove(job));
+
+                StateHasChanged();
+            }
+        }));
+
+        return Task.CompletedTask;
+    }
+
+    private bool CanBeDeleted(Job job)
+    {
+        foreach (var deletingJob in _deleting)
+        {
+            if (deletingJob.Guid.Equals(job.Guid))
+            {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+
+    private bool Filter(Job arg) =>
+        arg.Name.IndexOf(_searchString, StringComparison.InvariantCultureIgnoreCase) != -1;
+
+    private string Format(ProcessingMetrics metrics) =>
+        $"{metrics.Count.Format()} ({metrics.Throughput.Format()})";
+
+    public ValueTask DisposeAsync() => _tasks.DisposeAsync();
+
+    private async Task DeleteJob(Job job)
+    {
+        _deleting.Add(job);
+        var result = await _http.DeleteAsJsonAsync("api/jobs", job.Guid);
+
+        if (result.IsSuccessStatusCode)
+        {
+            _snackbar.Add($"Successfully deleted job {job.Name}", Severity.Success);
+        }
+        else
+        {
+            _snackbar.Add($"Failed to delete job {job.Name} {await result.Content.ReadAsStringAsync().ConfigureAwait(false)}", Severity.Error);
+            _deleting.Remove(job);
+        }
     }
 
 }

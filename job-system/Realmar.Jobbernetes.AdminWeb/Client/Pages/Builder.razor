@@ -1,1 +1,73 @@
 @page "/builder"
+@using Realmar.Jobbernetes.AdminWeb.Shared.Models
+
+@inject HttpClient _http
+@inject ISnackbar _snackbar
+
+<MudContainer MaxWidth="MaxWidth.Small">
+    <EditForm Model="@_model" OnValidSubmit="OnValidSubmit">
+        <DataAnnotationsValidator/>
+        <MudCard>
+            <MudCardContent>
+                <MudForm @ref="_form" @bind-IsValid="@_success" @bind-Errors="@errors">
+                    <MudGrid>
+                        <MudItem xs="12">
+                            <MudTextField T="string" @bind-Value="_model.Name" Label="Name" Required="true" RequiredError="Job name is required!"/>
+                        </MudItem>
+                        <MudItem xs="12">
+                            <MudTextField T="string" @bind-Value="_model.TopError" Label="TopError" Required="true" RequiredError="TopError is required!"/>
+                        </MudItem>
+
+                        <MudItem xs="12" sm="4">
+                            <MudNumericField @bind-Value="_model.SuccessProbability" Label="SuccessProbability" Variant="Variant.Text" Min="0" Max="100"/>
+                        </MudItem>
+                        <MudItem xs="6" sm="4">
+                            <MudNumericField @bind-Value="_model.IncreaseMin" Label="Increase Min" Variant="Variant.Text"/>
+                        </MudItem>
+                        <MudItem xs="6" sm="4">
+                            <MudNumericField @bind-Value="_model.IncreaseMax" Label="Increase Max" Variant="Variant.Text"/>
+                        </MudItem>
+                    </MudGrid>
+                </MudForm>
+            </MudCardContent>
+            <MudCardActions>
+                <MudProgressCircular Style="@($"float: left; {(_isSending ? "" : "display: none;")}")" Color="Color.Primary" Indeterminate="true"/>
+                <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto">Add</MudButton>
+            </MudCardActions>
+        </MudCard>
+    </EditForm>
+</MudContainer>
+
+@code
+{
+
+    private MudForm _form;
+    private bool _isSending;
+    private bool _success;
+    private string[] errors = { };
+
+    private AddJobModel _model = new();
+
+    private async Task OnValidSubmit(EditContext context)
+    {
+        _isSending = true;
+
+        var result = await _http.PutAsJsonAsync("api/jobs", context.Model)
+                                .ConfigureAwait(false);
+
+        if (result.IsSuccessStatusCode)
+        {
+            _snackbar.Add($"Successfully added job {_model.Name}", Severity.Success);
+        }
+        else
+        {
+            _snackbar.Add($"Failed to add job {_model.Name} {await result.Content.ReadAsStringAsync().ConfigureAwait(false)}", Severity.Error);
+
+            _form.Reset();
+        }
+
+        _isSending = false;
+
+        StateHasChanged();
+    }
+}

@@ -1,4 +1,4 @@
-namespace Realmar.Jobbernetes.AdminWeb.Shared
+namespace Realmar.Jobbernetes.AdminWeb.Shared.Primitives
 {
     public enum HealthState
     {

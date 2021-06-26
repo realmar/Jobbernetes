@@ -1,4 +1,4 @@
-<MudPaper Class="pa-2 d-flex justify-space-between flex-column flex-wrap" Height="100%">
+<MudPaper Style="@Style" Class="pa-2 d-flex justify-space-between flex-column flex-wrap" Height="100%">
     <h2>@Title</h2>
     <MudItem Class="align-self-center" Style="margin: auto;">@ChildContent</MudItem>
 </MudPaper>
@@ -10,5 +10,8 @@
 
     [Parameter]
     public string Title { get; set; }
+
+    [Parameter]
+    public string Style { get; set; }
 
 }

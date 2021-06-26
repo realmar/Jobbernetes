@@ -1,18 +1,21 @@
+@using Realmar.Jobbernetes.AdminWeb.Client.Formatters
+@using Realmar.Jobbernetes.AdminWeb.Shared.Models
+
 <MudGrid Class="py-2" Style="text-align: center">
     <MudItem xs="12" Class="py-0">
-        <MudText Typo="Typo.h5">@(Count > 1000 ? Math.Round(Count / 1000d, 1) + "k" : Count)</MudText>
+        <MudText Color="Color" Typo="Typo.h5">@(Metrics?.Count.Format() ?? Constants.MissingValue)</MudText>
     </MudItem>
     <MudItem xs="12" Class="py-0">
-        <MudText Typo="Typo.h5">@Throughput/s</MudText>
+        <MudText Color="Color" Typo="Typo.h5">@(Metrics?.Throughput.Format() ?? Constants.MissingValue)</MudText>
     </MudItem>
 </MudGrid>
 
 @code {
 
     [Parameter]
-    public int Count { get; set; }
+    public ProcessingMetrics? Metrics { get; set; }
 
     [Parameter]
-    public int Throughput { get; set; }
+    public Color Color { get; set; } = Color.Default;
 
 }

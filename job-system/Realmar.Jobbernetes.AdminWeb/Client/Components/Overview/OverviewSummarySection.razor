@@ -1,0 +1,83 @@
+@using Realmar.Jobbernetes.AdminWeb.Client.Formatters
+@using Microsoft.AspNetCore.SignalR.Client
+@using System.Threading
+@using Autofac.Features.OwnedInstances
+@using Realmar.Jobbernetes.AdminWeb.Shared.Models
+
+@inject Owned<TaskDisposer> _tasks
+@inject ColorProvider _colors;
+
+@implements IAsyncDisposable
+
+<MudGrid>
+    <MudItem xs="3">
+        <OverviewCard Title="Success Rate"
+                      Style="@($"background-color: {_colors.Get(_summary?.SuccessRate)}")">
+            <MudText Typo="Typo.h2"
+                     Class="flex-grow-1 font-weight-bold">
+                @(_summary == null ? Constants.MissingValue : _summary.SuccessRate.Format())
+            </MudText>
+        </OverviewCard>
+    </MudItem>
+    <MudItem xs="2">
+        <OverviewCard Title="Success">
+            <OverviewCardDetails Color="@Color.Success" Metrics="@_summary?.Success"/>
+        </OverviewCard>
+    </MudItem>
+    <MudItem xs="2">
+        <OverviewCard Title="Failed">
+            <OverviewCardDetails Color="@Color.Error" Metrics="@_summary?.Failed"/>
+        </OverviewCard>
+    </MudItem>
+    <MudItem xs="2">
+        <OverviewCard Title="Total">
+            <OverviewCardDetails Color="@Color.Info" Metrics="@_summary?.Total"/>
+        </OverviewCard>
+    </MudItem>
+    <MudItem xs="3">
+        <OverviewCard Title="Top Errors">
+            <MudList Clickable="false" Dense="true" DisableGutters="true">
+                @if (_summary != null)
+                {
+                    @foreach (var error in _summary.TopErrors.OrderByDescending(error => error.Percentage))
+                    {
+                        <MudListItem Text="@($"{error.Percentage.Format()} {error.Message}")"
+                                     Icon="@Icons.Filled.Error"
+                                     IconColor="Color.Error">
+                        </MudListItem>
+                    }
+                }
+            </MudList>
+        </OverviewCard>
+    </MudItem>
+</MudGrid>
+
+@code {
+
+    [Parameter]
+    public HubConnection HubConnection { get; set; }
+
+    [Parameter]
+    public CancellationToken CancellationToken { get; set; }
+
+    private OverviewSummary? _summary;
+
+    protected override Task OnInitializedAsync()
+    {
+        var summaryStream = HubConnection.StreamAsync<OverviewSummary>("StreamSummary", CancellationToken);
+
+        _tasks.Value.Add(Task.Run(async () =>
+        {
+            await foreach (var summary in summaryStream)
+            {
+                _summary = summary;
+                StateHasChanged();
+            }
+        }));
+
+        return Task.CompletedTask;
+    }
+
+    public ValueTask DisposeAsync() => _tasks.DisposeAsync();
+
+}
