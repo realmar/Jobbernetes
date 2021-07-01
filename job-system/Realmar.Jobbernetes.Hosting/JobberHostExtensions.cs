@@ -67,9 +67,12 @@ namespace Realmar.Jobbernetes.Hosting
                 services.Configure<TOptions>(context.Configuration.GetSection(sectionName ?? typeof(TOptions).Name));
 
             var options = typeof(IJobbernetes).Assembly.GetTypes()
-                                              .Where(type =>
-                                                         type!.Namespace!.StartsWith("Realmar.Jobbernetes.Framework.Options") &&
-                                                         type!.IsAbstract == false)
+                                              .Where(type => type.Namespace.StartsWith(
+                                                                 nameof(Realmar)        + "."
+                                                               + nameof(Jobbernetes)    + "."
+                                                               + nameof(Infrastructure) + "."
+                                                               + nameof(Infrastructure.Options))
+                                                          && type.IsAbstract == false)
                                               .ToArray();
 
             var           extensionsType = typeof(OptionsConfigurationServiceCollectionExtensions);
