@@ -5,7 +5,7 @@ local Storage(name) = {
   pvName:: self.name + '-pv',
   pvcName:: self.name + '-pvc',
 
-  pv: kube.PersistentVolume(self.pvName) {
+  /*pv: kube.PersistentVolume(self.pvName) {
     spec+: {
       storageClassName: 'jobbernetes-volume',
       capacity: {
@@ -20,17 +20,18 @@ local Storage(name) = {
           path: '/var/data/' + name,
         },
     },
-  },
+  },*/
   pvc: kube.PersistentVolumeClaim(self.pvcName) {
-    storageClass: 'jobbernetes-volume',
+    // storageClass: 'jobbernetes-volume',
+    storageClass: 'default',
     storage: '10Gi',
-    spec+: {
+    /*spec+: {
       selector: {
         matchLabels: {
           name: $.pvName,
         },
       },
-    },
+    },*/
   },
 };
 
