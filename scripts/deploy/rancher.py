@@ -11,6 +11,7 @@ commands = [
 
     f"kubectl apply --validate=false -f {os.path.join(SPECS_DIR, 'vendor', 'cert-manager.crds.v1.0.4.yaml')}",
 
+    f"helm repo add rancher-latest https://releases.rancher.com/server-charts/latest",
     f"helm repo add jetstack https://charts.jetstack.io",
     f"helm repo update",
 
