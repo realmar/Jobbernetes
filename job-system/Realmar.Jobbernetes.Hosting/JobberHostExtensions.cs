@@ -1,6 +1,4 @@
 using System;
-using System.Linq;
-using System.Reflection;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using Microsoft.Extensions.Configuration;
@@ -9,8 +7,8 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 using Prometheus.Client.DependencyInjection;
 using Realmar.Jobbernetes.Hosting.Logging.Options;
-using Realmar.Jobbernetes.Infrastructure.Facade;
 using Realmar.Jobbernetes.Infrastructure.Metrics;
+using Realmar.Jobbernetes.Infrastructure.Options;
 using Serilog;
 using Serilog.Formatting.Compact;
 
@@ -63,40 +61,10 @@ namespace Realmar.Jobbernetes.Hosting
 
         private static void ConfigureOptions(HostBuilderContext context, IServiceCollection services)
         {
-            void Configure<TOptions>(string? sectionName = null) where TOptions : class =>
-                services.Configure<TOptions>(context.Configuration.GetSection(sectionName ?? typeof(TOptions).Name));
+            var configuration = context.Configuration;
 
-            var options = typeof(IJobbernetes).Assembly.GetTypes()
-                                              .Where(type => type.Namespace.StartsWith(
-                                                                 nameof(Realmar)        + "."
-                                                               + nameof(Jobbernetes)    + "."
-                                                               + nameof(Infrastructure) + "."
-                                                               + nameof(Infrastructure.Options))
-                                                          && type.IsAbstract == false)
-                                              .ToArray();
-
-            var           extensionsType = typeof(OptionsConfigurationServiceCollectionExtensions);
-            const string? configureName  = nameof(OptionsConfigurationServiceCollectionExtensions.Configure);
-
-            var registerMethod = extensionsType.GetMethod(
-                configureName,
-                BindingFlags.Public | BindingFlags.Static, null,
-                new[] { typeof(IServiceCollection), typeof(IConfiguration) }, Array.Empty<ParameterModifier>());
-
-            if (registerMethod == null)
-            {
-                throw new InvalidOperationException($"Cannot find method {configureName} on type {extensionsType.FullName}. " +
-                                                    "This is a bug in the library.");
-            }
-
-            foreach (var option in options)
-            {
-                registerMethod.MakeGenericMethod(option)
-                              .Invoke(null, new object?[] { services, context.Configuration.GetSection(option.Name) });
-            }
-
-            Configure<SerilogOptions>(SerilogOptions.Position);
-
+            services.ConfigureAllOptions(configuration);
+            services.Configure<SerilogOptions>(configuration, SerilogOptions.Position);
             services.Configure<HostOptions>(hostOptions => hostOptions.ShutdownTimeout = TimeSpan.FromSeconds(120));
         }
 

@@ -27,11 +27,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Realmar.Jobbernetes.Demo.Ex
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Realmar.Jobbernetes.Infrastructure.Tests", "Realmar.Jobbernetes.Infrastructure.Tests\Realmar.Jobbernetes.Infrastructure.Tests.csproj", "{3A9C543E-E743-447C-92D8-F412825D8490}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Realmar.Jobbernetes.AdminWeb.Server", "Realmar.Jobbernetes.AdminWeb\Server\Realmar.Jobbernetes.AdminWeb.Server.csproj", "{806B60DF-AD1A-4833-A5EF-05A3A5EC8716}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Realmar.Jobbernetes.AdminWeb.Server", "Realmar.Jobbernetes.AdminWeb\Server\Realmar.Jobbernetes.AdminWeb.Server.csproj", "{806B60DF-AD1A-4833-A5EF-05A3A5EC8716}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Realmar.Jobbernetes.AdminWeb.Client", "Realmar.Jobbernetes.AdminWeb\Client\Realmar.Jobbernetes.AdminWeb.Client.csproj", "{7341903D-15FE-42F6-A9CA-F75BA99EF0B0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Realmar.Jobbernetes.AdminWeb.Client", "Realmar.Jobbernetes.AdminWeb\Client\Realmar.Jobbernetes.AdminWeb.Client.csproj", "{7341903D-15FE-42F6-A9CA-F75BA99EF0B0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Realmar.Jobbernetes.AdminWeb.Shared", "Realmar.Jobbernetes.AdminWeb\Shared\Realmar.Jobbernetes.AdminWeb.Shared.csproj", "{41F82CE4-4CAF-44CF-BF2A-97EDC906C04D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Realmar.Jobbernetes.AdminWeb.Shared", "Realmar.Jobbernetes.AdminWeb\Shared\Realmar.Jobbernetes.AdminWeb.Shared.csproj", "{41F82CE4-4CAF-44CF-BF2A-97EDC906C04D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Realmar.Jobbernetes.SourceGenerators", "Realmar.Jobbernetes.SourceGenerators\Realmar.Jobbernetes.SourceGenerators.csproj", "{90F8AD6C-3DC9-4775-AD1C-9A5C9A939DA7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -99,6 +101,10 @@ Global
 		{41F82CE4-4CAF-44CF-BF2A-97EDC906C04D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{41F82CE4-4CAF-44CF-BF2A-97EDC906C04D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{41F82CE4-4CAF-44CF-BF2A-97EDC906C04D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{90F8AD6C-3DC9-4775-AD1C-9A5C9A939DA7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{90F8AD6C-3DC9-4775-AD1C-9A5C9A939DA7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{90F8AD6C-3DC9-4775-AD1C-9A5C9A939DA7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{90F8AD6C-3DC9-4775-AD1C-9A5C9A939DA7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "Realmar.Jobbernetes.SourceGenerators": {
+      "commandName": "DebugRoslynComponent",
+      "targetProject": "..\\Realmar.Jobbernetes.Infrastructure\\Realmar.Jobbernetes.Infrastructure.csproj"
+    }
+  }
+}
