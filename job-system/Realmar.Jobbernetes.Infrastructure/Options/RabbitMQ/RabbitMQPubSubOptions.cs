@@ -1,6 +1,6 @@
 namespace Realmar.Jobbernetes.Infrastructure.Options.RabbitMQ
 {
-    public class RabbitMQPubSubOptions
+    public abstract class RabbitMQPubSubOptions
     {
         public string Exchange   { get; set; } = "jobbernetes-direct";
         public string Queue      { get; set; } = "jobbernetes-dev";
