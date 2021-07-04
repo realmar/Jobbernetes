@@ -23,11 +23,7 @@ local kube = import 'vendor/kube.libsonnet';
               image: components.dataviewer.image.fqn,
               imagePullPolicy: 'Always',
               ports: [{ name: 'http', containerPort: 3000 }],
-              resources: jn.ResourcesDefaults() {
-                limits+: {
-                  cpu: '500m',
-                },
-              },
+              resources: jn.ResourcesDefaults(),
               env_+: config.Logging() +
                      config.AspNetCore() +
                      config.MongoDB('jobbernetes', 'images'),

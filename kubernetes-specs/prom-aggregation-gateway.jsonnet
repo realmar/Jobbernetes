@@ -28,11 +28,11 @@ local kube = import 'vendor/kube.libsonnet';
               args_+: { listen: '0.0.0.0:' + $.port },
               resources: {
                 limits: {
-                  cpu: 0.3,
+                  cpu: '200m',
                   memory: '60Mi',
                 },
                 requests: {
-                  cpu: 0.1,
+                  cpu: '100m',
                   memory: '10Mi',
                 },
               },

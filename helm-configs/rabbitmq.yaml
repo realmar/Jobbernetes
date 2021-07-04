@@ -14,10 +14,10 @@ securityContext:
 ## Resource limits and requests
 resources:
   limits:
-     cpu: 6
+     cpu: 500m
      memory: 1024Mi
   requests:
-     cpu: 2
+     cpu: 200m
      memory: 256Mi
 
 ## Ingress configuration
@@ -31,7 +31,7 @@ ingress:
 
   ## Hosts
   hosts:
-    - host: rabbitmq.localhost
+    - host: rabbitmq.jn.realmar.net
       paths:
         - /
 

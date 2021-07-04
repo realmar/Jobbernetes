@@ -90,7 +90,7 @@ local ResourcesCpu(request, limit) = {
 
 local ResourcesDefaults() = std.mergePatch(
   ResourcesMemory('128Mi', '256Mi'),
-  ResourcesCpu('100m', '1000m')
+  ResourcesCpu('100m', '200m')
 );
 
 // exports

@@ -19,10 +19,10 @@ containerSecurityContext:
 
 resources:
   limits:
-    cpu: 2
+    cpu: 200m
     memory: 600Mi
   requests:
-    cpu: 1
+    cpu: 100m
     memory: 128Mi
 
 arbiter:

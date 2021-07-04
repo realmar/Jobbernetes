@@ -67,10 +67,10 @@ server:
   resources:
     requests:
       memory: 1768Mi
-      cpu: 1
+      cpu: 200m
     limits:
       memory: 2768Mi
-      cpu: 3
+      cpu: 500m
 
 pushgateway:
   # we use prom-aggregation-gateway instead
@@ -88,10 +88,10 @@ pushgateway:
   ##
   resources:
     limits:
-      cpu: 2
+      cpu: 200m
       memory: 256Mi
     requests:
-      cpu: 0.2
+      cpu: 20m
       memory: 128Mi
 
   persistentVolume:

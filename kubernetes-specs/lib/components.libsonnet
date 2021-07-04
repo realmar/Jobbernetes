@@ -23,11 +23,11 @@ local Component(_name, _ingress=null) = {
 local collection = {
   services:
     [
-      Component('dataviewer', 'dataviewer.jn.localhost'),
-      Component('adminweb', 'admin.jn.localhost'),
-      Component('input-service', 'input-service.jn.localhost'),
+      Component('dataviewer', 'dataviewer.jn.realmar.net'),
+      Component('adminweb', 'admin.jn.realmar.net'),
+      Component('input-service', 'input-service.jn.realmar.net'),
       Component('output-service'),
-      Component('external-service', 'external-service.jn.localhost'),
+      Component('external-service', 'external-service.jn.realmar.net'),
     ],
 
   jobs: [

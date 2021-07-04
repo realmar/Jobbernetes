@@ -33,11 +33,7 @@ local ImageJob(name, prometheusInstance, textPrefix, textPostfix) = kube.CronJob
               job: kube.Container(name) {
                 image: components.image_scrape_job.image.fqn,
                 imagePullPolicy: 'Always',
-                resources: jn.ResourcesDefaults() {
-                  limits+: {
-                    cpu: $.threads,
-                  },
-                },
+                resources: jn.ResourcesDefaults(),
                 env_+: config.Logging() +
                        config.RabbitMQConnection() +
                        config.RabbitMQConsumer('jobbernetes', 'jn-images-input', 'jn-images-input') +

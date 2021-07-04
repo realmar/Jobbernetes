@@ -23,11 +23,7 @@ local kube = import 'vendor/kube.libsonnet';
             server: kube.Container($.name) {
               image: components.output_service.image.fqn,
               imagePullPolicy: 'Always',
-              resources: jn.ResourcesDefaults() {
-                limits+: {
-                  cpu: '500m',
-                },
-              },
+              resources: jn.ResourcesDefaults(),
               env_+: config.Logging() +
                      config.RabbitMQConnection() +
                      config.RabbitMQConsumer('jobbernetes', 'jn-images-output', 'jn-images-output') +

@@ -836,4 +836,4 @@ dashboards:
 ingress:
   enabled: true
   hosts:
-    - grafana.localhost
+    - grafana.jn.realmar.net
