@@ -8,6 +8,13 @@ local ImageJob(name, prometheusInstance, textPrefix, textPostfix) = kube.CronJob
   processes:: 2,
   threads:: 2,
 
+  batchSize:: 300,
+
+  delayMin:: 100,
+  delayMax:: 300,
+
+  failureProbability:: 0.2,
+
   spec+: {
     schedule: '*/1 * * * *',
     successfulJobsHistoryLimit: 3,
@@ -48,15 +55,15 @@ local ImageJob(name, prometheusInstance, textPrefix, textPostfix) = kube.CronJob
                          ExternalServiceOptions__Url: 'http://' + components.external_service.serviceName + ':3000/images',
 
                          // Processing
-                         JobOptions__BatchSize: '300',
+                         JobOptions__BatchSize: std.toString($.batchSize),
                          JobOptions__MaxDegreeOfParallelism: std.toString($.threads),
 
                          // Demo
                          DemoOptions__TextPrefix: textPrefix,
                          DemoOptions__TextPostfix: textPostfix,
-                         DemoOptions__ProcessingDelayMilliseconds__Min: '100',
-                         DemoOptions__ProcessingDelayMilliseconds__Max: '300',
-                         DemoOptions__FailureProbability: '0.2',
+                         DemoOptions__ProcessingDelayMilliseconds__Min: std.toString($.delayMin),
+                         DemoOptions__ProcessingDelayMilliseconds__Max: std.toString($.delayMax),
+                         DemoOptions__FailureProbability: std.toString($.failureProbability),
                        },
               },
             },
